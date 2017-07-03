@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/hidden_project_pic"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="10dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="@dimen/list_text_size"
+            android:id="@+id/hidden_project_name"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:id="@+id/hidden_project_time"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/hidden_project_detail"
+        android:layout_width="25dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="25dp"
+        android:layout_alignParentRight="true"
+        android:gravity="center|center_vertical"
+        android:background="@mipmap/right_log"
+        />
+</LinearLayout>

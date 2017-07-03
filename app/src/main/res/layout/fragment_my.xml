@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="#EFEFF3"
+    android:layout_height="match_parent">
+    <!--标题-->
+    <RelativeLayout
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/title_bar_height"
+    android:background="@color/titleColor"
+    android:id="@+id/top">
+
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_alignParentLeft="true"
+    android:text="我的"
+    android:textSize="@dimen/title_text_size"
+    android:textColor="@color/black"
+    android:gravity="center_vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"/>
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:text="@string/commit"-->
+    <!--android:textSize="@dimen/title_text_size"-->
+    <!--android:textColor="@color/black"-->
+    <!--android:gravity="center_vertical"-->
+    <!--android:paddingRight="@dimen/activity_horizontal_margin"/>-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:text="@string/app_name"-->
+    <!--android:textSize="@dimen/title_text_size"-->
+    <!--android:textColor="@color/colorPrimaryDark"-->
+    <!--android:gravity="center_vertical"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:paddingLeft="@dimen/activity_horizontal_margin"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_centerHorizontal="true" />-->
+
+    </RelativeLayout>
+    <View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/line">
+    </View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp">
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/myinfo_layout"
+            android:layout_margin="20dp"
+            >
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="王小川"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:layout_margin="15dp"
+                    android:textSize="25dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="市政园林"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="25dp"
+                    android:textSize="15dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:layout_height="match_parent">
+
+                <com.app.officeautomationapp.view.RoundImageView
+                    android:id="@+id/iv_my_photo"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/user_photo" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical|center"
+        android:background="@color/white">
+        <ImageView
+            android:id="@+id/hidden_project_pic"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="10dp"
+            android:layout_width="30dp"
+            android:background="@mipmap/icon_person_info"
+            android:layout_height="30dp" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="60dp"
+                android:text="个人资料"
+                android:id="@+id/hidden_project_time"/>
+
+        <ImageView
+            android:id="@+id/hidden_project_pic1"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:layout_width="30dp"
+            android:background="@mipmap/icon_great"
+            android:layout_height="30dp" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line">
+    </View>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white">
+        <ImageView
+            android:id="@+id/hidden_project_pic3"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="10dp"
+            android:layout_width="30dp"
+            android:background="@mipmap/my_emotion_icon"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="60dp"
+            android:text="密码修改"
+            android:id="@+id/hidden_project_time2"/>
+
+        <ImageView
+            android:id="@+id/hidden_project_pic2"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:layout_width="30dp"
+            android:background="@mipmap/icon_great"
+            android:layout_height="30dp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line">
+    </View>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white">
+        <ImageView
+            android:layout_alignParentLeft="true"
+            android:layout_margin="10dp"
+            android:layout_width="30dp"
+            android:background="@mipmap/icon_my_favorite"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="60dp"
+            android:text="清理缓存"/>
+
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:layout_width="30dp"
+            android:background="@mipmap/icon_great"
+            android:layout_height="30dp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line">
+    </View>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white">
+        <ImageView
+            android:layout_alignParentLeft="true"
+            android:layout_margin="10dp"
+            android:layout_width="30dp"
+            android:background="@mipmap/my_setting_icon"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="60dp"
+            android:text="系统设置"/>
+
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:layout_width="30dp"
+            android:background="@mipmap/icon_great"
+            android:layout_height="30dp" />
+    </RelativeLayout>
+
+
+</LinearLayout>

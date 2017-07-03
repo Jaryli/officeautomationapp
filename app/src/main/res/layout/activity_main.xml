@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/bodyColor"
+    tools:context=".activity.MainActivity">
+
+    <!--&lt;!&ndash;标题&ndash;&gt;-->
+    <!--<RelativeLayout-->
+        <!--android:fitsSystemWindows="true"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/title_bar_height"-->
+        <!--android:background="@color/titleColor"-->
+        <!--android:id="@+id/top">-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:text="@string/back"-->
+            <!--android:textSize="@dimen/title_text_size"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:paddingLeft="@dimen/activity_horizontal_margin"/>-->
+
+        <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_alignParentRight="true"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:text="@string/commit"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:textSize="@dimen/title_text_size"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:textColor="@color/black"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:gravity="center_vertical"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:paddingRight="@dimen/activity_horizontal_margin"/>&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:text="@string/app_name"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:textSize="@dimen/title_text_size"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:textColor="@color/colorPrimaryDark"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:gravity="center_vertical"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_gravity="center_horizontal"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:paddingLeft="@dimen/activity_horizontal_margin"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_alignParentTop="true"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_centerHorizontal="true" />&ndash;&gt;-->
+
+    <!--</RelativeLayout>-->
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="@color/line">-->
+    <!--</View>-->
+
+
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_below="@+id/top"-->
+        <!--android:background="@color/bodyColor"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_marginTop="@dimen/activity_horizontal_margin"-->
+        <!--android:paddingLeft="@dimen/activity_horizontal_margin_min"-->
+        <!--android:paddingRight="@dimen/activity_horizontal_margin_min"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:id="@+id/linearLayout">-->
+
+        <!--<RelativeLayout-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+        <!--<RelativeLayout-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_marginLeft="20dp">-->
+            <!--&lt;!&ndash;android:background="@drawable/shape_button_bule"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:drawableRight="@mipmap/pd_64"&ndash;&gt;-->
+            <!--<Button-->
+                <!--android:layout_width="@dimen/button_layout_common"-->
+                <!--android:layout_height="@dimen/button_layout_common"-->
+                <!--android:background="@mipmap/text137"-->
+                <!--android:radius="80dip"-->
+                <!--android:paddingLeft="10dp"-->
+                <!--android:paddingTop="10dp"-->
+                <!--android:paddingRight="10dp"-->
+                <!--android:paddingBottom="10dp"-->
+                <!--android:id="@+id/button_tzgg" />-->
+            <!--<TextView-->
+                <!--android:layout_width="@dimen/button_layout_common"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:layout_marginTop="@dimen/button_layout_common"-->
+                <!--android:gravity="center"-->
+                <!--android:textSize="@dimen/button_down_text_size"-->
+                <!--android:text="通知公告"/>-->
+        <!--</RelativeLayout>-->
+
+            <!--<RelativeLayout-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerInParent="true"-->
+                <!--android:layout_alignParentTop="true">-->
+                <!--<Button-->
+                    <!--android:layout_width="@dimen/button_layout_common"-->
+                    <!--android:layout_height="@dimen/button_layout_common"-->
+                    <!--android:background="@mipmap/text137"-->
+                    <!--android:radius="80dip"-->
+                    <!--android:paddingLeft="10dp"-->
+                    <!--android:paddingTop="10dp"-->
+                    <!--android:paddingRight="10dp"-->
+                    <!--android:paddingBottom="10dp"-->
+                    <!--android:id="@+id/button_gzfq" />-->
+                <!--<TextView-->
+                    <!--android:layout_width="@dimen/button_layout_common"-->
+                    <!--android:layout_height="20dp"-->
+                    <!--android:layout_marginTop="@dimen/button_layout_common"-->
+                    <!--android:gravity="center"-->
+                    <!--android:textSize="@dimen/button_down_text_size"-->
+                    <!--android:text="工作发起"/>-->
+            <!--</RelativeLayout>-->
+
+            <!--<RelativeLayout-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_alignParentTop="true"-->
+                <!--android:layout_marginRight="20dp">-->
+                <!--<Button-->
+                    <!--android:layout_width="@dimen/button_layout_common"-->
+                    <!--android:layout_height="@dimen/button_layout_common"-->
+                    <!--android:background="@mipmap/text137"-->
+                    <!--android:radius="80dip"-->
+                    <!--android:paddingLeft="10dp"-->
+                    <!--android:paddingTop="10dp"-->
+                    <!--android:paddingRight="10dp"-->
+                    <!--android:paddingBottom="10dp"-->
+                    <!--android:id="@+id/button_rwdb" />-->
+                <!--<TextView-->
+                    <!--android:layout_width="@dimen/button_layout_common"-->
+                    <!--android:layout_height="20dp"-->
+                    <!--android:layout_marginTop="@dimen/button_layout_common"-->
+                    <!--android:gravity="center"-->
+                    <!--android:textSize="@dimen/button_down_text_size"-->
+                    <!--android:text="任务督办"/>-->
+            <!--</RelativeLayout>-->
+        <!--</RelativeLayout>-->
+
+    <!--<RelativeLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_marginTop="@dimen/activity_horizontal_margin"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <!--<RelativeLayout-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_marginLeft="20dp">-->
+            <!--<Button-->
+                <!--android:layout_width="@dimen/button_layout_common"-->
+                <!--android:layout_height="@dimen/button_layout_common"-->
+                <!--android:background="@mipmap/text137"-->
+                <!--android:radius="80dip"-->
+                <!--android:paddingLeft="10dp"-->
+                <!--android:paddingTop="10dp"-->
+                <!--android:paddingRight="10dp"-->
+                <!--android:paddingBottom="10dp"-->
+                <!--android:id="@+id/button_wply" />-->
+            <!--<TextView-->
+                <!--android:layout_width="@dimen/button_layout_common"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:layout_marginTop="@dimen/button_layout_common"-->
+                <!--android:gravity="center"-->
+                <!--android:textSize="@dimen/button_down_text_size"-->
+                <!--android:text="物品领用"/>-->
+        <!--</RelativeLayout>-->
+
+        <!--<RelativeLayout-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:layout_alignParentTop="true">-->
+            <!--<Button-->
+                <!--android:layout_width="@dimen/button_layout_common"-->
+                <!--android:layout_height="@dimen/button_layout_common"-->
+                <!--android:background="@mipmap/text137"-->
+                <!--android:radius="80dip"-->
+                <!--android:paddingLeft="10dp"-->
+                <!--android:paddingTop="10dp"-->
+                <!--android:paddingRight="10dp"-->
+                <!--android:paddingBottom="10dp"-->
+                <!--android:id="@+id/button_dsp" />-->
+            <!--<TextView-->
+                <!--android:layout_width="@dimen/button_layout_common"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:layout_marginTop="@dimen/button_layout_common"-->
+                <!--android:gravity="center"-->
+                <!--android:textSize="@dimen/button_down_text_size"-->
+                <!--android:text="待审批"/>-->
+        <!--</RelativeLayout>-->
+
+
+        <!--<RelativeLayout-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_marginRight="20dp">-->
+            <!--<Button-->
+                <!--android:layout_width="@dimen/button_layout_common"-->
+                <!--android:layout_height="@dimen/button_layout_common"-->
+                <!--android:background="@mipmap/text137"-->
+                <!--android:radius="80dip"-->
+                <!--android:paddingLeft="10dp"-->
+                <!--android:paddingTop="10dp"-->
+                <!--android:paddingRight="10dp"-->
+                <!--android:paddingBottom="10dp"-->
+                <!--android:id="@+id/button_ybgc" />-->
+            <!--<TextView-->
+                <!--android:layout_width="@dimen/button_layout_common"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:layout_marginTop="@dimen/button_layout_common"-->
+                <!--android:gravity="center"-->
+                <!--android:textSize="@dimen/button_down_text_size"-->
+                <!--android:text="隐蔽工程"/>-->
+        <!--</RelativeLayout>-->
+
+    <!--</RelativeLayout>-->
+
+    <!--<RelativeLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_marginTop="@dimen/activity_horizontal_margin"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <!--<RelativeLayout-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:layout_alignParentTop="true">-->
+            <!--<Button-->
+                <!--android:layout_width="@dimen/button_layout_common"-->
+                <!--android:layout_height="@dimen/button_layout_common"-->
+                <!--android:background="@mipmap/text137"-->
+                <!--android:radius="80dip"-->
+                <!--android:paddingLeft="10dp"-->
+                <!--android:paddingTop="10dp"-->
+                <!--android:paddingRight="10dp"-->
+                <!--android:paddingBottom="10dp"-->
+                <!--android:id="@+id/button_kq" />-->
+            <!--<TextView-->
+                <!--android:layout_width="@dimen/button_layout_common"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:layout_marginTop="@dimen/button_layout_common"-->
+                <!--android:gravity="center"-->
+                <!--android:textSize="@dimen/button_down_text_size"-->
+                <!--android:text="考勤"/>-->
+        <!--</RelativeLayout>-->
+
+    <!--</RelativeLayout>-->
+
+<!--</LinearLayout>-->
+
+
+
+    <!--<FrameLayout-->
+        <!--android:id="@+id/mainFrame"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--&gt;</FrameLayout>-->
+
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/viewPager"
+        ></android.support.v4.view.ViewPager>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:id="@+id/ll1">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/titleColor">
+            </View>
+            <RadioGroup
+                android:id="@+id/mainMenu"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <!--<RadioButton-->
+                <!--android:id="@+id/mainMessage"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="bottom"-->
+                <!--android:layout_weight="1"-->
+                <!--android:button="@null"-->
+                <!--android:checked="true"-->
+                <!--android:drawableTop="@drawable/tab_selector_message"-->
+                <!--android:gravity="center_horizontal|bottom"-->
+                <!--android:paddingTop="2dp"-->
+                <!--android:text="通知"-->
+                <!--android:textColor="@color/tab_selector_tv_color" />-->
+
+
+                <RadioButton
+                    android:id="@+id/mianWork"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawableTop="@drawable/tab_selector_work"
+                    android:gravity="center_horizontal|bottom"
+                    android:layout_marginRight="50dp"
+                    android:paddingTop="2dp"
+                    android:text="工作"
+                    android:textSize="12sp"
+                    android:textColor="@color/tab_selector_tv_color" />
+
+
+
+
+                <!--<RadioButton-->
+                <!--android:id="@+id/mainContact"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="bottom"-->
+                <!--android:layout_weight="1"-->
+                <!--android:button="@null"-->
+                <!--android:drawableTop="@drawable/tab_selector_contact"-->
+                <!--android:gravity="center_horizontal|bottom"-->
+                <!--android:paddingTop="2dp"-->
+                <!--android:text="联系人"-->
+                <!--android:textColor="@color/tab_selector_tv_color" />-->
+
+                <RadioButton
+                    android:id="@+id/mianMy"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="50dp"
+                    android:button="@null"
+                    android:drawableTop="@drawable/tab_selector_my"
+                    android:gravity="center_horizontal|bottom"
+                    android:paddingTop="2dp"
+                    android:text="我的"
+                    android:textSize="12sp"
+                    android:textColor="@color/tab_selector_tv_color" />
+            </RadioGroup>
+        </RelativeLayout>
+        <com.fangxu.allangleexpandablebutton.AllAngleExpandableButton
+            android:id="@+id/button_expandable_30_150"
+            android:layout_above="@+id/v2"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:aebAnimDurationMillis="175"
+            app:aebButtonElevation="4dp"
+            app:aebButtonGapDp="45dp"
+            app:aebStartAngleDegree="15"
+            app:aebEndAngleDegree="165"
+            app:aebIsSelectionMode="false"
+            app:aebMainButtonRotateAnimDurationMillis="300"
+            app:aebMainButtonRotateDegree="-135"
+            app:aebMainButtonSizeDp="45dp"
+            app:aebMaskBackgroundColor="@color/transparent"
+            app:aebRippleEffect="true"
+            app:aebBlurBackground="true"
+            app:aebSubButtonSizeDp="45dp"/>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/v2"
+            android:layout_below="@+id/ll1">
+        </View>
+    </RelativeLayout>
+
+
+
+
+</LinearLayout>

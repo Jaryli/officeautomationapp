@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="70dp">
+
+
+
+        <ImageView
+            android:id="@+id/message_pic"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="10dp"
+            android:layout_width="50dp"
+            android:background="@mipmap/icon_mail_normal"
+            android:layout_height="50dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="我的消息"
+                android:textSize="@dimen/list_text_size"
+                android:id="@+id/message_title"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="有您的消息"
+                android:id="@+id/message_type"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="07:35"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/message_time"/>
+
+</LinearLayout>
