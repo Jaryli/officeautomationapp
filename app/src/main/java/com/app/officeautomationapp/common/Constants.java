@@ -50,4 +50,9 @@ public class Constants {
     public final static String FlowGuidaddArchJob="9fac41f7-fd37-4959-8bc0-7c35922fd204";//现场用工签工单审批
 
     public final static String FlowGuidaddArchSign="f58f8da6-a7f2-45d9-8fb1-70ec0bdc83f2";//用章管理流程
+
+
+    public final static String getMyMenu=address+"/api/V1/Menu/GetPageList";//获取我的菜单列表
+
+    public final static String updateMenuIndex=address+"/api/V1/Menu/UpdateMenuIndex";//?indexIds={indexIds}&notIndexIds={notIndexIds}//添加菜单到应用首页
 }

@@ -3,6 +3,7 @@ package com.app.officeautomationapp.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -15,15 +16,33 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.adapter.DragAdapter;
 import com.app.officeautomationapp.adapter.OtherAdapter;
 import com.app.officeautomationapp.bean.ChannelItem;
+import com.app.officeautomationapp.bean.MessageBean;
+import com.app.officeautomationapp.bean.ProjectItemBean;
+import com.app.officeautomationapp.common.Constants;
+import com.app.officeautomationapp.dto.UserDto;
+import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.app.officeautomationapp.view.DragGrid;
 import com.app.officeautomationapp.view.OtherGridView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 
 /**
@@ -86,16 +105,119 @@ public class ProjectItemActivity extends BaseActivity  implements AdapterView.On
 
     /** 初始化数据*/
     private void initData() {
+        RequestParams params = new RequestParams(Constants.getMyMenu);
+        UserDto userDto= (UserDto)SharedPreferencesUtile.readObject(this.getApplicationContext(),"user");
+        params.addHeader("access_token", userDto.getAccessToken());
+        Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.e("JAVA", "onSuccess result:" + result);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int re=jsonObject.getInt("result");
+                    //int recordCount=jsonObject.getInt("recordCount");//总条数
+                    if(re!=1)
+                    {
+                        Toast.makeText(ProjectItemActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    else
+                    {
+                        if(jsonObject.get("data")==""||jsonObject.get("data")==null)
+                        {
+                            Toast.makeText(ProjectItemActivity.this,"没有数据",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        else
+                        {
+                            Gson gson = new Gson();
+                            List<ProjectItemBean> list=new ArrayList<ProjectItemBean>();
+                            Type type=new TypeToken<List<ProjectItemBean>>(){}.getType();
+                            list=gson.fromJson(jsonObject.get("data").toString(), type);
+//                            MessageDto messageDto = (MessageDto) gson.fromJson(jsonObject.toString(),MessageDto.class);
+                            for(int i=0;i<list.size();i++)
+                            {
+                                if(list.get(i).getIsIndex()==1) {
+                                    ChannelItem channelItem = new ChannelItem();
+                                    channelItem.setId(list.get(i).getId());
+                                    channelItem.setOrderId(list.get(i).getMenuSort());
+                                    channelItem.setSelected(0);
+                                    channelItem.setName(list.get(i).getMenuTitle());
+                                    userChannelList.add(channelItem);
+                                }
+                                else
+                                {
+                                    ChannelItem channelItem = new ChannelItem();
+                                    channelItem.setId(list.get(i).getId());
+                                    channelItem.setOrderId(list.get(i).getMenuSort());
+                                    channelItem.setSelected(0);
+                                    channelItem.setName(list.get(i).getMenuTitle());
+                                    otherChannelList.add(channelItem);
+                                }
+                            }
+                            if(userChannelList.size()>0)
+                            {
+                                sortList(userChannelList);
+                            }
+                            if(otherChannelList.size()>0)
+                            {
+                                sortList(otherChannelList);
+                            }
+                            userAdapter = new DragAdapter(ProjectItemActivity.this, userChannelList);
+                            userGridView.setAdapter(userAdapter);
+                            otherAdapter = new OtherAdapter(ProjectItemActivity.this, otherChannelList);
+                            otherGridView.setAdapter(ProjectItemActivity.this.otherAdapter);
+                            //设置GRIDVIEW的ITEM的点击监听
+                            otherGridView.setOnItemClickListener(ProjectItemActivity.this);
+                            userGridView.setOnItemClickListener(ProjectItemActivity.this);
 
-        userChannelList = getData("fIcon");
-        otherChannelList = getData("HIcon");
-        userAdapter = new DragAdapter(this, userChannelList);
-        userGridView.setAdapter(userAdapter);
-        otherAdapter = new OtherAdapter(this, otherChannelList);
-        otherGridView.setAdapter(this.otherAdapter);
-        //设置GRIDVIEW的ITEM的点击监听
-        otherGridView.setOnItemClickListener(this);
-        userGridView.setOnItemClickListener(this);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            //请求异常后的回调方法
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Log.e("JAVA", "onError:" + ex);
+                Toast.makeText(ProjectItemActivity.this,"网络或服务器异常！",Toast.LENGTH_SHORT).show();
+            }
+            //主动调用取消请求的回调方法
+            @Override
+            public void onCancelled(CancelledException cex) {
+                Log.e("JAVA", "onCancelled:" + cex);
+
+            }
+            @Override
+            public void onFinished() {
+                Log.e("JAVA", "onFinished:" + "");
+            }
+        });
+
+    }
+
+    private void sortList(ArrayList<ChannelItem> list)
+    {
+        Collections.sort(list, new Comparator<ChannelItem>(){
+            /*
+             * int compare(Student o1, Student o2) 返回一个基本类型的整型，
+             * 返回负数表示：o1 小于o2，
+             * 返回0 表示：o1和o2相等，
+             * 返回正数表示：o1大于o2。
+             */
+            public int compare(ChannelItem o1, ChannelItem o2) {
+
+                //按照学生的年龄进行升序排列
+                if(o1.getOrderId() > o2.getOrderId()){
+                    return 1;
+                }
+                if(o1.getOrderId() == o2.getOrderId()){
+                    return 0;
+                }
+                return -1;
+            }
+        });
     }
 
 
@@ -282,8 +404,9 @@ public class ProjectItemActivity extends BaseActivity  implements AdapterView.On
                 break;
             case R.id.tv_item_add:
                 //保存一下
+                saveData();
                 //刷新主页样式
-                this.finish();
+
                 break;
 
             default:
@@ -292,5 +415,72 @@ public class ProjectItemActivity extends BaseActivity  implements AdapterView.On
         }
 
 
+    }
+
+    private void saveData()
+    {
+        List<ChannelItem> userList=userAdapter.getChannnelLst();
+        List<ChannelItem> otherList=otherAdapter.getChannnelLst();
+        String userStr="";
+        String otherStr="";
+        if(userList.size()>0)
+        {
+            for(ChannelItem channelItem:userList)
+            {
+                userStr+=channelItem.getId()+",";
+            }
+            userStr.substring(0,userStr.length()-1);
+        }
+        if(otherList.size()>0)
+        {
+            for(ChannelItem channelItem:otherList)
+            {
+                otherStr+=channelItem.getId()+",";
+            }
+            otherStr.substring(0,otherStr.length()-1);
+        }
+        RequestParams params = new RequestParams(Constants.updateMenuIndex+"?indexIds="+userStr+"&notIndexIds="+otherStr);
+        UserDto userDto= (UserDto)SharedPreferencesUtile.readObject(this.getApplicationContext(),"user");
+        params.addHeader("access_token", userDto.getAccessToken());
+//        params.addParameter("indexIds",userStr);
+//        params.addParameter("notIndexIds",otherStr);
+        Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.e("JAVA", "onSuccess result:" + result);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int re=jsonObject.getInt("result");
+                    if(re!=1)
+                    {
+                        Toast.makeText(ProjectItemActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    else
+                    {
+                        Toast.makeText(ProjectItemActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                        ProjectItemActivity.this.finish();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            //请求异常后的回调方法
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Log.e("JAVA", "onError:" + ex);
+                Toast.makeText(ProjectItemActivity.this,"网络或服务器异常！",Toast.LENGTH_SHORT).show();
+            }
+            //主动调用取消请求的回调方法
+            @Override
+            public void onCancelled(CancelledException cex) {
+                Log.e("JAVA", "onCancelled:" + cex);
+
+            }
+            @Override
+            public void onFinished() {
+                Log.e("JAVA", "onFinished:" + "");
+            }
+        });
     }
 }

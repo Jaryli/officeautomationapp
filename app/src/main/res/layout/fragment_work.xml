@@ -5,453 +5,605 @@
     android:scrollbars="vertical"
     android:background="#EFEFF3"
     android:orientation="vertical">
-    <RelativeLayout
-        android:id="@+id/top"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/title_bar_height"
-        android:background="@color/titleColor"
-        android:fitsSystemWindows="true">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:text="我的工作"
-            android:textColor="@color/black"
-            android:textSize="@dimen/title_text_size" />
-
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line"></View>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-
-        <com.jude.rollviewpager.RollPagerView
-            android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:id="@+id/rollViewpager"/>
-
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/white"
-            android:orientation="horizontal">
-            <LinearLayout
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="20px"
-                android:gravity="center"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true">
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@mipmap/icon_sun"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="8dp"
-                    android:text="早上好，管理员"
-                    android:textColor="#8a8a8a"
-                    android:textSize="15sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:layout_alignParentRight="true"
-                android:id="@+id/ll_message"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20px"
-
-                android:gravity="center">
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@mipmap/icon_message_blue"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:gravity="center_vertical"
-                    android:text="通知"
-                    android:textColor="#1296db"
-                    android:textSize="15sp" />
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/line"></View>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/white"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:orientation="vertical">
-                <Button
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="5dp"
-                    android:id="@+id/btn_work_approval"
-                    android:text="0"
-                    android:gravity="center"
-                    android:textSize="25dp"
-                    android:background="@drawable/empty_button_style"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="待我审批"/>
-            </LinearLayout>
-            <View
-                android:layout_width="1dip"
-                android:layout_height="80dp"
-                android:background="@color/titleColor"
-                android:layout_gravity="center_vertical|center_horizontal"
-                />
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginLeft="10dp"
-                android:orientation="vertical">
-
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/workViewPager"
-                    android:layout_width="wrap_content"
-                    android:layout_height="70dp"></android.support.v4.view.ViewPager>
-
-                <!--在FrameLayout布局的底部放置三个点-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_gravity="bottom"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/dot_first"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:background="@mipmap/dot_n" />
-
-                    <ImageView
-                        android:id="@+id/dot_second"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:background="@mipmap/dot_n" />
-
-                    <ImageView
-                        android:id="@+id/dot_thrid"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:background="@mipmap/dot_n" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
-            android:background="@color/white"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
+
             <RelativeLayout
+                android:id="@+id/top"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="@dimen/title_bar_height"
+                android:background="@color/titleColor"
+                android:fitsSystemWindows="true">
+
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_height="match_parent"
                     android:layout_alignParentLeft="true"
                     android:gravity="center_vertical"
-                    android:layout_centerVertical="true"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:text="我的应用"
+                    android:text="我的工作"
                     android:textColor="@color/black"
                     android:textSize="@dimen/title_text_size" />
 
-
-                <LinearLayout
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:id="@+id/ll_manageItem"
-                    android:layout_marginRight="20px"
-                    android:layout_centerVertical="true"
-                    android:gravity="center">
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@mipmap/icon_manage_blue"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:gravity="center_vertical"
-                        android:text="管理"
-                        android:textColor="#1296db"
-                        android:textSize="15sp" />
-                </LinearLayout>
-
             </RelativeLayout>
 
-
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/titleColor"></View>
+                android:background="@color/line"></View>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:background="@color/white"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <Button
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="10dp"
-                        android:id="@+id/btn_receive_things"
-                        android:background="@mipmap/icon_recevie_goods"/>
-                    <TextView
+
+                <com.jude.rollviewpager.RollPagerView
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:id="@+id/rollViewpager"/>
+
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_height="match_parent"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20px"
                         android:gravity="center"
-                        android:text="物品领用"/>
-                </LinearLayout>
-                <View
-                    android:layout_width="1dip"
-                    android:layout_height="70dp"
-                    android:background="@color/titleColor"
-                    />
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true">
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@mipmap/icon_sun"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentLeft="true"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="8dp"
+                            android:text="早上好，管理员"
+                            android:textColor="#8a8a8a"
+                            android:textSize="15sp" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <Button
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="10dp"
-                        android:id="@+id/btn_hidden_project"
-                        android:background="@mipmap/icon_hidden_project"/>
-                    <TextView
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_height="match_parent"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="隐蔽工程"/>
-                </LinearLayout>
-                <View
-                    android:layout_width="1dip"
-                    android:layout_height="70dp"
-                    android:background="@color/titleColor"
-                    />
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/ll_message"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20px"
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <Button
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="10dp"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@mipmap/icon_message_blue"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentLeft="true"
+                            android:gravity="center_vertical"
+                            android:text="通知"
+                            android:textColor="#1296db"
+                            android:textSize="15sp" />
+                    </LinearLayout>
 
-                        android:background="@mipmap/icon_work"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="我的任务"/>
-                </LinearLayout>
+                </RelativeLayout>
 
                 <View
-                    android:layout_width="1dip"
-                    android:layout_height="70dp"
-                    android:background="@color/titleColor"
-                    />
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line"></View>
+
+
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    >
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_alignParentLeft="true"
+                            android:gravity="center_vertical"
+                            android:layout_centerVertical="true"
+                            android:paddingLeft="@dimen/activity_horizontal_margin"
+                            android:text="待办工作"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/title_text_size" />
+
+
+                        <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:id="@+id/ll_manageItem"
+                            android:layout_marginRight="20px"
+                            android:layout_centerVertical="true"
+                            android:gravity="center">
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@mipmap/icon_manage_blue"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:gravity="center_vertical"
+                                android:text="管理"
+                                android:textColor="#1296db"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/titleColor"></View>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@color/white"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:orientation="vertical">
+                            <Button
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginBottom="5dp"
+                                android:id="@+id/btn_work_approval"
+                                android:text="0"
+                                android:gravity="center"
+                                android:textSize="25dp"
+                                android:background="@drawable/empty_button_style"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="待我审批"/>
+                        </LinearLayout>
+                        <View
+                            android:layout_width="1dip"
+                            android:layout_height="80dp"
+                            android:background="@color/titleColor"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_marginLeft="10dp"
+                            android:orientation="vertical">
+
+                            <android.support.v4.view.ViewPager
+                                android:id="@+id/workViewPager"
+                                android:layout_width="wrap_content"
+                                android:layout_height="70dp"></android.support.v4.view.ViewPager>
+
+                            <!--在FrameLayout布局的底部放置三个点-->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:layout_gravity="bottom"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:id="@+id/dot_first"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:background="@mipmap/dot_n" />
+
+                                <ImageView
+                                    android:id="@+id/dot_second"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:background="@mipmap/dot_n" />
+
+                                <ImageView
+                                    android:id="@+id/dot_thrid"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:background="@mipmap/dot_n" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/titleColor"></View>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line"></View>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/white"
                     android:orientation="vertical">
-                    <Button
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="10dp"
-                        android:id="@+id/btn_start_work"
-                        android:background="@mipmap/icon_start_work"/>
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="工作发起"/>
+                        android:layout_height="40dp"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:text="工作发起"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/title_text_size" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:background="@color/white"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <Button
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="10dp"
+                                android:id="@+id/btn_receive_things"
+                                android:background="@mipmap/icon_recevie_goods"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="物品领用"/>
+                        </LinearLayout>
+                        <View
+                            android:layout_width="1dip"
+                            android:layout_height="70dp"
+                            android:background="@color/titleColor"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <Button
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="10dp"
+                                android:id="@+id/btn_hidden_project"
+                                android:background="@mipmap/icon_hidden_project"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="隐蔽工程"/>
+                        </LinearLayout>
+                        <View
+                            android:layout_width="1dip"
+                            android:layout_height="70dp"
+                            android:background="@color/titleColor"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <Button
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="10dp"
+
+                                android:background="@mipmap/icon_work"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="我的任务"/>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dip"
+                            android:layout_height="70dp"
+                            android:background="@color/titleColor"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <Button
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="10dp"
+                                android:id="@+id/btn_start_work"
+                                android:background="@mipmap/icon_start_work"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="工作发起"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/titleColor"></View>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:background="@color/white"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <Button
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="10dp"
+
+                                android:background="@mipmap/icon_time"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="任务督办"/>
+                        </LinearLayout>
+                        <View
+                            android:layout_width="1dip"
+                            android:layout_height="70dp"
+                            android:background="@color/titleColor"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <Button
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="10dp"
+                                android:id="@+id/btn_message"
+                                android:background="@mipmap/icon_message"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="公告通知"/>
+                        </LinearLayout>
+                        <View
+                            android:layout_width="1dip"
+                            android:layout_height="70dp"
+                            android:background="@color/titleColor"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <!--<Button-->
+                            <!--android:layout_width="40dp"-->
+                            <!--android:layout_height="40dp"-->
+                            <!--android:layout_marginTop="10dp"-->
+
+                            <!--android:background="@mipmap/icon_work"/>-->
+                            <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:gravity="center"-->
+                            <!--android:text="按钮3"/>-->
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dip"
+                            android:layout_height="70dp"
+                            android:background="@color/titleColor"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <!--<Button-->
+                            <!--android:layout_width="40dp"-->
+                            <!--android:layout_height="40dp"-->
+                            <!--android:layout_marginTop="10dp"-->
+
+                            <!--android:background="@mipmap/icon_work"/>-->
+                            <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:gravity="center"-->
+                            <!--android:text="按钮4"/>-->
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:text="查询中心"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/title_text_size" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:background="@color/white"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <Button
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="10dp"
+                                android:id="@+id/btn_receive_things1"
+                                android:background="@mipmap/icon_recevie_goods"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="物品领用"/>
+                        </LinearLayout>
+                        <View
+                            android:layout_width="1dip"
+                            android:layout_height="70dp"
+                            android:background="@color/titleColor"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <Button
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="10dp"
+                                android:id="@+id/btn_hidden_project1"
+                                android:background="@mipmap/icon_hidden_project"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="隐蔽工程"/>
+                        </LinearLayout>
+                        <View
+                            android:layout_width="1dip"
+                            android:layout_height="70dp"
+                            android:background="@color/titleColor"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <Button
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="10dp"
+
+                                android:background="@mipmap/icon_work"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="我的任务"/>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dip"
+                            android:layout_height="70dp"
+                            android:background="@color/titleColor"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <Button
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="10dp"
+                                android:id="@+id/btn_start_work1"
+                                android:background="@mipmap/icon_start_work"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="工作发起"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/titleColor"></View>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:background="@color/white"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <Button
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="10dp"
-
-                        android:background="@mipmap/icon_time"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="任务督办"/>
-                </LinearLayout>
-                <View
-                    android:layout_width="1dip"
-                    android:layout_height="70dp"
-                    android:background="@color/titleColor"
-                    />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <Button
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="10dp"
-                        android:id="@+id/btn_message"
-                        android:background="@mipmap/icon_message"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="公告通知"/>
-                </LinearLayout>
-                <View
-                    android:layout_width="1dip"
-                    android:layout_height="70dp"
-                    android:background="@color/titleColor"
-                    />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <!--<Button-->
-                        <!--android:layout_width="40dp"-->
-                        <!--android:layout_height="40dp"-->
-                        <!--android:layout_marginTop="10dp"-->
-
-                        <!--android:background="@mipmap/icon_work"/>-->
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:gravity="center"-->
-                        <!--android:text="按钮3"/>-->
-                </LinearLayout>
-
-                <View
-                    android:layout_width="1dip"
-                    android:layout_height="70dp"
-                    android:background="@color/titleColor"
-                    />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <!--<Button-->
-                        <!--android:layout_width="40dp"-->
-                        <!--android:layout_height="40dp"-->
-                        <!--android:layout_marginTop="10dp"-->
-
-                        <!--android:background="@mipmap/icon_work"/>-->
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:gravity="center"-->
-                        <!--android:text="按钮4"/>-->
-                </LinearLayout>
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/titleColor"></View>
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/line"></View>
+    </ScrollView>
 
-
-
-
-
-    </LinearLayout>
 
 
 </LinearLayout>
