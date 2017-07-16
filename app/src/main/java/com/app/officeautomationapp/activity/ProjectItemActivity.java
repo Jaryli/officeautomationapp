@@ -1,5 +1,6 @@
 package com.app.officeautomationapp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.graphics.Bitmap;
@@ -38,7 +39,9 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -207,8 +210,6 @@ public class ProjectItemActivity extends BaseActivity  implements AdapterView.On
              * 返回正数表示：o1大于o2。
              */
             public int compare(ChannelItem o1, ChannelItem o2) {
-
-                //按照学生的年龄进行升序排列
                 if(o1.getOrderId() > o2.getOrderId()){
                     return 1;
                 }
@@ -404,8 +405,11 @@ public class ProjectItemActivity extends BaseActivity  implements AdapterView.On
                 break;
             case R.id.tv_item_add:
                 //保存一下
-                saveData();
-                //刷新主页样式
+                try {
+                    saveData();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
 
                 break;
 
@@ -417,8 +421,7 @@ public class ProjectItemActivity extends BaseActivity  implements AdapterView.On
 
     }
 
-    private void saveData()
-    {
+    private void saveData() throws UnsupportedEncodingException {
         List<ChannelItem> userList=userAdapter.getChannnelLst();
         List<ChannelItem> otherList=otherAdapter.getChannnelLst();
         String userStr="";
@@ -429,7 +432,7 @@ public class ProjectItemActivity extends BaseActivity  implements AdapterView.On
             {
                 userStr+=channelItem.getId()+",";
             }
-            userStr.substring(0,userStr.length()-1);
+            userStr=userStr.substring(0,userStr.length()-1);
         }
         if(otherList.size()>0)
         {
@@ -437,7 +440,7 @@ public class ProjectItemActivity extends BaseActivity  implements AdapterView.On
             {
                 otherStr+=channelItem.getId()+",";
             }
-            otherStr.substring(0,otherStr.length()-1);
+            otherStr=otherStr.substring(0,otherStr.length()-1);
         }
         RequestParams params = new RequestParams(Constants.updateMenuIndex+"?indexIds="+userStr+"&notIndexIds="+otherStr);
         UserDto userDto= (UserDto)SharedPreferencesUtile.readObject(this.getApplicationContext(),"user");
@@ -459,6 +462,8 @@ public class ProjectItemActivity extends BaseActivity  implements AdapterView.On
                     else
                     {
                         Toast.makeText(ProjectItemActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                        //刷新主页样式
+//                        setResult(RESULT_OK,(new Intent()).setAction("1"));
                         ProjectItemActivity.this.finish();
                     }
                 } catch (JSONException e) {
