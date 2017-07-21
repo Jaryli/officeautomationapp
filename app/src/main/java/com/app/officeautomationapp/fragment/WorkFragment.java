@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.activity.ApprovalWorkActivity;
 import com.app.officeautomationapp.activity.HiddenProjectActivity;
+import com.app.officeautomationapp.activity.ItemContactsActivity;
 import com.app.officeautomationapp.activity.MessageActivity;
 import com.app.officeautomationapp.activity.ProjectItemActivity;
 import com.app.officeautomationapp.activity.ReceiveThingsActivity;
@@ -465,7 +466,7 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
         }
         else if("联系人".equals(str))
         {
-            Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getActivity(), ItemContactsActivity.class));
         }
         else
         {

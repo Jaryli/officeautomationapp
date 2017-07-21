@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
@@ -30,13 +32,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static java.security.AccessController.getContext;
-
 /**
  * Created by CS-711701-00027 on 2017/7/21.
  */
 
-public class ItemContactsActivity extends BaseActivity {
+public class ItemContactsActivity extends BaseActivity implements View.OnClickListener {
     private RecyclerView rvContacts;
     private WaveSideBar sideBar;
     /**
@@ -50,19 +50,29 @@ public class ItemContactsActivity extends BaseActivity {
 
     private ArrayList<SortModel> contacts = new ArrayList<SortModel>();
 
+    private ImageView imageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         initData();
         initView();
     }
 
     private void initView() {
         setContentView(R.layout.activity_contacts);
+        imageView=(ImageView)findViewById(R.id.iv_contacts_back);
+        imageView.setOnClickListener(this);
         rvContacts = (RecyclerView) findViewById(R.id.rv_contacts);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
-        rvContacts.setAdapter(new ContactsAdapter(contacts, R.layout.item_contacts));
+        ContactsAdapter adapter=new ContactsAdapter(contacts, R.layout.item_contacts);
+        rvContacts.setAdapter(adapter);
+        adapter.setOnItemClickListener(new ContactsAdapter.onRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                Toast.makeText(ItemContactsActivity.this,contacts.get(position).getName(),Toast.LENGTH_SHORT).show();
+            }
+        });
         sideBar = (WaveSideBar) findViewById(R.id.side_bar);
         sideBar.setOnSelectIndexItemListener(new WaveSideBar.OnSelectIndexItemListener() {
             @Override
@@ -81,7 +91,7 @@ public class ItemContactsActivity extends BaseActivity {
         //实例化汉字转拼音类
         characterParser = CharacterParser.getInstance();
         pinyinComparator = new PinyinComparator();
-        RequestParams params = new RequestParams(Constants.GetPersonList);
+        RequestParams params = new RequestParams(Constants.GetPersonList+"?pageIndex=1&pageSize=9999");
         UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(this.getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
@@ -98,7 +108,7 @@ public class ItemContactsActivity extends BaseActivity {
                     }
                     else
                     {
-                        if(jsonObject.get("data")==""||jsonObject.get("data")==null)
+                        if(jsonObject.get("dataList")==""||jsonObject.get("dataList")==null)
                         {
                             Toast.makeText(ItemContactsActivity.this,"没有数据",Toast.LENGTH_SHORT).show();
                             return;
@@ -128,6 +138,7 @@ public class ItemContactsActivity extends BaseActivity {
 
                                 contacts.add(sortModel);
                                 Collections.sort(contacts, pinyinComparator);
+
                             }
                         }
                     }
@@ -156,5 +167,15 @@ public class ItemContactsActivity extends BaseActivity {
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_contacts_back:
+                this.finish();
+                break;
+            default:
+                break;
 
+        }
+    }
 }

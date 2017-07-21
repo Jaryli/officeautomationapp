@@ -39,6 +39,8 @@
         <activity android:name="com.app.officeautomationapp.activity.MessageActivity" />
         <activity android:name="com.app.officeautomationapp.activity.ProjectItemActivity" />
         <activity android:name="com.app.officeautomationapp.activity.ThingsGetActivity" />
+        <activity android:name="com.app.officeautomationapp.activity.ItemContactsActivity" />
+
 
 
 

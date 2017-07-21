@@ -20,6 +20,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     private List<SortModel> contacts;
     private int layoutId;
 
+    private onRecyclerViewItemClickListener itemClickListener = null;
+
     public ContactsAdapter(List<SortModel> contacts, int layoutId) {
         this.contacts = contacts;
         this.layoutId = layoutId;
@@ -33,7 +35,17 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     }
 
     @Override
-    public void onBindViewHolder(ContactsViewHolder holder, int position) {
+    public void onBindViewHolder(final ContactsViewHolder holder, int position) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (itemClickListener != null) {
+                    int layoutPosition = holder.getLayoutPosition();
+                    itemClickListener.onItemClick(holder.itemView, layoutPosition);
+                }
+            }
+        });
+
         SortModel contact = contacts.get(position);
         if (position == 0 || !contacts.get(position-1).getSortLetters().equals(contact.getSortLetters())) {
             holder.tvIndex.setVisibility(View.VISIBLE);
@@ -60,5 +72,14 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
             ivAvatar = (ImageView) itemView.findViewById(R.id.iv_avatar);
             tvName = (TextView) itemView.findViewById(R.id.tv_name);
         }
+    }
+
+    public void setOnItemClickListener(onRecyclerViewItemClickListener listener) {
+        this.itemClickListener = listener;
+    }
+
+    public  interface onRecyclerViewItemClickListener {
+
+        void onItemClick(View v, int position);
     }
 }
