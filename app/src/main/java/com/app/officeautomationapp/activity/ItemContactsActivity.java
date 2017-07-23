@@ -56,7 +56,7 @@ public class ItemContactsActivity extends BaseActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initData();
-        initView();
+
     }
 
     private void initView() {
@@ -138,7 +138,7 @@ public class ItemContactsActivity extends BaseActivity implements View.OnClickLi
 
                                 contacts.add(sortModel);
                                 Collections.sort(contacts, pinyinComparator);
-
+                                initView();
                             }
                         }
                     }

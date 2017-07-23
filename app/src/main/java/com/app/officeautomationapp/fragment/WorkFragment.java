@@ -21,6 +21,7 @@ import com.app.officeautomationapp.activity.ApprovalWorkActivity;
 import com.app.officeautomationapp.activity.HiddenProjectActivity;
 import com.app.officeautomationapp.activity.ItemContactsActivity;
 import com.app.officeautomationapp.activity.MessageActivity;
+import com.app.officeautomationapp.activity.MyTaskActivity;
 import com.app.officeautomationapp.activity.ProjectItemActivity;
 import com.app.officeautomationapp.activity.ReceiveThingsActivity;
 import com.app.officeautomationapp.activity.StartWorkActivity;
@@ -381,90 +382,90 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
 
     private void clickBtn(ArrayList<ProjectItemBean> list,int position)
     {
-        String str=list.get(position).getMenuTitle();
-        if("公告通知".equals(str))
+        int a=list.get(position).getMenuType();
+        if(5==a)//("公告通知".equals(str))
         {
             startActivity(new Intent(getActivity(), MessageActivity.class));
         }
-        else if("待审批".equals(str))
+        else if(6==a)//("待审批".equals(str))
         {
             startActivity(new Intent(getActivity(), ApprovalWorkActivity.class));
         }
-        else if("我的任务".equals(str))
+        else if(2==a)//("我的任务".equals(str))
         {
-            Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getActivity(), MyTaskActivity.class));
         }
 
 
-        else if("台班".equals(str))
+        else if(10==a)//("台班".equals(str))
         {
             startActivity(new Intent(getActivity(), WorkTaibanActivity.class));
         }
 
-        else if("点工".equals(str))
+        else if(11==a)//("点工".equals(str))
         {
             startActivity(new Intent(getActivity(), WorkYonggongActivity.class));
         }
 
-        else if("用章".equals(str))
+        else if(12==a)//("用章".equals(str))
         {
             startActivity(new Intent(getActivity(), WorkYongzhangActivity.class));
         }
-        else if("请假".equals(str))
+        else if(13==a)//("请假".equals(str))
         {
             startActivity(new Intent(getActivity(), WorkQingjiaActivity.class));
         }
 
-        else if("领用".equals(str))
+        else if(0==a)//("领用".equals(str))
         {
             startActivity(new Intent(getActivity(), ReceiveThingsActivity.class));
         }
 
-        else if("隐蔽工程".equals(str))
+        else if(1==a)//("隐蔽工程".equals(str))
         {
             startActivity(new Intent(getActivity(), HiddenProjectActivity.class));
         }
-        else if("任务督办".equals(str))
+        else if(4==a)//("任务督办".equals(str))
         {
             Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
         }
-        else if("苗木".equals(str))
-        {
-            Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
-        }
-
-        else if("土建".equals(str))
+        else if(22==a)//("苗木".equals(str))
         {
             Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
         }
 
-        else if("工作发起".equals(str))
+        else if(23==a)//("土建".equals(str))
+        {
+            Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
+        }
+
+        else if(3==a)//("工作发起".equals(str))
         {
             startActivity(new Intent(getActivity(), StartWorkActivity.class));
         }
 
 
-        else if("我的工作".equals(str))
+        else if(15==a)//("我的工作".equals(str))
         {
             Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
         }
-        else if("点工查询".equals(str))
+        else if(20==a)//("点工查询".equals(str))
         {
             Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
         }
-        else if("点工台班".equals(str))
+        else if(21==a)//("点工台班".equals(str))
         {
             Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
         }
-        else if("苗木明细".equals(str))
+        else if(22==a)//("苗木明细".equals(str))
         {
             Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
         }
-        else if("土建明细".equals(str))
+        else if(23==a)//("土建明细".equals(str))
         {
             Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
         }
-        else if("联系人".equals(str))
+        else if(14==a)//("联系人".equals(str))
         {
             startActivity(new Intent(getActivity(), ItemContactsActivity.class));
         }

@@ -58,4 +58,9 @@ public class Constants {
 
     public final static String GetPersonList=address+"/api/V1/User/GetAddressList";//?pageIndex={pageIndex}&pageSize={pageSize}//获取通信录
 
+
+    public final static String GetMyTaskList=address+"/api/V1/Task/GetMyTaskList";//?pageIndex={pageIndex}&pageSize={pageSize}"获取我参与的任务 我的任务
+
+
+    public final static String GetTaskDetail=address+"/api/V1/Task/GetTaskDetail";//?taskId={taskId} 获取任务详情
 }
