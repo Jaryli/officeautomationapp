@@ -117,9 +117,10 @@ public class MyTaskActivity extends BaseActivity implements  View.OnClickListene
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Intent intent=new Intent(MyTaskActivity.this, MessageDetailActivity.class);
-//                intent.putExtra("data",listMyTask.get(i));
-//                startActivity(intent);
+                Intent intent=new Intent(MyTaskActivity.this, MyTaskDetailActivity.class);
+                intent.putExtra("data",listMyTask.get(i));
+                startActivity(intent);
+//                Toast.makeText(view.getContext(), listMyTask.get(i).getTaskName(), Toast.LENGTH_SHORT).show();
             }
         });
     }
