@@ -63,4 +63,10 @@ public class Constants {
 
 
     public final static String GetTaskDetail=address+"/api/V1/Task/GetTaskDetail";//?taskId={taskId} 获取任务详情
+
+    public final static String AddTodoDetail=address+"/api/V1/Task/AddTodoDetail";//我的任务办理
+
+    public final static String GetMyDoingWork=address+"/api/V1/WorkFlow/GetMyDoingWork";//获取待我审批的工作//?workName={workName}&workGuid={workGuid}&pageIndex={pageIndex}&pageSize={pageSize}
+
+    public final static String GetMyPostWork=address+"/api/V1/WorkFlow/GetMyPostWork";//获取我发起的工作//?workName={workName}&workGuid={workGuid}&pageIndex={pageIndex}&pageSize={pageSize}
 }

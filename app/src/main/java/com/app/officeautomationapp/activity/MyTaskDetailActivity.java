@@ -128,8 +128,6 @@ public class MyTaskDetailActivity extends BaseActivity implements  View.OnClickL
         });
     }
 
-
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -137,6 +135,8 @@ public class MyTaskDetailActivity extends BaseActivity implements  View.OnClickL
                 this.finish();
                 break;
             case R.id.tv_item_add:
+                Intent intent=new Intent(this,MyTaskDoActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;

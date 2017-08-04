@@ -219,12 +219,6 @@
         android:visibility="gone"
         android:id="@+id/loader"
         android:gravity="center_horizontal">
-
-        <!--<com.tuyenmonkey.mkloader.MKLoader-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:mk_type="Whirlpool"-->
-            <!--app:mk_color="#E5E5E5" />-->
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

@@ -42,6 +42,7 @@
         <activity android:name="com.app.officeautomationapp.activity.ItemContactsActivity" />
         <activity android:name="com.app.officeautomationapp.activity.MyTaskActivity" />
         <activity android:name="com.app.officeautomationapp.activity.MyTaskDetailActivity" />
+        <activity android:name="com.app.officeautomationapp.activity.MyTaskDoActivity" />
 
 
 
