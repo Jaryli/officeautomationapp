@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.InputType;
@@ -39,6 +40,7 @@ import android.widget.Toast;
 import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.adapter.ApprovalSelectAdapter;
 import com.app.officeautomationapp.common.Constants;
+import com.app.officeautomationapp.fragment.ApprovalFragment;
 import com.app.officeautomationapp.fragment.MessageFragment;
 import com.app.officeautomationapp.view.MyGridView;
 import com.google.gson.Gson;
@@ -63,7 +65,7 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
     private RadioButton tvApprovalHas;
     private EditText etApprovalSearch;
     private ImageView ivApprovalBack;
-    private LinearLayout loader;
+//    private LinearLayout loader;
     private ScrollView svApprovalSelect;
     private Button btnApprovalSelectDo;
     private MyGridView gvApprovalselect;
@@ -73,18 +75,17 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
     private RelativeLayout RL_InfoTip;
     private InputMethodManager imm;
 
+
     private String[] text = {"全部","请假","报销","出差","外出","采购","请假","报销","出差","外出","采购","请假","报销","出差","外出","采购","请假","报销","出差","外出","采购"};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_approval);
 
-
-
         //弹出层
         RL_InfoTip=(RelativeLayout)findViewById(R.id.info_tip);
-
 
         btnApprovalSearch=(RelativeLayout)findViewById(R.id.btn_approval_search);
         btnApprovalSearch.setOnClickListener(this);
@@ -105,7 +106,7 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
         ivApprovalBack=(ImageView)findViewById(R.id.iv_approval_back);
         ivApprovalBack.setOnClickListener(this);
 
-        loader=(LinearLayout)findViewById(R.id.loader);
+//        loader=(LinearLayout)findViewById(R.id.loader);
         svApprovalSelect=(ScrollView) findViewById(R.id.sv_approval_select);
         btnApprovalSelectDo=(Button)findViewById(R.id.btn_approval_select_do);
         btnApprovalSelectDo.setOnClickListener(this);
@@ -130,6 +131,11 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
         width = size.x;//获取屏幕的宽度
 
         imm = (InputMethodManager) etApprovalSearch.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);//键盘
+
+
+        //加入fragment
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().add(R.id.ll_approval_item, ApprovalFragment.newInstance(Constants.GetMyDoingWork,"","")).commit();
 
     }
 
@@ -207,34 +213,7 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
 
     private void loadData()
     {
-        loader.setVisibility(View.VISIBLE);
-        //loaddata
-        RequestParams params = new RequestParams("http://www.facebook.com");
-        Log.i("ApprovalActivity", "post-url:" + Constants.login);
-        Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                Log.i("ApprovalActivity", "onSuccess result:" + result);
-                loader.setVisibility(View.GONE);
-            }
-            //请求异常后的回调方法
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                Log.i("ApprovalActivity", "onError:" + ex);
-                loader.setVisibility(View.GONE);
-            }
-            //主动调用取消请求的回调方法
-            @Override
-            public void onCancelled(CancelledException cex) {
-                Log.i("ApprovalActivity", "onCancelled:" + cex);
-                loader.setVisibility(View.GONE);
-            }
-            @Override
-            public void onFinished() {
-                Log.i("ApprovalActivity", "onFinished:" + "");
-                loader.setVisibility(View.GONE);
-            }
-        });
+
 
     }
 
@@ -251,5 +230,6 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
             }
         };
     };
+
 
 }

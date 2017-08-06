@@ -1,5 +1,7 @@
 package com.app.officeautomationapp.bean;
 
+import android.graphics.drawable.Drawable;
+
 import java.io.Serializable;
 
 /**
@@ -17,6 +19,9 @@ public class ProjectItemBean implements Serializable {
     private int MenuCate;
     private int MenuSort;
     private int IsIndex;
+
+    private Drawable localPic;//本地图片
+    private int num;//数量
 
     public int getId() {
         return Id;
@@ -88,5 +93,21 @@ public class ProjectItemBean implements Serializable {
 
     public void setIsIndex(int isIndex) {
         IsIndex = isIndex;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
+
+    public Drawable getLocalPic() {
+        return localPic;
+    }
+
+    public void setLocalPic(Drawable localPic) {
+        this.localPic = localPic;
     }
 }

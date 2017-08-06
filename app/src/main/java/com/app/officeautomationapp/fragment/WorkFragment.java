@@ -178,6 +178,8 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
                             {
                                 sortList(list2);
                             }
+
+
                             //实例化一个适配器
                             MyGridAdapter myGridAdapter1=new MyGridAdapter(getActivity(),R.layout.grid_item,list1);
                             //为GridView设置适配器
@@ -210,6 +212,7 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
                                     clickBtn(list3,position);
                                 }
                             });
+                            initNum(myGridAdapter1);
                         }
                     }
                 } catch (JSONException e) {
@@ -234,6 +237,72 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
             }
         });
     }
+
+
+    private void initNum(final MyGridAdapter myGridAdapter1 )
+    {
+        //准备要添加的数据条目
+        RequestParams params = new RequestParams(Constants.GetIndexTip);
+        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getActivity().getApplicationContext(),"user");
+        params.addHeader("access_token", userDto.getAccessToken());
+        Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.e("JAVA", "onSuccess result:" + result);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int re=jsonObject.getInt("result");
+                    if(re!=1)
+                    {
+                        Toast.makeText(getActivity(),jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    else
+                    {
+                        int workCount=jsonObject.getInt("workCount");
+                        int taskCount=jsonObject.getInt("taskCount");
+                        btnWorkApproval.setText((workCount+taskCount)+"");
+                        if(list1.size()>0)
+                        {
+                            for(int i=0;i<list1.size();i++)
+                            {
+                                if(list1.get(i).getMenuType()==6)
+                                {
+                                    list1.get(i).setNum(taskCount);
+                                }
+                                if(list1.get(i).getMenuType()==2)
+                                {
+                                    list1.get(i).setNum(workCount);
+                                }
+                                myGridAdapter1.refresh(list1);
+                            }
+                        }
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            //请求异常后的回调方法
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Log.e("JAVA", "onError:" + ex);
+                Toast.makeText(getActivity(),"网络或服务器异常！",Toast.LENGTH_SHORT).show();
+            }
+            //主动调用取消请求的回调方法
+            @Override
+            public void onCancelled(CancelledException cex) {
+                Log.e("JAVA", "onCancelled:" + cex);
+
+            }
+            @Override
+            public void onFinished() {
+                Log.e("JAVA", "onFinished:" + "");
+            }
+        });
+    }
+
+
     private void sortList(ArrayList<ProjectItemBean> list)
     {
         Collections.sort(list, new Comparator<ProjectItemBean>(){

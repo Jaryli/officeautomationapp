@@ -1,12 +1,14 @@
 package com.app.officeautomationapp.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.app.officeautomationapp.R;
@@ -15,6 +17,7 @@ import com.app.officeautomationapp.bean.ProjectItemBean;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,12 +31,13 @@ public class MyGridAdapter extends ArrayAdapter<ProjectItemBean> {
     private ImageOptions options;
 
     private Context mContext;
+    ArrayList<ProjectItemBean> mList;
 
-
-    public MyGridAdapter(Context context, int resource, List<ProjectItemBean> objects) {
+    public MyGridAdapter(Context context, int resource, ArrayList<ProjectItemBean> objects) {
         super(context, resource,objects);
         //x.Ext.init(this.getApplication());
         //x.Ext.setDebug(BuildConfig.DEBUG); // 是否输出debug日志, 开启debug会影响性能.
+        this.mList = objects;
         this.mContext=context;
         resourceId=resource;
 
@@ -59,8 +63,18 @@ public class MyGridAdapter extends ArrayAdapter<ProjectItemBean> {
     }
 
     @Override
+    public int getCount() {
+        return mList.size();
+    }
+
+    @Override
+    public ProjectItemBean getItem(int position) {
+        return mList.get(position);
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ProjectItemBean projectItemBean=getItem(position);//获得实例
+//        ProjectItemBean projectItemBean=getItem(position);//获得实例
         View view;
         ViewHolder viewHolder;//实例缓存
         if(convertView==null) {//布局缓存
@@ -69,6 +83,7 @@ public class MyGridAdapter extends ArrayAdapter<ProjectItemBean> {
             viewHolder=new ViewHolder();
             viewHolder.hPic=(ImageView)view.findViewById(R.id.image_item);
             viewHolder.hTitle=(TextView) view.findViewById(R.id.text_item);
+            viewHolder.hNum=(TextView) view.findViewById(R.id.item_num);
             view.setTag(viewHolder);
         }else
         {
@@ -76,15 +91,41 @@ public class MyGridAdapter extends ArrayAdapter<ProjectItemBean> {
 
             viewHolder=(ViewHolder)view.getTag();
         }
-        //xutil2.0 废弃
-        //xUtilsImageLoader imageLoader=new xUtilsImageLoader(mContext);
-        //viewHolder.hPic.setImageDrawable(imageLoader.display(viewHolder.hPic,hiddenProjectBean.getPic()));
-
-        x.image().bind(viewHolder.hPic, projectItemBean.getMenuImageStr(), options);
-
-        viewHolder.hTitle.setText(projectItemBean.getMenuTitle().toString());
+        if(mList.get(getCount() - position - 1).getLocalPic()!=null&&!"".equals(mList.get(getCount() - position - 1).getLocalPic()))//加载本地图片
+        {
+            viewHolder.hPic.setBackground(mList.get(getCount() - position - 1).getLocalPic());
+        }
+        else
+        {
+            x.image().bind(viewHolder.hPic, mList.get(getCount() - position - 1).getMenuImageStr(), options);
+        }
+        viewHolder.hTitle.setText(mList.get(getCount() - position - 1).getMenuTitle().toString());
+        if(mList.get(getCount() - position - 1).getNum()>0) {
+            viewHolder.hNum.setVisibility(View.VISIBLE);
+            viewHolder.hNum.setText(mList.get(getCount() - position - 1).getNum()+"");
+        }
         return view;
     }
+
+    public void refresh(ArrayList<ProjectItemBean> list) {
+        mList = list;
+        notifyDataSetChanged();
+    }
+
+//    public void update(int index,ListView listview){
+//        //得到第一个可见item项的位置
+//        int visiblePosition = listview.getFirstVisiblePosition();
+//        //得到指定位置的视图，对listview的缓存机制不清楚的可以去了解下
+//        View view = listview.getChildAt(index - visiblePosition);
+//        ViewHolder holder = (ViewHolder) view.getTag();
+//        holder.hNum=(TextView) view.findViewById(R.id.bar_num);
+//        setData(holder,index);
+//    }
+//    private void setData(ViewHolder holder,int index){
+//        ProjectItemBean projectItemBean = list.get(index);
+//        holder.hNum.setVisibility(View.VISIBLE);
+//        holder.hNum.setText(projectItemBean.getNum());
+//    }
 
 
 
@@ -92,6 +133,7 @@ public class MyGridAdapter extends ArrayAdapter<ProjectItemBean> {
     class ViewHolder{
         ImageView hPic;
         TextView hTitle;
+        TextView hNum;
 //        TextView hType;
 //        TextView hTime;
         //ImageView detailImage;

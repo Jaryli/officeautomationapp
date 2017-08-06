@@ -69,4 +69,9 @@ public class Constants {
     public final static String GetMyDoingWork=address+"/api/V1/WorkFlow/GetMyDoingWork";//获取待我审批的工作//?workName={workName}&workGuid={workGuid}&pageIndex={pageIndex}&pageSize={pageSize}
 
     public final static String GetMyPostWork=address+"/api/V1/WorkFlow/GetMyPostWork";//获取我发起的工作//?workName={workName}&workGuid={workGuid}&pageIndex={pageIndex}&pageSize={pageSize}
+
+
+    public final static String GetIndexTip=address+"/api/V1/WorkFlow/GetIndexTip";//获取首页待审批角标数量和我的工作角标数量
+    public final static String GetTodoTip=address+"/api/V1/WorkFlow/GetTodoTip";//获取待办角标数量（含各子分类角标数量）
+
 }

@@ -15,6 +15,7 @@ import com.app.officeautomationapp.R;
 
 /**
  * Created by CS-711701-00027 on 2017/4/14.
+ * 圆角image
  */
 
 public class RoundImageView extends ImageView {

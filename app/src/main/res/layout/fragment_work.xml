@@ -183,7 +183,6 @@
                             <Button
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:layout_marginTop="20dp"
                                 android:layout_marginBottom="5dp"
                                 android:id="@+id/btn_work_approval"
                                 android:text="0"
