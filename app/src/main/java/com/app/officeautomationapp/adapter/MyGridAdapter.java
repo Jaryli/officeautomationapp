@@ -41,10 +41,6 @@ public class MyGridAdapter extends ArrayAdapter<ProjectItemBean> {
         this.mContext=context;
         resourceId=resource;
 
-
-
-
-
         options= new ImageOptions.Builder().setFadeIn(true) //淡入效果
                 //ImageOptions.Builder()的一些其他属性：
                 .setCircular(true) //设置图片显示为圆形
@@ -91,18 +87,18 @@ public class MyGridAdapter extends ArrayAdapter<ProjectItemBean> {
 
             viewHolder=(ViewHolder)view.getTag();
         }
-        if(mList.get(getCount() - position - 1).getLocalPic()!=null&&!"".equals(mList.get(getCount() - position - 1).getLocalPic()))//加载本地图片
+        if(mList.get(position).getLocalPic()!=0&&!"".equals(mList.get(position).getLocalPic()))//加载本地图片
         {
-            viewHolder.hPic.setBackground(mList.get(getCount() - position - 1).getLocalPic());
+            viewHolder.hPic.setBackgroundResource(mList.get(position).getLocalPic());
         }
         else
         {
-            x.image().bind(viewHolder.hPic, mList.get(getCount() - position - 1).getMenuImageStr(), options);
+            x.image().bind(viewHolder.hPic, mList.get(position).getMenuImageStr(), options);
         }
-        viewHolder.hTitle.setText(mList.get(getCount() - position - 1).getMenuTitle().toString());
-        if(mList.get(getCount() - position - 1).getNum()>0) {
+        viewHolder.hTitle.setText(mList.get(position).getMenuTitle().toString());
+        if(mList.get(position).getNum()>0) {
             viewHolder.hNum.setVisibility(View.VISIBLE);
-            viewHolder.hNum.setText(mList.get(getCount() - position - 1).getNum()+"");
+            viewHolder.hNum.setText(mList.get(position).getNum()+"");
         }
         return view;
     }

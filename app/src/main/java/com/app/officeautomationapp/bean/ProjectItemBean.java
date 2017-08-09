@@ -20,7 +20,7 @@ public class ProjectItemBean implements Serializable {
     private int MenuSort;
     private int IsIndex;
 
-    private Drawable localPic;//本地图片
+    private int localPic;//本地图片
     private int num;//数量
 
     public int getId() {
@@ -103,11 +103,11 @@ public class ProjectItemBean implements Serializable {
         this.num = num;
     }
 
-    public Drawable getLocalPic() {
+    public int getLocalPic() {
         return localPic;
     }
 
-    public void setLocalPic(Drawable localPic) {
+    public void setLocalPic(int localPic) {
         this.localPic = localPic;
     }
 }

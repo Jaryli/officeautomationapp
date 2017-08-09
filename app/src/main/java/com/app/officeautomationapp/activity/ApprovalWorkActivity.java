@@ -40,7 +40,7 @@ public class ApprovalWorkActivity extends BaseActivity implements View.OnClickLi
     private int msgCount;
 
     private MyGridView mygridview;
-    ArrayList<ProjectItemBean> mList;
+    ArrayList<ProjectItemBean> mList=new ArrayList<ProjectItemBean>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,12 +107,40 @@ public class ApprovalWorkActivity extends BaseActivity implements View.OnClickLi
                                 {
                                     mList.get(i).setNum(MachineCount);
                                 }
-                                if(mList.get(i).getMenuType()==2)
+                                if(mList.get(i).getId()==2)
                                 {
                                     mList.get(i).setNum(JobCount);
                                 }
-                                myGridAdapter1.refresh(mList);
+                                if(mList.get(i).getId()==3)
+                                {
+                                    mList.get(i).setNum(SignCount);
+                                }
+                                if(mList.get(i).getId()==4)
+                                {
+                                    mList.get(i).setNum(LeaveCount);
+                                }
+                                if(mList.get(i).getId()==5)
+                                {
+                                    mList.get(i).setNum(UsedCount);
+                                }
+                                if(mList.get(i).getId()==6)
+                                {
+                                    mList.get(i).setNum(TreeCount);
+                                }
+                                if(mList.get(i).getId()==7)
+                                {
+                                    mList.get(i).setNum(CivilCount);
+                                }
+                                if(mList.get(i).getId()==8)
+                                {
+                                    mList.get(i).setNum(ContractCount);
+                                }
+                                if(mList.get(i).getId()==9)
+                                {
+                                    mList.get(i).setNum(FeeCount);
+                                }
                             }
+                            myGridAdapter1.refresh(mList);
                         }
                         if(TotalCount>0)
                         {
@@ -166,47 +194,47 @@ public class ApprovalWorkActivity extends BaseActivity implements View.OnClickLi
     private void initData()
     {
         ProjectItemBean projectItemBean=new ProjectItemBean();
-        projectItemBean.setLocalPic(this.getResources().getDrawable(R.mipmap.icon_time));
+        projectItemBean.setLocalPic(R.mipmap.icon_time);
         projectItemBean.setMenuTitle("台班");
         projectItemBean.setId(1);
         mList.add(projectItemBean);
         ProjectItemBean projectItemBean2=new ProjectItemBean();
-        projectItemBean2.setLocalPic(this.getResources().getDrawable(R.mipmap.icon_time));
+        projectItemBean2.setLocalPic(R.mipmap.icon_time);
         projectItemBean2.setMenuTitle("用章");
         projectItemBean2.setId(2);
         mList.add(projectItemBean2);
         ProjectItemBean projectItemBean3=new ProjectItemBean();
-        projectItemBean3.setLocalPic(this.getResources().getDrawable(R.mipmap.icon_time));
+        projectItemBean3.setLocalPic(R.mipmap.icon_time);
         projectItemBean3.setMenuTitle("签工");
         projectItemBean3.setId(3);
         mList.add(projectItemBean3);
         ProjectItemBean projectItemBean4=new ProjectItemBean();
-        projectItemBean4.setLocalPic(this.getResources().getDrawable(R.mipmap.icon_time));
+        projectItemBean4.setLocalPic(R.mipmap.icon_time);
         projectItemBean4.setMenuTitle("请假");
         projectItemBean4.setId(4);
         mList.add(projectItemBean4);
         ProjectItemBean projectItemBean5=new ProjectItemBean();
-        projectItemBean5.setLocalPic(this.getResources().getDrawable(R.mipmap.icon_time));
+        projectItemBean5.setLocalPic(R.mipmap.icon_time);
         projectItemBean5.setMenuTitle("领用");
         projectItemBean5.setId(5);
         mList.add(projectItemBean5);
         ProjectItemBean projectItemBean6=new ProjectItemBean();
-        projectItemBean6.setLocalPic(this.getResources().getDrawable(R.mipmap.icon_time));
+        projectItemBean6.setLocalPic(R.mipmap.icon_time);
         projectItemBean6.setMenuTitle("苗木验收");
         projectItemBean6.setId(6);
         mList.add(projectItemBean6);
         ProjectItemBean projectItemBean7=new ProjectItemBean();
-        projectItemBean7.setLocalPic(this.getResources().getDrawable(R.mipmap.icon_time));
+        projectItemBean7.setLocalPic(R.mipmap.icon_time);
         projectItemBean7.setMenuTitle("土建验收");
         projectItemBean7.setId(7);
         mList.add(projectItemBean7);
         ProjectItemBean projectItemBean8=new ProjectItemBean();
-        projectItemBean8.setLocalPic(this.getResources().getDrawable(R.mipmap.icon_time));
+        projectItemBean8.setLocalPic(R.mipmap.icon_time);
         projectItemBean8.setMenuTitle("合同");
         projectItemBean8.setId(8);
         mList.add(projectItemBean8);
         ProjectItemBean projectItemBean9=new ProjectItemBean();
-        projectItemBean9.setLocalPic(this.getResources().getDrawable(R.mipmap.icon_time));
+        projectItemBean9.setLocalPic(R.mipmap.icon_time);
         projectItemBean9.setMenuTitle("费用报销");
         projectItemBean9.setId(9);
         mList.add(projectItemBean9);

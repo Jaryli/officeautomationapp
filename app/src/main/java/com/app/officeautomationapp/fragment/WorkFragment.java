@@ -266,11 +266,11 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
                         {
                             for(int i=0;i<list1.size();i++)
                             {
-                                if(list1.get(i).getMenuType()==6)
+                                if(list1.get(i).getMenuType()==2)
                                 {
                                     list1.get(i).setNum(taskCount);
                                 }
-                                if(list1.get(i).getMenuType()==2)
+                                if(list1.get(i).getMenuType()==6)
                                 {
                                     list1.get(i).setNum(workCount);
                                 }

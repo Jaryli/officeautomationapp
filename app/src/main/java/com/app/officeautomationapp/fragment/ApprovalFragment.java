@@ -196,8 +196,10 @@ public class ApprovalFragment extends Fragment {
                     }
                     else
                     {
-                        if(jsonObject.get("data")==""||jsonObject.get("data")==null)
+                        if(jsonObject.get("data")==null||jsonObject.get("data").equals("")||jsonObject.get("data").toString().equals("[]"))
                         {
+//                            listApproval.clear();
+//                            adapter.notifyDataSetChanged();
                             Toast.makeText(getActivity(),"没有数据",Toast.LENGTH_SHORT).show();
                             return;
                         }

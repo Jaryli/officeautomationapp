@@ -74,6 +74,7 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
     private int width;//屏幕的宽度
     private RelativeLayout RL_InfoTip;
     private InputMethodManager imm;
+    FragmentManager manager;
 
 
     private String[] text = {"全部","请假","报销","出差","外出","采购","请假","报销","出差","外出","采购","请假","报销","出差","外出","采购","请假","报销","出差","外出","采购"};
@@ -102,6 +103,22 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
         tvApprovalHas.setOnClickListener(this);
 
         etApprovalSearch=(EditText)findViewById(R.id.et_approval_search);
+        //键盘搜索事件
+        etApprovalSearch.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(keyCode == KeyEvent.KEYCODE_ENTER) {
+                    RL_InfoTip.setVisibility(View.GONE);//底部tip设置不可见
+                    imm.hideSoftInputFromWindow(etApprovalSearch.getWindowToken(), 0);//关闭软键盘
+                    //搜索动作
+                    Message message = new Message();
+                    message.what = 1;
+                    mHandler.sendMessage(message);
+                }
+                return true;
+
+            }
+        });
 
         ivApprovalBack=(ImageView)findViewById(R.id.iv_approval_back);
         ivApprovalBack.setOnClickListener(this);
@@ -134,7 +151,7 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
 
 
         //加入fragment
-        FragmentManager manager = getSupportFragmentManager();
+        manager = getSupportFragmentManager();
         manager.beginTransaction().add(R.id.ll_approval_item, ApprovalFragment.newInstance(Constants.GetMyDoingWork,"","")).commit();
 
     }
@@ -192,29 +209,33 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    /**
-     * 键盘搜索事件
-     * @param keyCode
-     * @param event
-     * @return
-     */
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_ENTER) {
-            RL_InfoTip.setVisibility(View.GONE);//底部tip设置不可见
-            imm.hideSoftInputFromWindow(etApprovalSearch.getWindowToken(), 0);//关闭软键盘
-            //搜索动作
-            Message message = new Message();
-            message.what = 1;
-            mHandler.sendMessage(message);
-        }
-        return true;
-    }
+//    /**
+//     * 键盘搜索事件
+//     * 无效，需要绑定输入框，这个仅仅是回车事件
+//     * @param keyCode
+//     * @param event
+//     * @return
+//     */
+//    @Override
+//    public boolean onKeyUp(int keyCode, KeyEvent event) {
+//        Toast.makeText(this,"111",Toast.LENGTH_SHORT).show();
+//        if(keyCode == KeyEvent.KEYCODE_ENTER) {
+//            RL_InfoTip.setVisibility(View.GONE);//底部tip设置不可见
+//            imm.hideSoftInputFromWindow(etApprovalSearch.getWindowToken(), 0);//关闭软键盘
+//            //搜索动作
+//            Message message = new Message();
+//            message.what = 1;
+//            mHandler.sendMessage(message);
+//        }
+//        return true;
+//    }
+
 
     private void loadData()
     {
-
-
+        manager.beginTransaction().add(R.id.ll_approval_item, ApprovalFragment.newInstance(Constants.GetMyDoingWork,etApprovalSearch.getText().toString(),"")).commit();
+        manager.executePendingTransactions();
+        etApprovalSearch.setText("");
     }
 
     private Handler mHandler = new Handler()

@@ -67,6 +67,7 @@
 
     <LinearLayout
         android:id="@+id/top2"
+        android:visibility="gone"
         android:layout_below="@+id/top_line"
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -84,6 +85,7 @@
             <RadioButton
                 android:id="@+id/tv_approval_noApproval"
                 android:layout_width="0dp"
+
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:button="@null"
@@ -114,6 +116,7 @@
         android:layout_below="@id/top2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:id="@+id/top3"
         android:background="@color/titleColor"
         >
@@ -139,6 +142,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:visibility="gone"
         android:layout_below="@+id/top3"
         android:id="@+id/v_approval_view1"
         android:background="@color/line">
