@@ -53,6 +53,7 @@ public class ApprovalFragment extends Fragment {
         args.putString("workGuid", workGuid);
         ApprovalFragment fragment = new ApprovalFragment();
         fragment.setArguments(args);
+        clearList();
         return fragment;
     }
     //公共参数
@@ -60,7 +61,13 @@ public class ApprovalFragment extends Fragment {
     private String workName;
     private String workGuid;
 
-    private List<ApprovalBean> listApproval=new ArrayList<ApprovalBean>();
+    private static List<ApprovalBean> listApproval=new ArrayList<ApprovalBean>();
+
+    public static void clearList()
+    {
+        listApproval.clear();
+        page = 0;
+    }
 
     private ListView listView;
     private ApprovalAdapter adapter;
@@ -69,7 +76,7 @@ public class ApprovalFragment extends Fragment {
     private SwipeRefreshHelper mSwipeRefreshHelper;
     private Handler mHandler = new Handler();
 
-    int page = 0;
+    static int page = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -198,7 +205,7 @@ public class ApprovalFragment extends Fragment {
                     {
                         if(jsonObject.get("data")==null||jsonObject.get("data").equals("")||jsonObject.get("data").toString().equals("[]"))
                         {
-//                            listApproval.clear();
+//
 //                            adapter.notifyDataSetChanged();
                             Toast.makeText(getActivity(),"没有数据",Toast.LENGTH_SHORT).show();
                             return;
