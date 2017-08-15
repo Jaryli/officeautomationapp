@@ -35,6 +35,9 @@ public class ApprovalWorkActivity extends BaseActivity implements View.OnClickLi
 
     private ImageView ivWorkApprovalBack;
     private ImageView btnNoApproval;
+    private ImageView btnWorkStartMy;
+    private ImageView btnWorkSendMe;
+
 
     private TextView bar_num;
     private int msgCount;
@@ -52,6 +55,10 @@ public class ApprovalWorkActivity extends BaseActivity implements View.OnClickLi
         ivWorkApprovalBack.setOnClickListener(this);
         btnNoApproval=(ImageView)findViewById(R.id.btn_no_approval);
         btnNoApproval.setOnClickListener(this);
+        btnWorkStartMy=(ImageView)findViewById(R.id.btn_work_start_my);
+        btnWorkStartMy.setOnClickListener(this);
+        btnWorkSendMe=(ImageView)findViewById(R.id.btn_work_send_me);
+        btnWorkSendMe.setOnClickListener(this);
 
         mygridview = (MyGridView)findViewById(R.id.mygridview);
         initData();
@@ -181,6 +188,12 @@ public class ApprovalWorkActivity extends BaseActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_no_approval:
+                startActivity(new Intent(this, ApprovalActivity.class));
+                break;
+            case R.id.btn_work_send_me:
+                startActivity(new Intent(this, ApprovalActivity.class));
+                break;
+            case R.id.btn_work_start_my:
                 startActivity(new Intent(this, ApprovalActivity.class));
                 break;
             case R.id.iv_work_approval_back:

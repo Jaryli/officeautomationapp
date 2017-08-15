@@ -86,6 +86,7 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
 
 
     private String[] text;
+    private String flowType="";
 
 
     @Override
@@ -122,8 +123,9 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
                     Message message = new Message();
                     message.what = 1;
                     mHandler.sendMessage(message);
+                    return true;
                 }
-                return true;
+                return false;
 
             }
         });
@@ -193,6 +195,7 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
                             gvApprovalselect=(MyGridView)findViewById(R.id.gv_approval_select);
                             final ApprovalSelectAdapter approvalSelectAdapter= new ApprovalSelectAdapter(ApprovalActivity.this,text,0);
                             gvApprovalselect.setAdapter(approvalSelectAdapter);
+                            final List<FlowBean> finalList = list;
                             gvApprovalselect.setOnItemClickListener(new AdapterView.OnItemClickListener()
                             {
                                 @Override
@@ -200,6 +203,14 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
                                     Log.d("*********","************:"+i);
                                     approvalSelectAdapter.changeSelected(ApprovalActivity.this,i);
                                     approvalSelectAdapter.notifyDataSetChanged();
+                                    if(0==i)
+                                    {
+                                        flowType="";
+                                    }
+                                    else
+                                    {
+                                        flowType= finalList.get(i-1).getAFF_Guid();
+                                    }
                                 }
                             });
                         }
@@ -252,6 +263,7 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
                 svApprovalSelect.setVisibility(View.GONE);//底部设置不可见
                 btnApprovalSelectDo.setVisibility(View.GONE);//底部设不可见
                 //搜索
+                loadData();
                 break;
 
             case R.id.btn_approval_cancel:
@@ -303,9 +315,9 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
 
     private void loadData()
     {
-        manager.beginTransaction().replace(R.id.ll_approval_item, ApprovalFragment.newInstance(Constants.GetMyDoingWork,etApprovalSearch.getText().toString(),"")).commit();
+        manager.beginTransaction().replace(R.id.ll_approval_item, ApprovalFragment.newInstance(Constants.GetMyDoingWork,etApprovalSearch.getText().toString(),flowType)).commit();
         manager.executePendingTransactions();
-        etApprovalSearch.setText("");
+//        etApprovalSearch.setText("");
     }
 
     private Handler mHandler = new Handler()
