@@ -74,4 +74,6 @@ public class Constants {
     public final static String GetIndexTip=address+"/api/V1/WorkFlow/GetIndexTip";//获取首页待审批角标数量和我的工作角标数量
     public final static String GetTodoTip=address+"/api/V1/WorkFlow/GetTodoTip";//获取待办角标数量（含各子分类角标数量）
 
+    public final static String GetFlowList=address+"/api/V1/WorkFlow/GetFlowList";//获取工作流分类列表
+
 }

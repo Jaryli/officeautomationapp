@@ -39,17 +39,25 @@ import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.adapter.ApprovalSelectAdapter;
+import com.app.officeautomationapp.bean.FlowBean;
 import com.app.officeautomationapp.common.Constants;
+import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.fragment.ApprovalFragment;
 import com.app.officeautomationapp.fragment.MessageFragment;
+import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.app.officeautomationapp.view.MyGridView;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -77,7 +85,7 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
     FragmentManager manager;
 
 
-    private String[] text = {"全部","请假","报销","出差","外出","采购","请假","报销","出差","外出","采购","请假","报销","出差","外出","采购","请假","报销","出差","外出","采购"};
+    private String[] text;
 
 
     @Override
@@ -128,18 +136,7 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
         btnApprovalSelectDo=(Button)findViewById(R.id.btn_approval_select_do);
         btnApprovalSelectDo.setOnClickListener(this);
 
-        gvApprovalselect=(MyGridView)findViewById(R.id.gv_approval_select);
-        final ApprovalSelectAdapter approvalSelectAdapter= new ApprovalSelectAdapter(this,text,0);
-        gvApprovalselect.setAdapter(approvalSelectAdapter);
-        gvApprovalselect.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("*********","************:"+i);
-                approvalSelectAdapter.changeSelected(ApprovalActivity.this,i);
-                approvalSelectAdapter.notifyDataSetChanged();
-            }
-        });
+
 
                 //获取屏幕的宽度
         Display display = this.getWindowManager().getDefaultDisplay();
@@ -153,9 +150,82 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
         //加入fragment
         manager = getSupportFragmentManager();
         manager.beginTransaction().add(R.id.ll_approval_item, ApprovalFragment.newInstance(Constants.GetMyDoingWork,"","")).commit();
-
+        initType();
     }
 
+    private void initType()
+    {
+        RequestParams params = new RequestParams(Constants.GetFlowList);
+        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
+        params.addHeader("access_token", userDto.getAccessToken());
+        Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.e("JAVA", "onSuccess result:" + result);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int re=jsonObject.getInt("result");
+                    if(re!=1)
+                    {
+                        Toast.makeText(ApprovalActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    else
+                    {
+                        if(jsonObject.get("data")==""||jsonObject.get("data")==null)
+                        {
+                            Toast.makeText(ApprovalActivity.this,"没有数据",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        else
+                        {
+                            Gson gson = new Gson();
+                            List<FlowBean> list=new ArrayList<FlowBean>();
+                            Type type=new TypeToken<List<FlowBean>>(){}.getType();
+                            list=gson.fromJson(jsonObject.get("data").toString(), type);
+//                            MessageDto messageDto = (MessageDto) gson.fromJson(jsonObject.toString(),MessageDto.class);
+                            text=new String[list.size()+1];
+                            text[0]="全部";
+                            for(int i=0;i<list.size();i++)
+                            {
+                                text[i+1]=list.get(i).getAFF_Name();
+                            }
+                            gvApprovalselect=(MyGridView)findViewById(R.id.gv_approval_select);
+                            final ApprovalSelectAdapter approvalSelectAdapter= new ApprovalSelectAdapter(ApprovalActivity.this,text,0);
+                            gvApprovalselect.setAdapter(approvalSelectAdapter);
+                            gvApprovalselect.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                            {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                    Log.d("*********","************:"+i);
+                                    approvalSelectAdapter.changeSelected(ApprovalActivity.this,i);
+                                    approvalSelectAdapter.notifyDataSetChanged();
+                                }
+                            });
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            //请求异常后的回调方法
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Log.e("JAVA", "onError:" + ex);
+                Toast.makeText(ApprovalActivity.this,"网络或服务器异常！",Toast.LENGTH_SHORT).show();
+            }
+            //主动调用取消请求的回调方法
+            @Override
+            public void onCancelled(CancelledException cex) {
+                Log.e("JAVA", "onCancelled:" + cex);
+
+            }
+            @Override
+            public void onFinished() {
+                Log.e("JAVA", "onFinished:" + "");
+            }
+        });
+    }
 
 
 
@@ -233,7 +303,7 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
 
     private void loadData()
     {
-        manager.beginTransaction().add(R.id.ll_approval_item, ApprovalFragment.newInstance(Constants.GetMyDoingWork,etApprovalSearch.getText().toString(),"")).commit();
+        manager.beginTransaction().replace(R.id.ll_approval_item, ApprovalFragment.newInstance(Constants.GetMyDoingWork,etApprovalSearch.getText().toString(),"")).commit();
         manager.executePendingTransactions();
         etApprovalSearch.setText("");
     }
