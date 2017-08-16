@@ -69,7 +69,7 @@ public class ApprovalWorkActivity extends BaseActivity implements View.OnClickLi
         mygridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                clickBtn(list1,position);
+                clickBtn(position);
             }
         });
         initNum(myGridAdapter1);
@@ -116,11 +116,11 @@ public class ApprovalWorkActivity extends BaseActivity implements View.OnClickLi
                                 }
                                 if(mList.get(i).getId()==2)
                                 {
-                                    mList.get(i).setNum(JobCount);
+                                    mList.get(i).setNum(SignCount);
                                 }
                                 if(mList.get(i).getId()==3)
                                 {
-                                    mList.get(i).setNum(SignCount);
+                                    mList.get(i).setNum(JobCount);
                                 }
                                 if(mList.get(i).getId()==4)
                                 {
@@ -186,15 +186,19 @@ public class ApprovalWorkActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
+        Intent intent=new Intent(this, ApprovalActivity.class);
         switch (view.getId()) {
             case R.id.btn_no_approval:
-                startActivity(new Intent(this, ApprovalActivity.class));
+                intent.putExtra("url",Constants.GetMyDoingWork);
+                startActivity(intent);
                 break;
             case R.id.btn_work_send_me:
-                startActivity(new Intent(this, ApprovalActivity.class));
+                intent.putExtra("url",Constants.GetMyPostWork);
+                startActivity(intent);
                 break;
             case R.id.btn_work_start_my:
-                startActivity(new Intent(this, ApprovalActivity.class));
+                intent.putExtra("url",Constants.GetMyWorkFlows);
+                startActivity(intent);
                 break;
             case R.id.iv_work_approval_back:
                 this.finish();
@@ -204,51 +208,67 @@ public class ApprovalWorkActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
+    private void clickBtn(int position)
+    {
+        ProjectItemBean projectItemBean= mList.get(position);
+
+
+    }
+
     private void initData()
     {
         ProjectItemBean projectItemBean=new ProjectItemBean();
         projectItemBean.setLocalPic(R.mipmap.icon_time);
         projectItemBean.setMenuTitle("台班");
+        projectItemBean.setGuid("d1693633-e78a-4f7d-97fc-a3742639eaa9");
         projectItemBean.setId(1);
         mList.add(projectItemBean);
         ProjectItemBean projectItemBean2=new ProjectItemBean();
         projectItemBean2.setLocalPic(R.mipmap.icon_time);
         projectItemBean2.setMenuTitle("用章");
+        projectItemBean.setGuid("d1693633-e78a-4f7d-97fc-a3742639eaa9");
         projectItemBean2.setId(2);
         mList.add(projectItemBean2);
         ProjectItemBean projectItemBean3=new ProjectItemBean();
         projectItemBean3.setLocalPic(R.mipmap.icon_time);
         projectItemBean3.setMenuTitle("签工");
+        projectItemBean.setGuid("d1693633-e78a-4f7d-97fc-a3742639eaa9");
         projectItemBean3.setId(3);
         mList.add(projectItemBean3);
         ProjectItemBean projectItemBean4=new ProjectItemBean();
         projectItemBean4.setLocalPic(R.mipmap.icon_time);
         projectItemBean4.setMenuTitle("请假");
+        projectItemBean.setGuid("d1693633-e78a-4f7d-97fc-a3742639eaa9");
         projectItemBean4.setId(4);
         mList.add(projectItemBean4);
         ProjectItemBean projectItemBean5=new ProjectItemBean();
         projectItemBean5.setLocalPic(R.mipmap.icon_time);
         projectItemBean5.setMenuTitle("领用");
+        projectItemBean.setGuid("d1693633-e78a-4f7d-97fc-a3742639eaa9");
         projectItemBean5.setId(5);
         mList.add(projectItemBean5);
         ProjectItemBean projectItemBean6=new ProjectItemBean();
         projectItemBean6.setLocalPic(R.mipmap.icon_time);
         projectItemBean6.setMenuTitle("苗木验收");
+        projectItemBean.setGuid("d1693633-e78a-4f7d-97fc-a3742639eaa9");
         projectItemBean6.setId(6);
         mList.add(projectItemBean6);
         ProjectItemBean projectItemBean7=new ProjectItemBean();
         projectItemBean7.setLocalPic(R.mipmap.icon_time);
         projectItemBean7.setMenuTitle("土建验收");
+        projectItemBean.setGuid("d1693633-e78a-4f7d-97fc-a3742639eaa9");
         projectItemBean7.setId(7);
         mList.add(projectItemBean7);
         ProjectItemBean projectItemBean8=new ProjectItemBean();
         projectItemBean8.setLocalPic(R.mipmap.icon_time);
         projectItemBean8.setMenuTitle("合同");
+        projectItemBean.setGuid("d1693633-e78a-4f7d-97fc-a3742639eaa9");
         projectItemBean8.setId(8);
         mList.add(projectItemBean8);
         ProjectItemBean projectItemBean9=new ProjectItemBean();
         projectItemBean9.setLocalPic(R.mipmap.icon_time);
         projectItemBean9.setMenuTitle("费用报销");
+        projectItemBean.setGuid("d1693633-e78a-4f7d-97fc-a3742639eaa9");
         projectItemBean9.setId(9);
         mList.add(projectItemBean9);
 

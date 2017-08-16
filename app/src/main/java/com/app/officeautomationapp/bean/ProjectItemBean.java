@@ -22,6 +22,7 @@ public class ProjectItemBean implements Serializable {
 
     private int localPic;//本地图片
     private int num;//数量
+    private String guid;//Guid 流程的id
 
     public int getId() {
         return Id;
@@ -109,5 +110,13 @@ public class ProjectItemBean implements Serializable {
 
     public void setLocalPic(int localPic) {
         this.localPic = localPic;
+    }
+
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
     }
 }

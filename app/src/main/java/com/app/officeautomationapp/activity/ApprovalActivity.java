@@ -87,12 +87,15 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
 
     private String[] text;
     private String flowType="";
+    private String url;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_approval);
+        Intent intent=getIntent();
+        url = intent.getSerializableExtra("url").toString();
 
         //弹出层
         RL_InfoTip=(RelativeLayout)findViewById(R.id.info_tip);
@@ -151,7 +154,7 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
 
         //加入fragment
         manager = getSupportFragmentManager();
-        manager.beginTransaction().add(R.id.ll_approval_item, ApprovalFragment.newInstance(Constants.GetMyDoingWork,"","")).commit();
+        manager.beginTransaction().add(R.id.ll_approval_item, ApprovalFragment.newInstance(url,"","")).commit();
         initType();
     }
 
@@ -315,7 +318,7 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
 
     private void loadData()
     {
-        manager.beginTransaction().replace(R.id.ll_approval_item, ApprovalFragment.newInstance(Constants.GetMyDoingWork,etApprovalSearch.getText().toString(),flowType)).commit();
+        manager.beginTransaction().replace(R.id.ll_approval_item, ApprovalFragment.newInstance(url,etApprovalSearch.getText().toString(),flowType)).commit();
         manager.executePendingTransactions();
 //        etApprovalSearch.setText("");
     }
