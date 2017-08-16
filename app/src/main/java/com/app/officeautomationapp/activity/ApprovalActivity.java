@@ -77,6 +77,7 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
     private ScrollView svApprovalSelect;
     private Button btnApprovalSelectDo;
     private MyGridView gvApprovalselect;
+    private LinearLayout layoutCondition;
 
 
     private int width;//屏幕的宽度
@@ -94,9 +95,15 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_approval);
+
+        layoutCondition=(LinearLayout)findViewById(R.id.layout2);
         Intent intent=getIntent();
         url = intent.getSerializableExtra("url").toString();
-
+        String hiddenTitle = intent.getSerializableExtra("hiddenTitle")==null?"0":intent.getSerializableExtra("hiddenTitle").toString();
+        if("1".equals(hiddenTitle))//隐藏上面的条件
+        {
+            layoutCondition.setVisibility(View.GONE);
+        }
         //弹出层
         RL_InfoTip=(RelativeLayout)findViewById(R.id.info_tip);
 

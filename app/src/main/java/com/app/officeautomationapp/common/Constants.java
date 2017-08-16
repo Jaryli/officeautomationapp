@@ -77,4 +77,7 @@ public class Constants {
 
     public final static String GetFlowList=address+"/api/V1/WorkFlow/GetFlowList";//获取工作流分类列表
 
+
+    public final static String GetUnCheckApplyResList=address+"/api/V1/Res/GetUnCheckApplyResList";//获取待我审批的物品列表
+
 }

@@ -211,6 +211,21 @@ public class ApprovalWorkActivity extends BaseActivity implements View.OnClickLi
     private void clickBtn(int position)
     {
         ProjectItemBean projectItemBean= mList.get(position);
+        Intent intent=new Intent(this, ApprovalActivity.class);
+        if(!"".equals(projectItemBean.getGuid()))
+        {
+            intent.putExtra("url",Constants.GetMyDoingWork+"?workGuid="+projectItemBean.getGuid());
+            intent.putExtra("hiddenTitle","1");
+            startActivity(intent);
+        }
+        else//特殊接口
+        {
+            if(projectItemBean.getId()==5)
+            {
+                intent=new Intent(this, ApprovalReceiveActivity.class);
+                startActivity(intent);
+            }
+        }
 
 
     }
@@ -226,49 +241,49 @@ public class ApprovalWorkActivity extends BaseActivity implements View.OnClickLi
         ProjectItemBean projectItemBean2=new ProjectItemBean();
         projectItemBean2.setLocalPic(R.mipmap.icon_time);
         projectItemBean2.setMenuTitle("用章");
-        projectItemBean.setGuid("d1693633-e78a-4f7d-97fc-a3742639eaa9");
+        projectItemBean2.setGuid("f58f8da6-a7f2-45d9-8fb1-70ec0bdc83f2");
         projectItemBean2.setId(2);
         mList.add(projectItemBean2);
         ProjectItemBean projectItemBean3=new ProjectItemBean();
         projectItemBean3.setLocalPic(R.mipmap.icon_time);
         projectItemBean3.setMenuTitle("签工");
-        projectItemBean.setGuid("d1693633-e78a-4f7d-97fc-a3742639eaa9");
+        projectItemBean3.setGuid("9fac41f7-fd37-4959-8bc0-7c35922fd204");
         projectItemBean3.setId(3);
         mList.add(projectItemBean3);
         ProjectItemBean projectItemBean4=new ProjectItemBean();
         projectItemBean4.setLocalPic(R.mipmap.icon_time);
         projectItemBean4.setMenuTitle("请假");
-        projectItemBean.setGuid("d1693633-e78a-4f7d-97fc-a3742639eaa9");
+        projectItemBean4.setGuid("e1e8d30f-2550-40f6-88eb-aa393124c674");
         projectItemBean4.setId(4);
         mList.add(projectItemBean4);
         ProjectItemBean projectItemBean5=new ProjectItemBean();
         projectItemBean5.setLocalPic(R.mipmap.icon_time);
-        projectItemBean5.setMenuTitle("领用");
-        projectItemBean.setGuid("d1693633-e78a-4f7d-97fc-a3742639eaa9");
+        projectItemBean5.setMenuTitle("领用"); //GetUnCheckApplyResList
+        projectItemBean5.setGuid("");
         projectItemBean5.setId(5);
         mList.add(projectItemBean5);
         ProjectItemBean projectItemBean6=new ProjectItemBean();
         projectItemBean6.setLocalPic(R.mipmap.icon_time);
         projectItemBean6.setMenuTitle("苗木验收");
-        projectItemBean.setGuid("d1693633-e78a-4f7d-97fc-a3742639eaa9");
+        projectItemBean6.setGuid("5de2a402-280a-46ff-ab6f-fbab969a79a9");
         projectItemBean6.setId(6);
         mList.add(projectItemBean6);
         ProjectItemBean projectItemBean7=new ProjectItemBean();
         projectItemBean7.setLocalPic(R.mipmap.icon_time);
         projectItemBean7.setMenuTitle("土建验收");
-        projectItemBean.setGuid("d1693633-e78a-4f7d-97fc-a3742639eaa9");
+        projectItemBean7.setGuid("b04bfff9-9b7d-4f2f-8511-f49368e43d15");
         projectItemBean7.setId(7);
         mList.add(projectItemBean7);
         ProjectItemBean projectItemBean8=new ProjectItemBean();
         projectItemBean8.setLocalPic(R.mipmap.icon_time);
         projectItemBean8.setMenuTitle("合同");
-        projectItemBean.setGuid("d1693633-e78a-4f7d-97fc-a3742639eaa9");
+        projectItemBean8.setGuid("ec5cca2d-a335-4610-af04-a577d2955699");
         projectItemBean8.setId(8);
         mList.add(projectItemBean8);
         ProjectItemBean projectItemBean9=new ProjectItemBean();
         projectItemBean9.setLocalPic(R.mipmap.icon_time);
         projectItemBean9.setMenuTitle("费用报销");
-        projectItemBean.setGuid("d1693633-e78a-4f7d-97fc-a3742639eaa9");
+        projectItemBean9.setGuid("632c0da6-14a2-4daa-a5df-d311be6900a3");
         projectItemBean9.setId(9);
         mList.add(projectItemBean9);
 
