@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -23,7 +24,6 @@ import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
 import com.chanven.lib.cptr.loadmore.SwipeRefreshHelper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.yinglan.scrolllayout.ScrollLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,13 +41,14 @@ import java.util.List;
 
 public class ApprovalReceiveActivity extends BaseActivity implements View.OnClickListener  {
     private ListView listView;
+    private ImageView iv_approval_back;
     SwipeRefreshLayout swipeRefreshLayout;
     private SwipeRefreshHelper mSwipeRefreshHelper;
     private Handler mHandler = new Handler();
     static int page = 0;
     private static List<ReceiveThingsCheckBean> listReceiveThingsCheck=new ArrayList<ReceiveThingsCheckBean>();
     ApprovalReceiveThingsAdapter approvalReceiveThingsAdapter;
-    ScrollLayout mScrollLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,50 +60,16 @@ public class ApprovalReceiveActivity extends BaseActivity implements View.OnClic
 
     private void initView() {
         listView=(ListView)findViewById(R.id.lv_approval);
+        iv_approval_back=(ImageView)findViewById(R.id.iv_approval_back);
 //        ptrClassicFrameLayout = (PtrClassicFrameLayout) this.findViewById(R.id.test_list_view_frame);
         swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.sryt_swipe_listview_approval);
         swipeRefreshLayout.setColorSchemeColors(Color.GRAY);
-        mScrollLayout=(ScrollLayout)findViewById(R.id.scroll_down_layout);
-        /**设置 setting*/
-        mScrollLayout.setMinOffset(50);
-        mScrollLayout.setMaxOffset((int) (ScreenUtil.getScreenHeight(this) * 0.5));
-        mScrollLayout.setExitOffset(20);
-        mScrollLayout.setIsSupportExit(true);
-        mScrollLayout.setAllowHorizontalScroll(true);
-        mScrollLayout.setOnScrollChangedListener(mOnScrollChangedListener);
-        mScrollLayout.setToExit();
+
     }
-
-    private ScrollLayout.OnScrollChangedListener mOnScrollChangedListener = new ScrollLayout.OnScrollChangedListener() {
-        @Override
-        public void onScrollProgressChanged(float currentProgress) {
-            if (currentProgress >= 0) {
-                float precent = 255 * currentProgress;
-                if (precent > 255) {
-                    precent = 255;
-                } else if (precent < 0) {
-                    precent = 0;
-                }
-                mScrollLayout.getBackground().setAlpha(255 - (int) precent);
-            }
-
-        }
-
-        @Override
-        public void onScrollFinished(ScrollLayout.Status currentStatus) {
-            if (currentStatus.equals(ScrollLayout.Status.EXIT)) {
-
-            }
-        }
-
-        @Override
-        public void onChildScroll(int top) {
-        }
-    };
 
 
     private void initData() {
-        approvalReceiveThingsAdapter = new ApprovalReceiveThingsAdapter(this,R.layout.approval_receive_item, listReceiveThingsCheck,mScrollLayout);
+        approvalReceiveThingsAdapter = new ApprovalReceiveThingsAdapter(this,R.layout.approval_receive_item, listReceiveThingsCheck,this);
         listView.setAdapter(approvalReceiveThingsAdapter);
         mSwipeRefreshHelper = new SwipeRefreshHelper(swipeRefreshLayout);
 
@@ -239,6 +206,12 @@ public class ApprovalReceiveActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()) {
+            case R.id.iv_approval_back:
+                this.finish();
+                break;
+            default:
+                break;
+        }
     }
 }

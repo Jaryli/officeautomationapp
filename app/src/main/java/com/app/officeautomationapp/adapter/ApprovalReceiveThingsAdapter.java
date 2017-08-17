@@ -2,6 +2,7 @@ package com.app.officeautomationapp.adapter;
 
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
+import com.app.officeautomationapp.activity.ApprovalReceiveActivity;
 import com.app.officeautomationapp.bean.ReceiveThingsCheckBean;
 import com.app.officeautomationapp.view.MoreTextView;
-import com.yinglan.scrolllayout.ScrollLayout;
+import com.app.officeautomationapp.view.SpinnerDialog2;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,14 +33,15 @@ public class ApprovalReceiveThingsAdapter extends ArrayAdapter<ReceiveThingsChec
 
     private Context mContext;
 
-    private ScrollLayout mScrollLayout;
+    private Activity activity;
 
 
-    public ApprovalReceiveThingsAdapter(Context context, int resource, List<ReceiveThingsCheckBean> objects,ScrollLayout scrollLayout) {
+
+    public ApprovalReceiveThingsAdapter(Context context, int resource, List<ReceiveThingsCheckBean> objects,Activity activity) {
         super(context, resource,objects);
         this.mContext=context;
+        this.activity=activity;
         resourceId=resource;
-        mScrollLayout=scrollLayout;
     }
 
     @Override
@@ -56,8 +59,15 @@ public class ApprovalReceiveThingsAdapter extends ArrayAdapter<ReceiveThingsChec
                 @Override
                 public void onClick(View view) {
 //                    Toast.makeText(mContext, receiveThingsCheckBean.getProjectName(), Toast.LENGTH_LONG).show();
-                    mScrollLayout.setToOpen();
-//                    mScrollLayout.scrollToExit();
+                    final SpinnerDialog2 spinnerDialog=new SpinnerDialog2(activity,R.style.DialogAnimations_SmileWindow);
+                    spinnerDialog.bindOnSpinerListener(new SpinnerDialog2.OnDoneClick() {
+                        @Override
+                        public void onClick(int status, String reason) {
+                            Toast.makeText(mContext, reason+status+receiveThingsCheckBean.getProjectName(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    spinnerDialog.showSpinerDialog();
+
                 }
             });
             view.setTag(viewHolder);
@@ -67,14 +77,7 @@ public class ApprovalReceiveThingsAdapter extends ArrayAdapter<ReceiveThingsChec
 
             viewHolder=(ViewHolder)view.getTag();
         }
-        //xutil2.0 废弃
-        //xUtilsImageLoader imageLoader=new xUtilsImageLoader(mContext);
-        //viewHolder.hPic.setImageDrawable(imageLoader.display(viewHolder.hPic,hiddenProjectBean.getPic()));
-
-//        x.image().bind(viewHolder.hPic, messageBean.getPic(), options);
-
         viewHolder.hTitle.setText(getText(receiveThingsCheckBean));
-        //viewHolder.hTime.setText(IsToday(approvalBean.getCreateTime())?approvalBean.getCreateTime().split(" ")[1]:approvalBean.getCreateTime().split(" ")[0]);
         return view;
     }
 

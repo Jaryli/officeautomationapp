@@ -152,6 +152,7 @@ public class ApprovalFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(view.getContext(),listApproval.get(i).getAFF_Name().toString(),Toast.LENGTH_SHORT).show();
 //                Intent intent=new Intent(getActivity(), MessageDetailActivity.class);
 //                intent.putExtra("data",listApproval.get(i));
 //                startActivity(intent);
