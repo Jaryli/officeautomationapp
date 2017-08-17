@@ -226,8 +226,6 @@ public class ApprovalWorkActivity extends BaseActivity implements View.OnClickLi
                 startActivity(intent);
             }
         }
-
-
     }
 
     private void initData()

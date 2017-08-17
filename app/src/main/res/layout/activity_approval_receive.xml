@@ -5,6 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.yinglan.scrolllayout.ScrollLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/scroll_down_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="123"/>
+        </LinearLayout>
+    </com.yinglan.scrolllayout.ScrollLayout>
+
     <!--标题-->
     <RelativeLayout
         android:fitsSystemWindows="true"
@@ -89,5 +105,9 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
     </LinearLayout>
+
+
+
+
 
 </RelativeLayout >

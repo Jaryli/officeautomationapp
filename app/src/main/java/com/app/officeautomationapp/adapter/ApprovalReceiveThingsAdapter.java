@@ -8,9 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.bean.ReceiveThingsCheckBean;
+import com.app.officeautomationapp.view.MoreTextView;
+import com.yinglan.scrolllayout.ScrollLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,26 +31,35 @@ public class ApprovalReceiveThingsAdapter extends ArrayAdapter<ReceiveThingsChec
 
     private Context mContext;
 
+    private ScrollLayout mScrollLayout;
 
-    public ApprovalReceiveThingsAdapter(Context context, int resource, List<ReceiveThingsCheckBean> objects) {
+
+    public ApprovalReceiveThingsAdapter(Context context, int resource, List<ReceiveThingsCheckBean> objects,ScrollLayout scrollLayout) {
         super(context, resource,objects);
         this.mContext=context;
         resourceId=resource;
+        mScrollLayout=scrollLayout;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ReceiveThingsCheckBean receiveThingsCheckBean=getItem(position);//获得实例
+        final ReceiveThingsCheckBean receiveThingsCheckBean=getItem(position);//获得实例
         View view;
-        ViewHolder viewHolder;//实例缓存
+        final ViewHolder viewHolder;//实例缓存
         if(convertView==null) {//布局缓存
             view = LayoutInflater.from(getContext()).inflate(resourceId, null);
 
             viewHolder=new ViewHolder();
-            viewHolder.hPic=(TextView)view.findViewById(R.id.approval_pic);
-            viewHolder.hTitle=(TextView) view.findViewById(R.id.approval_title);
-            viewHolder.hType=(TextView) view.findViewById(R.id.approval_type);
-            viewHolder.hTime=(TextView) view.findViewById(R.id.approval_time);
+            viewHolder.hTitle=(MoreTextView) view.findViewById(R.id.approval_title);
+            viewHolder.hBtn=(TextView) view.findViewById(R.id.approval_pic);
+            viewHolder.hBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+//                    Toast.makeText(mContext, receiveThingsCheckBean.getProjectName(), Toast.LENGTH_LONG).show();
+                    mScrollLayout.setToOpen();
+//                    mScrollLayout.scrollToExit();
+                }
+            });
             view.setTag(viewHolder);
         }else
         {
@@ -61,12 +73,31 @@ public class ApprovalReceiveThingsAdapter extends ArrayAdapter<ReceiveThingsChec
 
 //        x.image().bind(viewHolder.hPic, messageBean.getPic(), options);
 
-        viewHolder.hPic.setText(getPicText(receiveThingsCheckBean.getTypeInfo()));
-        viewHolder.hTitle.setText(receiveThingsCheckBean.getProjectName().length()>22?receiveThingsCheckBean.getProjectName().substring(0,20)+"...":receiveThingsCheckBean.getProjectName());
-        viewHolder.hType.setText(receiveThingsCheckBean.getTypeInfo());
-        viewHolder.hTime.setText(receiveThingsCheckBean.getApplyDate());
+        viewHolder.hTitle.setText(getText(receiveThingsCheckBean));
         //viewHolder.hTime.setText(IsToday(approvalBean.getCreateTime())?approvalBean.getCreateTime().split(" ")[1]:approvalBean.getCreateTime().split(" ")[0]);
         return view;
+    }
+
+    private String getText(ReceiveThingsCheckBean receiveThingsCheckBean)
+    {
+        StringBuffer str=new StringBuffer();
+        str.append("物品名称:"+receiveThingsCheckBean.getResName());
+        str.append("\n");
+        str.append("分配领用:"+receiveThingsCheckBean.getTypeInfo());
+        str.append("\n");
+        str.append("领用时间:"+receiveThingsCheckBean.getUseDate());
+        str.append("\n");
+        str.append("归还时间:"+receiveThingsCheckBean.getBackDate());
+        str.append("\n");
+        str.append("申请时间:"+receiveThingsCheckBean.getApplyDate());
+        str.append("\n");
+        str.append("关联工程:"+receiveThingsCheckBean.getProjectName());
+        str.append("\n");
+        str.append("申请数量:"+receiveThingsCheckBean.getNumInfo());
+        str.append("\n");
+        str.append("审批记录:"+receiveThingsCheckBean.getRemark());
+
+        return str.toString();
     }
 
     private String getPicText(String str)
@@ -139,9 +170,7 @@ public class ApprovalReceiveThingsAdapter extends ArrayAdapter<ReceiveThingsChec
 
     //实例缓存
     class ViewHolder{
-        TextView hPic;
-        TextView hTitle;
-        TextView hType;
-        TextView hTime;
+        MoreTextView hTitle;
+        TextView hBtn;
     }
 }

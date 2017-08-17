@@ -13,4 +13,11 @@
         <attr name="auto_play" format="boolean">
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="MoreTextStyle">
+        <attr name="textSize" format="dimension"/>
+        <attr name="textColor" format="color"/>
+        <attr name="maxLine" format="integer" />
+        <attr name="text" format="string" />
+    </declare-styleable>
 </resources>
