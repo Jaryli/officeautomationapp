@@ -59,12 +59,18 @@ public class ApprovalReceiveActivity extends BaseActivity implements View.OnClic
     }
 
     private void initView() {
-        listView=(ListView)findViewById(R.id.lv_approval);
-        iv_approval_back=(ImageView)findViewById(R.id.iv_approval_back);
+        listView = (ListView) findViewById(R.id.lv_approval);
+        iv_approval_back = (ImageView) findViewById(R.id.iv_approval_back);
+        iv_approval_back.setOnClickListener(this);
 //        ptrClassicFrameLayout = (PtrClassicFrameLayout) this.findViewById(R.id.test_list_view_frame);
-        swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.sryt_swipe_listview_approval);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sryt_swipe_listview_approval);
         swipeRefreshLayout.setColorSchemeColors(Color.GRAY);
 
+    }
+
+    public void refreshData()
+    {
+        initData();
     }
 
 
@@ -97,20 +103,17 @@ public class ApprovalReceiveActivity extends BaseActivity implements View.OnClic
             }
         });
 
-        mSwipeRefreshHelper.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void loadMore() {
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        initProjects("loadmore");
-//                        adapter.notifyDataSetChanged();
-//                        mSwipeRefreshHelper.loadMoreComplete(true);
-//                        Toast.makeText(view.getContext(), "加载成功", Toast.LENGTH_SHORT).show();
-                    }
-                }, 1000);
-            }
-        });
+//        mSwipeRefreshHelper.setOnLoadMoreListener(new OnLoadMoreListener() {
+//            @Override
+//            public void loadMore() {
+//                mHandler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        initProjects("loadmore");
+//                    }
+//                }, 1000);
+//            }
+//        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -126,8 +129,8 @@ public class ApprovalReceiveActivity extends BaseActivity implements View.OnClic
     private void initProjects(final String str){
         RequestParams params = new RequestParams(Constants.GetUnCheckApplyResList);
 
-        params.addQueryStringParameter("pageIndex",(page+1)+"");
-        params.addQueryStringParameter("pageSize","10");
+//        params.addQueryStringParameter("pageIndex",(page+1)+"");
+//        params.addQueryStringParameter("pageSize","10");
         UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(this.getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
@@ -195,7 +198,7 @@ public class ApprovalReceiveActivity extends BaseActivity implements View.OnClic
         approvalReceiveThingsAdapter.notifyDataSetChanged();
         if(str.equals("refresh")) {
             mSwipeRefreshHelper.refreshComplete();
-            mSwipeRefreshHelper.setLoadMoreEnable(true);
+            mSwipeRefreshHelper.setLoadMoreEnable(false);
         }
         else
         {

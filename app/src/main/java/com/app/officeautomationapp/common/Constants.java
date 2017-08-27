@@ -80,4 +80,8 @@ public class Constants {
 
     public final static String GetUnCheckApplyResList=address+"/api/V1/Res/GetUnCheckApplyResList";//获取待我审批的物品列表
 
+
+    public final static String HandleResApply =address+"/api/V1/Res/HandleResApply";//领用审批post id：记录主键编号，resultCode：审批结果，2-同意，9-不同意。msg：审批意见。
+
+
 }

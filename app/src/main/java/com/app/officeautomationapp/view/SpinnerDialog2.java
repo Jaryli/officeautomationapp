@@ -32,7 +32,7 @@ public class SpinnerDialog2 {
     int pos;
     int style;
 
-    int status=1;//同意
+    int status=2;//同意
 
 
 
@@ -60,16 +60,16 @@ public class SpinnerDialog2 {
         radio_yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                status=1;
+                status=2;
             }
         });
         radio_no= (RadioButton) v.findViewById(R.id.radio_no);
         radio_no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                status=0;
+                status=9;
             }
-        });
+        });//不同意
 
         adb.setView(v);
         alertDialog = adb.create();

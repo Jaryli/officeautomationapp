@@ -3,19 +3,34 @@ package com.app.officeautomationapp.adapter;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.activity.ApprovalReceiveActivity;
+import com.app.officeautomationapp.activity.ReceiveThingsActivity;
+import com.app.officeautomationapp.bean.ReceiveThingsCheckApplyPostBean;
 import com.app.officeautomationapp.bean.ReceiveThingsCheckBean;
+import com.app.officeautomationapp.common.Constants;
+import com.app.officeautomationapp.dto.UserDto;
+import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.app.officeautomationapp.view.MoreTextView;
 import com.app.officeautomationapp.view.SpinnerDialog2;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,11 +48,11 @@ public class ApprovalReceiveThingsAdapter extends ArrayAdapter<ReceiveThingsChec
 
     private Context mContext;
 
-    private Activity activity;
+    private ApprovalReceiveActivity activity;
 
+    ProgressDialog progressDialog;
 
-
-    public ApprovalReceiveThingsAdapter(Context context, int resource, List<ReceiveThingsCheckBean> objects,Activity activity) {
+    public ApprovalReceiveThingsAdapter(Context context, int resource, List<ReceiveThingsCheckBean> objects,ApprovalReceiveActivity activity) {
         super(context, resource,objects);
         this.mContext=context;
         this.activity=activity;
@@ -54,7 +69,7 @@ public class ApprovalReceiveThingsAdapter extends ArrayAdapter<ReceiveThingsChec
 
             viewHolder=new ViewHolder();
             viewHolder.hTitle=(MoreTextView) view.findViewById(R.id.approval_title);
-            viewHolder.hBtn=(TextView) view.findViewById(R.id.approval_pic);
+            viewHolder.hBtn=(LinearLayout) view.findViewById(R.id.approval_pic);
             viewHolder.hBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -63,7 +78,12 @@ public class ApprovalReceiveThingsAdapter extends ArrayAdapter<ReceiveThingsChec
                     spinnerDialog.bindOnSpinerListener(new SpinnerDialog2.OnDoneClick() {
                         @Override
                         public void onClick(int status, String reason) {
-                            Toast.makeText(mContext, reason+status+receiveThingsCheckBean.getProjectName(), Toast.LENGTH_LONG).show();
+//                            Toast.makeText(mContext, reason+status+receiveThingsCheckBean.getProjectName(), Toast.LENGTH_LONG).show();
+                            ReceiveThingsCheckApplyPostBean receiveThingsCheckApplyPostBean=new ReceiveThingsCheckApplyPostBean();
+                            receiveThingsCheckApplyPostBean.setId(receiveThingsCheckBean.getId());
+                            receiveThingsCheckApplyPostBean.setMsg(reason);
+                            receiveThingsCheckApplyPostBean.setResultCode(status);
+                            post(receiveThingsCheckApplyPostBean);
                         }
                     });
                     spinnerDialog.showSpinerDialog();
@@ -79,6 +99,54 @@ public class ApprovalReceiveThingsAdapter extends ArrayAdapter<ReceiveThingsChec
         }
         viewHolder.hTitle.setText(getText(receiveThingsCheckBean));
         return view;
+    }
+
+
+    private void post(ReceiveThingsCheckApplyPostBean receiveThingsCheckApplyPostBean)
+    {
+        Gson gson = new Gson();
+        String result = gson.toJson(receiveThingsCheckApplyPostBean);
+        progressDialog= new ProgressDialog(getContext());
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage("提交中...");
+        progressDialog.setCanceledOnTouchOutside(false);//对话框不消失
+        progressDialog.show();
+        RequestParams params = new RequestParams(Constants.HandleResApply);
+        Log.i("", "post-url:" + Constants.HandleResApply);
+        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getContext().getApplicationContext(),"user");
+        params.addHeader("access_token", userDto.getAccessToken());
+        params.setBodyContent("'"+result+"'");
+        Log.i("JAVA", "body:" + params.getBodyContent());
+        Callback.Cancelable cancelable = x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.i("JAVA", "onSuccess result:" + result);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int re=jsonObject.getInt("result");
+                    Toast.makeText(getContext(),jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                    activity.refreshData();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            //请求异常后的回调方法
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Log.i("JAVA", "onError:" + ex);
+                Toast.makeText(getContext(),"网络或服务器异常！",Toast.LENGTH_SHORT).show();
+            }
+            //主动调用取消请求的回调方法
+            @Override
+            public void onCancelled(CancelledException cex) {
+                Log.i("JAVA", "onCancelled:" + cex);
+            }
+            @Override
+            public void onFinished() {
+                Log.i("JAVA", "onFinished:" + "");
+                progressDialog.hide();
+            }
+        });
     }
 
     private String getText(ReceiveThingsCheckBean receiveThingsCheckBean)
@@ -174,6 +242,6 @@ public class ApprovalReceiveThingsAdapter extends ArrayAdapter<ReceiveThingsChec
     //实例缓存
     class ViewHolder{
         MoreTextView hTitle;
-        TextView hBtn;
+        LinearLayout hBtn;
     }
 }
