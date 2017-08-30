@@ -44,6 +44,8 @@
         <activity android:name="com.app.officeautomationapp.activity.MyTaskDetailActivity" />
         <activity android:name="com.app.officeautomationapp.activity.MyTaskDoActivity" />
         <activity android:name="com.app.officeautomationapp.activity.ApprovalReceiveActivity" />
+        <activity android:name="com.app.officeautomationapp.activity.ApprovalDetailActivity" />
+
 
 
 

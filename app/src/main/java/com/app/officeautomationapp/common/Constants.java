@@ -83,5 +83,6 @@ public class Constants {
 
     public final static String HandleResApply =address+"/api/V1/Res/HandleResApply";//领用审批post id：记录主键编号，resultCode：审批结果，2-同意，9-不同意。msg：审批意见。
 
+    public final static String GetWorkView =address+"/api/V1/WorkFlow/GetWorkView";//根据步骤Id获取工作详情?hid={hid}
 
 }

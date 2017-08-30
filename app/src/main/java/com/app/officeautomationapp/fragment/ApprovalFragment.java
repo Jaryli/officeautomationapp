@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
+import com.app.officeautomationapp.activity.ApprovalDetailActivity;
 import com.app.officeautomationapp.activity.MessageDetailActivity;
 import com.app.officeautomationapp.adapter.ApprovalAdapter;
 import com.app.officeautomationapp.adapter.MessageAdapter;
@@ -152,10 +153,10 @@ public class ApprovalFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(view.getContext(),listApproval.get(i).getAFF_Name().toString(),Toast.LENGTH_SHORT).show();
-//                Intent intent=new Intent(getActivity(), MessageDetailActivity.class);
-//                intent.putExtra("data",listApproval.get(i));
-//                startActivity(intent);
+//                Toast.makeText(view.getContext(),listApproval.get(i).getAFF_Name().toString(),Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(getActivity(), ApprovalDetailActivity.class);
+                intent.putExtra("data",listApproval.get(i).getAFH_Id());
+                startActivity(intent);
             }
         });
     }

@@ -1,81 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-
-    <!--标题-->
-    <RelativeLayout
-        android:fitsSystemWindows="true"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/title_bar_height"
-        android:background="@color/titleColor"
-        android:id="@+id/top">
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/titleColor"
+    android:layout_height="60dp">
+    <LinearLayout
+        android:layout_width="20dp"
+        android:layout_height="60dp"
+        android:orientation="vertical"
+        android:id="@+id/picture1"
+        >
+        <View
+            android:layout_width="1dip"
+            android:layout_height="20dp"
+            android:id="@+id/approval_pic1"
+            android:layout_gravity="center"
+            android:background="@color/line"
+            />
 
         <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="10dp"
-            android:id="@+id/iv_approval_back"
-            android:background="@mipmap/icon_back"/>
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center"
+            android:background="@mipmap/approved_2x"
+            android:id="@+id/approval_pic2"/>
 
         <View
             android:layout_width="1dip"
-            android:layout_height="30dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginLeft="50dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:id="@+id/approval_pic3"
             android:background="@color/line"
-            android:layout_gravity="center_vertical|center_horizontal"
             />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="50dp"
-            android:text="待审批"
-            android:textSize="@dimen/title_text_size"
-            android:textColor="@color/black"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin"/>
-
-
-    </RelativeLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/top"
-        android:id="@+id/top_line"
-        android:background="@color/line">
-    </View>
+    </LinearLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/top_line"
-        android:orientation="vertical">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/picture1"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="10dp"
+        android:background="@mipmap/qipaopao">
 
-        <WebView
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/top_line2"
-            android:id="@+id/webView" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/picture">
+
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="5dp"
+                android:id="@+id/approval_pic"
+                android:background="@drawable/circle_textview_blue"
+                android:gravity="center"
+                android:textSize="10sp"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:text="我的的"/>
+        </RelativeLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/picture"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="我的消息"
+                android:textSize="13sp"
+                android:id="@+id/approval_title"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="10sp"
+                android:textColor="@color/blue"
+                android:text="有您的消息"
+                android:id="@+id/approval_type"/>
         </LinearLayout>
 
 
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_margin="10dp"
+                android:id="@+id/approval_time"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textSize="10dp"
+                android:textColor="@color/black"
+                android:text="15:12:30"/>
+
     </RelativeLayout>
 
-
-
-</RelativeLayout >
+</RelativeLayout>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <!--标题-->
+    <RelativeLayout
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/titleColor"
+        android:id="@+id/top">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/iv_approval_back"
+            android:background="@mipmap/icon_back"/>
+
+        <View
+            android:layout_width="1dip"
+            android:layout_height="30dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginLeft="50dp"
+            android:background="@color/line"
+            android:layout_gravity="center_vertical|center_horizontal"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="50dp"
+            android:text="待审批"
+            android:textSize="@dimen/title_text_size"
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin"/>
+
+
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/top"
+        android:id="@+id/top_line"
+        android:background="@color/line">
+    </View>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/titleColor"
+        android:layout_marginBottom="40dp"
+        android:id="@+id/scroll"
+        android:layout_below="@id/top_line">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/topInfo"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/picture">
+
+                    <TextView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_margin="10dp"
+                        android:id="@+id/approval_pic"
+                        android:background="@drawable/circle_textview_blue"
+                        android:gravity="center"
+                        android:textSize="12sp"
+                        android:layout_gravity="center"
+                        android:textColor="@color/white"
+                        android:text="审批"/>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/picture"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="我的消息"
+                        android:textSize="13sp"
+                        android:id="@+id/approval_title"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:textSize="10sp"
+                        android:textColor="@color/orange"
+                        android:text="有您的消息"
+                        android:id="@+id/approval_type"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/topInfo"
+                android:id="@+id/webViewInfo"
+                android:orientation="vertical">
+
+                <WebView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/webView" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_below="@id/webViewInfo">
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="#00000000"
+                    android:id="@+id/list_item"
+                    android:dividerHeight="0dip"></ListView>
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/back"
+        android:layout_alignParentBottom="true">
+        <com.app.officeautomationapp.view.MyGridView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/mygridview"
+            android:numColumns="3"
+            android:verticalSpacing="1dp"
+            android:horizontalSpacing="1dp"
+            android:stretchMode="columnWidth"
+            android:gravity="center">
+        </com.app.officeautomationapp.view.MyGridView>
+
+    </LinearLayout>
+</RelativeLayout >
