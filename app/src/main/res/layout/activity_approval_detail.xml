@@ -66,6 +66,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:id="@+id/topInfo"
                 android:orientation="horizontal">
 
@@ -108,7 +109,7 @@
                         android:layout_marginTop="5dp"
                         android:textSize="10sp"
                         android:textColor="@color/orange"
-                        android:text="有您的消息"
+                        android:text="待我审批"
                         android:id="@+id/approval_type"/>
                 </LinearLayout>
             </LinearLayout>
@@ -145,8 +146,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@drawable/back"
+        android:background="@color/white"
+        android:orientation="vertical"
         android:layout_alignParentBottom="true">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line">
+        </View>
         <com.app.officeautomationapp.view.MyGridView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

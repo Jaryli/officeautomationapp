@@ -3,6 +3,7 @@ package com.app.officeautomationapp.adapter;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,8 @@ public class ApprovalDetailAdapter extends ArrayAdapter<FlowHistorie> {
 //            layoutParams.height = 20;
 //            viewHolder.hPic1.setLayoutParams(layoutParams);
         }
+        viewHolder.hPic.setText("已审批");
+        viewHolder.hType.setText(flowHistorie.getAFHMessage());
         if(position+1==objectsList.size())
         {
             viewHolder.hPic2.setBackground(mContext.getResources().getDrawable(R.mipmap.wait_2x));
@@ -77,12 +80,14 @@ public class ApprovalDetailAdapter extends ArrayAdapter<FlowHistorie> {
             layoutParams.width = 0;
             layoutParams.height = 20;
             viewHolder.hPic3.setLayoutParams(layoutParams);
+            viewHolder.hPic.setText("待审批");
+            viewHolder.hType.setText("审批中");
+            viewHolder.hType.setTextColor(Color.parseColor("#ff7f00"));
         }
-        viewHolder.hPic.setText(flowHistorie.getUserTrueName());
         viewHolder.hTitle.setText(flowHistorie.getUserTrueName());
-        viewHolder.hType.setText("");
+
         viewHolder.hTime.setText(flowHistorie.getCreateTime());
-        //viewHolder.hTime.setText(IsToday(approvalBean.getCreateTime())?approvalBean.getCreateTime().split(" ")[1]:approvalBean.getCreateTime().split(" ")[0]);
+        //viewHolder.hTime.setText(IsToday(approvalBean.getCreateTime())?approvalBean.getCreateTime().split(" ")[1]:approvalBean.getCreateTime().split(" ")[0];
         return view;
     }
 

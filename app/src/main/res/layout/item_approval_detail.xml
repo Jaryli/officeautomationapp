@@ -11,7 +11,7 @@
         >
         <View
             android:layout_width="1dip"
-            android:layout_height="20dp"
+            android:layout_height="21dp"
             android:id="@+id/approval_pic1"
             android:layout_gravity="center"
             android:background="@color/line"

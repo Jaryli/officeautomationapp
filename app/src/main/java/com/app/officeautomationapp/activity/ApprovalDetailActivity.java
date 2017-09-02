@@ -7,12 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.adapter.ApprovalDetailAdapter;
+import com.app.officeautomationapp.adapter.ApprovalNextStepAdapter;
 import com.app.officeautomationapp.bean.ApprovalDetailBean;
 import com.app.officeautomationapp.bean.FlowHistorie;
 import com.app.officeautomationapp.bean.MessageBean;
@@ -43,12 +46,13 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     private TextView approval_pic;
     private TextView approval_title;
     private TextView approval_type;
+    private ImageView iv_approval_back;
     private WebView webView;
     private ListView list_item;
     private MyGridView mygridview;
     private ApprovalDetailAdapter adapter;
-    private ArrayList<NextStep> listNextSteps;
     private static List<FlowHistorie> listFlowHistories=new ArrayList<FlowHistorie>();
+    private static List<NextStep> listNextSteps=new ArrayList<NextStep>();
 
 
     @Override
@@ -67,6 +71,8 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
         webView=(WebView)findViewById(R.id.webView);
         list_item=(ListView)findViewById(R.id.list_item);
         mygridview=(MyGridView)findViewById(R.id.mygridview);
+        iv_approval_back=(ImageView)findViewById(R.id.iv_approval_back);
+        iv_approval_back.setOnClickListener(this);
     }
 
 
@@ -105,16 +111,30 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
                             approvalDetailBean=gson.fromJson(jsonObject.get("data").toString(), type);
 
                             listFlowHistories=approvalDetailBean.getFlowHistories();
+                            FlowHistorie flowHistorie=new FlowHistorie();
+                            flowHistorie.setUserTrueName("我");
+                            listFlowHistories.add(flowHistorie);
                             adapter = new ApprovalDetailAdapter(ApprovalDetailActivity.this,R.layout.item_approval_detail, listFlowHistories);
                             list_item.setAdapter(adapter);
                             setListViewHeightBasedOnChildren(list_item);
+                            approval_title.setText(approvalDetailBean.getWorkName());
 
                             WebSettings webSettings = webView.getSettings();
                             webSettings.setJavaScriptEnabled(true);
-//                            webSettings.setBuiltInZoomControls(true);
-//                            webSettings.setSupportZoom(true);
+                            webView.loadDataWithBaseURL(null,"<style>table { width: 100%%; border-top: 1px solid #eee; border-left: 1px solid #eee; }td { border-right: 1px solid #eee; border-bottom: 1px solid #eee; padding: 8px; }</style><table>"+approvalDetailBean.getFormView()+"</table>", "text/html",  "utf-8", null);
 
-                            webView.loadDataWithBaseURL(null,"<table>"+approvalDetailBean.getFormView()+"</table>", "text/html",  "utf-8", null);
+                            listNextSteps=approvalDetailBean.getNextSteps();
+                            ApprovalNextStepAdapter myGridAdapter1=new ApprovalNextStepAdapter(ApprovalDetailActivity.this,R.layout.item_approval_nextstep,listNextSteps);
+                            mygridview.setNumColumns(listNextSteps.size());
+                            //为GridView设置适配器
+                            mygridview.setAdapter(myGridAdapter1);
+                            mygridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    clickBtn(listNextSteps,position);
+                                }
+                            });
+
                         }
                     }
                 } catch (JSONException e) {
@@ -141,6 +161,9 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
 
     }
 
+    private void clickBtn(List<NextStep> list,int position) {
+            Toast.makeText(this,list.get(position).getAFS_Name().toString(),Toast.LENGTH_SHORT).show();
+    }
 
     public void setListViewHeightBasedOnChildren(ListView listView) {
         if (listFlowHistories == null) {
@@ -159,6 +182,12 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()) {
+            case R.id.iv_approval_back:
+                this.finish();
+                break;
+            default:
+                break;
+        }
     }
 }
