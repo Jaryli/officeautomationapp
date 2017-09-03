@@ -14,14 +14,23 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground">
+        android:background="?android:attr/selectableItemBackground"
+        >
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"/>
         <ImageView
             android:id="@+id/iv_avatar"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_margin="10dp"
             android:src="@mipmap/ic_avatar"
-            android:contentDescription="avatar"/>
+            android:contentDescription="avatar"
+            android:layout_margin="10dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/checkBox" />
+
 
         <TextView
             android:id="@+id/tv_name"
@@ -32,6 +41,7 @@
             android:textColor="#424242"
             android:textSize="16sp"
             android:layout_centerVertical="true" />
+
     </RelativeLayout>
 
     <View

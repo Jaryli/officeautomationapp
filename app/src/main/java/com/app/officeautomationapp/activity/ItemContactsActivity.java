@@ -1,11 +1,13 @@
 package com.app.officeautomationapp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
@@ -17,6 +19,7 @@ import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.CharacterParser;
 import com.app.officeautomationapp.util.PinyinComparator;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
+import com.app.officeautomationapp.view.SpinnerDialogContacts;
 import com.gjiazhe.wavesidebar.WaveSideBar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -49,28 +52,62 @@ public class ItemContactsActivity extends BaseActivity implements View.OnClickLi
     private PinyinComparator pinyinComparator;
 
     private ArrayList<SortModel> contacts = new ArrayList<SortModel>();
+    private ArrayList<SortModel> selectContacts = new ArrayList<SortModel>();
 
     private ImageView imageView;
+    private TextView done;
+
+    private boolean hasCheckBox;
+    private boolean hasDone;
+    private int code;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initData();
-
     }
 
     private void initView() {
+        hasCheckBox=getIntent().getBooleanExtra("hasCheckBox",false);
+        hasDone=getIntent().getBooleanExtra("hasDone",false);
+        code= getIntent().getIntExtra("code",0);
         setContentView(R.layout.activity_contacts);
         imageView=(ImageView)findViewById(R.id.iv_contacts_back);
         imageView.setOnClickListener(this);
+        done=(TextView)findViewById(R.id.done);
+        done.setOnClickListener(this);
+        if(!hasDone)
+        {
+            done.setVisibility(View.GONE);
+        }
         rvContacts = (RecyclerView) findViewById(R.id.rv_contacts);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
-        ContactsAdapter adapter=new ContactsAdapter(contacts, R.layout.item_contacts);
+        ContactsAdapter adapter=new ContactsAdapter(contacts, R.layout.item_contacts,hasCheckBox);
         rvContacts.setAdapter(adapter);
         adapter.setOnItemClickListener(new ContactsAdapter.onRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                Toast.makeText(ItemContactsActivity.this,contacts.get(position).getName(),Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ItemContactsActivity.this,contacts.get(position).getName(),Toast.LENGTH_SHORT).show();
+                if(!hasDone)//弹出
+                {
+                    SpinnerDialogContacts spinnerDialog=new SpinnerDialogContacts(ItemContactsActivity.this,R.style.DialogAnimations_SmileWindow,contacts.get(position).getName(),contacts.get(position).getPhone(),contacts.get(position).getS_phone(),contacts.get(position).getQq());
+                    spinnerDialog.showSpinerDialog();
+                }
+                else
+                {
+                    boolean isHas = false;
+                    for (int i = 0; i < selectContacts.size(); i++) {
+                        if (selectContacts.get(i).getId() == contacts.get(position).getId())//有过
+                        {
+                            selectContacts.remove(selectContacts.get(i));
+                            isHas = true;
+                            break;
+                        }
+                    }
+                    if (!isHas) {
+                        selectContacts.add(contacts.get(position));
+                    }
+                }
             }
         });
         sideBar = (WaveSideBar) findViewById(R.id.side_bar);
@@ -125,6 +162,9 @@ public class ItemContactsActivity extends BaseActivity implements View.OnClickLi
                                 SortModel sortModel=new SortModel();
                                 sortModel.setId(list.get(i).getUserId());
                                 sortModel.setName(list.get(i).getUserTrueName());
+                                sortModel.setPhone(list.get(i).getMobile());
+                                sortModel.setS_phone(list.get(i).getShortPhone());
+                                sortModel.setQq(list.get(i).getQQ());
                                 //汉字转换成拼音
                                 String pinyin = characterParser.getSelling(list.get(i).getUserTrueName());
                                 String sortString = pinyin.substring(0, 1).toUpperCase();
@@ -171,6 +211,16 @@ public class ItemContactsActivity extends BaseActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_contacts_back:
+                this.finish();
+                break;
+            case R.id.done:
+//                Toast.makeText(this,selectContacts.size()+"",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent();
+                intent.putExtra("data", selectContacts);
+                /*
+                 * 调用setResult方法表示我将Intent对象返回给之前的那个Activity，这样就可以在onActivityResult方法中得到Intent对象，
+                 */
+                setResult(code, intent);
                 this.finish();
                 break;
             default:

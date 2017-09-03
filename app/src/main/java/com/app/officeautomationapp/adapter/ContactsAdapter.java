@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,11 +21,14 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     private List<SortModel> contacts;
     private int layoutId;
 
+    private boolean hasCheckBox;
+
     private onRecyclerViewItemClickListener itemClickListener = null;
 
-    public ContactsAdapter(List<SortModel> contacts, int layoutId) {
+    public ContactsAdapter(List<SortModel> contacts, int layoutId,boolean hasCheckBox) {
         this.contacts = contacts;
         this.layoutId = layoutId;
+        this.hasCheckBox=hasCheckBox;
     }
 
     @Override
@@ -42,6 +46,13 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                 if (itemClickListener != null) {
                     int layoutPosition = holder.getLayoutPosition();
                     itemClickListener.onItemClick(holder.itemView, layoutPosition);
+                    if(hasCheckBox) {
+                        if (holder.checkBox.isChecked()) {
+                            holder.checkBox.setChecked(false);
+                        } else {
+                            holder.checkBox.setChecked(true);
+                        }
+                    }
                 }
             }
         });
@@ -54,6 +65,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
             holder.tvIndex.setVisibility(View.GONE);
         }
         holder.tvName.setText(contact.getName());
+        if(!hasCheckBox) {
+            holder.checkBox.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -65,12 +79,14 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
         public TextView tvIndex;
         public ImageView ivAvatar;
         public TextView tvName;
+        public CheckBox checkBox;
 
         public ContactsViewHolder(View itemView) {
             super(itemView);
             tvIndex = (TextView) itemView.findViewById(R.id.tv_index);
             ivAvatar = (ImageView) itemView.findViewById(R.id.iv_avatar);
             tvName = (TextView) itemView.findViewById(R.id.tv_name);
+            checkBox= (CheckBox) itemView.findViewById(R.id.checkBox);
         }
     }
 

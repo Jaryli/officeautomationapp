@@ -20,10 +20,12 @@ import com.app.officeautomationapp.bean.ApprovalDetailBean;
 import com.app.officeautomationapp.bean.FlowHistorie;
 import com.app.officeautomationapp.bean.MessageBean;
 import com.app.officeautomationapp.bean.NextStep;
+import com.app.officeautomationapp.bean.SortModel;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.app.officeautomationapp.view.MyGridView;
+import com.app.officeautomationapp.view.SpinnerDialog3;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -54,6 +56,8 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     private static List<FlowHistorie> listFlowHistories=new ArrayList<FlowHistorie>();
     private static List<NextStep> listNextSteps=new ArrayList<NextStep>();
 
+    SpinnerDialog3 spinnerDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,20 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
         setContentView(R.layout.activity_approval_detail);
         initView();
         initData();
+    }
+
+    /**
+     * 所有的Activity对象的返回值都是由这个方法来接收
+     * requestCode:    表示的是启动一个Activity时传过去的requestCode值
+     * resultCode：表示的是启动后的Activity回传值时的resultCode值
+     * data：表示的是启动后的Activity回传过来的Intent对象
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ArrayList<SortModel> result_value = (ArrayList<SortModel>)data.getSerializableExtra("data");
+        spinnerDialog.refreshData(requestCode,result_value);
+
     }
 
     private void initView()
@@ -162,7 +180,33 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     }
 
     private void clickBtn(List<NextStep> list,int position) {
-            Toast.makeText(this,list.get(position).getAFS_Name().toString(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,list.get(position).getAFS_Name().toString(),Toast.LENGTH_SHORT).show();
+        ArrayList<SortModel> defaultList1=null;
+        if(list.get(position).getDefaultUserId1()!=null||!list.get(position).getDefaultUserId1().equals("0"))
+        {
+            defaultList1=new ArrayList<SortModel>();
+            SortModel sortModel=new SortModel();
+            sortModel.setId(Integer.parseInt(list.get(position).getDefaultUserId1()));
+            sortModel.setName(list.get(position).getDefaultRealName1());
+            defaultList1.add(sortModel);
+        }
+        ArrayList<SortModel> defaultList2=null;
+        if(list.get(position).getDefaultUserId2()!=null&&!list.get(position).getDefaultUserId2().equals("0")&&!list.get(position).getDefaultUserId2().equals(""))
+        {
+            defaultList2=new ArrayList<SortModel>();
+            SortModel sortModel=new SortModel();
+            sortModel.setId(Integer.parseInt(list.get(position).getDefaultUserId2()));
+            sortModel.setName(list.get(position).getDefaultRealName2());
+            defaultList2.add(sortModel);
+        }
+        spinnerDialog=new SpinnerDialog3(this,R.style.DialogAnimations_SmileWindow,defaultList1,defaultList2);
+        spinnerDialog.bindOnSpinerListener(new SpinnerDialog3.OnDoneClick() {
+            @Override
+            public void onClick(int status, String reason) {
+
+            }
+        });
+        spinnerDialog.showSpinerDialog();
     }
 
     public void setListViewHeightBasedOnChildren(ListView listView) {

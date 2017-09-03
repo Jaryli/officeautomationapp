@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rl_name"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="王尼玛"
+            android:scaleType="centerCrop"
+            android:src="@color/color_f6" />
+
+
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/ll_del"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_toEndOf="@+id/rl_name">
+
+        <ImageView
+            android:id="@+id/iv_del"
+            android:layout_marginLeft="13dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:src="@mipmap/delet_zhaopian_1x" />
+    </LinearLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/iv_personplus"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:background="@mipmap/icon_personplus"/>
+</RelativeLayout>
