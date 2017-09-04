@@ -34,7 +34,7 @@ public class SpinnerDialog3 {
     int pos;
     int style;
 
-    int status=2;//同意
+    int status=0;//同意
     final ArrayList<SortModel> list1=new ArrayList<>();//返回获取,需要在最后面丢上一个空的
     final ArrayList<SortModel> list2=new ArrayList<>();//返回获取,需要在最后面丢上一个空的
 
@@ -69,14 +69,14 @@ public class SpinnerDialog3 {
         radio_yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                status=2;
+                status=0;
             }
         });
         radio_no= (RadioButton) v.findViewById(R.id.radio_no);
         radio_no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                status=9;
+                status=1;
             }
         });//不同意
         mygridview= (MyGridView) v.findViewById(R.id.mygridview);
@@ -113,7 +113,7 @@ public class SpinnerDialog3 {
             @Override
             public void onClick(View v) {
                 //提交
-                onDoneClick.onClick(status,et_reason.getText().toString());
+                onDoneClick.onClick(status,et_reason.getText().toString(),list1,list2);
                 alertDialog.dismiss();
             }
         });
@@ -179,7 +179,7 @@ public class SpinnerDialog3 {
 
     public interface OnDoneClick
     {
-        void onClick(int status, String reason);
+        void onClick(int status, String reason,ArrayList<SortModel> list1,ArrayList<SortModel> list2);
     }
 
 }

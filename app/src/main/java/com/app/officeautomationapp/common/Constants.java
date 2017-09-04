@@ -85,4 +85,9 @@ public class Constants {
 
     public final static String GetWorkView =address+"/api/V1/WorkFlow/GetWorkView";//根据步骤Id获取工作详情?hid={hid}
 
+
+    public final static String GetWorkInfo =address+"/api/V1/WorkFlow/GetWorkInfo";//根据工作Id获取工作详情?workId={workId}
+
+    public final static String HandleWork =address+"/api/V1/WorkFlow/HandleWork";//工作办理
+
 }

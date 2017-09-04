@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 public class ApprovalBean  implements Serializable {
     private Integer AFH_Id;
+    private Integer AFW_Id;
     private String AFW_Name;
     private String AFF_Name;
     private String AFW_FlowGuid;
@@ -78,5 +79,13 @@ public class ApprovalBean  implements Serializable {
 
     public void setFlowShortName(String flowShortName) {
         FlowShortName = flowShortName;
+    }
+
+    public Integer getAFW_Id() {
+        return AFW_Id;
+    }
+
+    public void setAFW_Id(Integer AFW_Id) {
+        this.AFW_Id = AFW_Id;
     }
 }

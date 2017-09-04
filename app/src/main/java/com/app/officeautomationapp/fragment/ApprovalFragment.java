@@ -90,6 +90,19 @@ public class ApprovalFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode>0) {
+            swipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeRefreshHelper.autoRefresh();
+                }
+            });
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -155,8 +168,9 @@ public class ApprovalFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 //                Toast.makeText(view.getContext(),listApproval.get(i).getAFF_Name().toString(),Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(getActivity(), ApprovalDetailActivity.class);
-                intent.putExtra("data",listApproval.get(i).getAFH_Id());
-                startActivity(intent);
+                intent.putExtra("hid",listApproval.get(i).getAFH_Id());
+                intent.putExtra("wid",listApproval.get(i).getAFW_Id());
+                startActivityForResult(intent,1);
             }
         });
     }
