@@ -2,7 +2,6 @@ package com.app.officeautomationapp.view;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -10,7 +9,6 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.app.officeautomationapp.R;
-import com.app.officeautomationapp.activity.ItemContactsActivity;
 import com.app.officeautomationapp.adapter.PersonAdapter;
 import com.app.officeautomationapp.bean.SortModel;
 
@@ -84,7 +82,7 @@ public class SpinnerDialog3 {
         mygridview= (MyGridView) v.findViewById(R.id.mygridview);
         initData();
         //实例化一个适配器
-        myGridAdapter=new PersonAdapter(context,R.layout.item_person,list1,1,codeNum1);
+        myGridAdapter=new PersonAdapter(context,R.layout.item_person,R.layout.item_person2,list1,1,codeNum1);
         //为GridView设置适配器
         mygridview.setAdapter(myGridAdapter);
         mygridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -96,7 +94,7 @@ public class SpinnerDialog3 {
 
         mygridview2= (MyGridView) v.findViewById(R.id.mygridview2);
         //实例化一个适配器
-        myGridAdapter2=new PersonAdapter(context,R.layout.item_person,list2,10,codeNum2);
+        myGridAdapter2=new PersonAdapter(context,R.layout.item_person,R.layout.item_person2,list2,10,codeNum2);
         //为GridView设置适配器
         mygridview2.setAdapter(myGridAdapter2);
         mygridview2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -128,34 +126,6 @@ public class SpinnerDialog3 {
         alertDialog.show();
     }
 
-//    private void clickBtn1(ArrayList<SortModel> list,int position)
-//    {
-//        if(maxNum+1==list.size())
-//        {
-//            int resultCode=1;
-//            //召唤神龙
-//            Intent intent = new Intent();
-//            intent.putExtra("hasCheckBox", true);
-//            intent.putExtra("hasDone", true);
-//            intent.putExtra("code", resultCode);
-//            intent.setClass(context, ItemContactsActivity.class);
-//            /*
-//             * 如果希望启动另一个Activity，并且希望有返回值，则需要使用startActivityForResult这个方法，
-//             * 第一个参数是Intent对象，第二个参数是一个requestCode值，如果有多个按钮都要启动Activity，则requestCode标志着每个按钮所启动的Activity
-//             */
-//            context.startActivityForResult(intent, resultCode);
-//
-//        }
-//    }
-
-//    private void clickBtn2(ArrayList<SortModel> list,int position)
-//    {
-//        if(maxNum+1==list.size())
-//        {
-//            //召唤神龙
-//
-//        }
-//    }
 
     private final int codeNum1=1;
     private final int codeNum2=2;

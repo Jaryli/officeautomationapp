@@ -60,6 +60,7 @@ public class ItemContactsActivity extends BaseActivity implements View.OnClickLi
     private boolean hasCheckBox;
     private boolean hasDone;
     private int code;
+    private int maxNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,7 @@ public class ItemContactsActivity extends BaseActivity implements View.OnClickLi
     private void initView() {
         hasCheckBox=getIntent().getBooleanExtra("hasCheckBox",false);
         hasDone=getIntent().getBooleanExtra("hasDone",false);
+        maxNum=getIntent().getIntExtra("maxNum",999);
         code= getIntent().getIntExtra("code",0);
         setContentView(R.layout.activity_contacts);
         imageView=(ImageView)findViewById(R.id.iv_contacts_back);
@@ -82,12 +84,13 @@ public class ItemContactsActivity extends BaseActivity implements View.OnClickLi
         }
         rvContacts = (RecyclerView) findViewById(R.id.rv_contacts);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
-        ContactsAdapter adapter=new ContactsAdapter(contacts, R.layout.item_contacts,hasCheckBox);
+        ContactsAdapter adapter=new ContactsAdapter(contacts, R.layout.item_contacts,hasCheckBox,maxNum);
         rvContacts.setAdapter(adapter);
         adapter.setOnItemClickListener(new ContactsAdapter.onRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
 //                Toast.makeText(ItemContactsActivity.this,contacts.get(position).getName(),Toast.LENGTH_SHORT).show();
+
                 if(!hasDone)//弹出
                 {
                     SpinnerDialogContacts spinnerDialog=new SpinnerDialogContacts(ItemContactsActivity.this,R.style.DialogAnimations_SmileWindow,contacts.get(position).getName(),contacts.get(position).getPhone(),contacts.get(position).getS_phone(),contacts.get(position).getQq());
@@ -96,15 +99,32 @@ public class ItemContactsActivity extends BaseActivity implements View.OnClickLi
                 else
                 {
                     boolean isHas = false;
+                    SortModel sortModel=null;
                     for (int i = 0; i < selectContacts.size(); i++) {
                         if (selectContacts.get(i).getId() == contacts.get(position).getId())//有过
                         {
-                            selectContacts.remove(selectContacts.get(i));
+                            sortModel=selectContacts.get(i);
                             isHas = true;
                             break;
                         }
                     }
-                    if (!isHas) {
+                    if(!isHas)
+                    {
+                        if(maxNum<=selectContacts.size())
+                        {
+                            Toast.makeText(ItemContactsActivity.this,"最多选择"+maxNum+"个",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+
+                    if(isHas)
+                    {
+                        if(sortModel!=null)
+                        {
+                            selectContacts.remove(sortModel);
+                        }
+                    }
+                    else{
                         selectContacts.add(contacts.get(position));
                     }
                 }
@@ -165,6 +185,7 @@ public class ItemContactsActivity extends BaseActivity implements View.OnClickLi
                                 sortModel.setPhone(list.get(i).getMobile());
                                 sortModel.setS_phone(list.get(i).getShortPhone());
                                 sortModel.setQq(list.get(i).getQQ());
+                                sortModel.setChecked(false);
                                 //汉字转换成拼音
                                 String pinyin = characterParser.getSelling(list.get(i).getUserTrueName());
                                 String sortString = pinyin.substring(0, 1).toUpperCase();
@@ -209,13 +230,16 @@ public class ItemContactsActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
+        Intent intent = new Intent();
         switch (v.getId()) {
             case R.id.iv_contacts_back:
+                /*
+                 * 调用setResult方法表示我将Intent对象返回给之前的那个Activity，这样就可以在onActivityResult方法中得到Intent对象，
+                 */
+                setResult(0, intent);
                 this.finish();
                 break;
             case R.id.done:
-//                Toast.makeText(this,selectContacts.size()+"",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent();
                 intent.putExtra("data", selectContacts);
                 /*
                  * 调用setResult方法表示我将Intent对象返回给之前的那个Activity，这样就可以在onActivityResult方法中得到Intent对象，

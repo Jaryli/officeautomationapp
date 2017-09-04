@@ -13,6 +13,7 @@ public class SortModel implements Serializable{
     private String phone;
     private String s_phone;
     private String qq;
+    private boolean isChecked;
 
     public int getId() {
         return id;
@@ -57,5 +58,13 @@ public class SortModel implements Serializable{
 
     public void setQq(String qq) {
         this.qq = qq;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 }

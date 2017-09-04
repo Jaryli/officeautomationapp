@@ -76,8 +76,12 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ArrayList<SortModel> result_value = (ArrayList<SortModel>)data.getSerializableExtra("data");
-        spinnerDialog.refreshData(requestCode,result_value);
+        if(resultCode>0)
+        {
+            ArrayList<SortModel> result_value = (ArrayList<SortModel>)data.getSerializableExtra("data");
+            spinnerDialog.refreshData(requestCode,result_value);
+        }
+
 
     }
 
@@ -180,9 +184,9 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     }
 
     private void clickBtn(List<NextStep> list,int position) {
-        Toast.makeText(this,list.get(position).getAFS_Name().toString(),Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this,list.get(position).getAFS_Name().toString(),Toast.LENGTH_SHORT).show();
         ArrayList<SortModel> defaultList1=null;
-        if(list.get(position).getDefaultUserId1()!=null||!list.get(position).getDefaultUserId1().equals("0"))
+        if(list.get(position).getDefaultUserId1()!=null&&!list.get(position).getDefaultUserId1().equals("0")&&!list.get(position).getDefaultUserId1().equals(""))
         {
             defaultList1=new ArrayList<SortModel>();
             SortModel sortModel=new SortModel();

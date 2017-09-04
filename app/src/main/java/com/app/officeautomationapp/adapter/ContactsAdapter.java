@@ -22,13 +22,17 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     private int layoutId;
 
     private boolean hasCheckBox;
+    private int selectNum=0;
+    private int maxNum=0;
+
 
     private onRecyclerViewItemClickListener itemClickListener = null;
 
-    public ContactsAdapter(List<SortModel> contacts, int layoutId,boolean hasCheckBox) {
+    public ContactsAdapter(List<SortModel> contacts, int layoutId,boolean hasCheckBox,int maxNum) {
         this.contacts = contacts;
         this.layoutId = layoutId;
         this.hasCheckBox=hasCheckBox;
+        this.maxNum=maxNum;
     }
 
     @Override
@@ -40,24 +44,31 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 
     @Override
     public void onBindViewHolder(final ContactsViewHolder holder, int position) {
+        final SortModel contact = contacts.get(position);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (itemClickListener != null) {
                     int layoutPosition = holder.getLayoutPosition();
                     itemClickListener.onItemClick(holder.itemView, layoutPosition);
-                    if(hasCheckBox) {
-                        if (holder.checkBox.isChecked()) {
-                            holder.checkBox.setChecked(false);
-                        } else {
-                            holder.checkBox.setChecked(true);
+                    if(maxNum>selectNum||contact.isChecked()){
+                        if(hasCheckBox) {
+                            if (contact.isChecked()) {
+                                contact.setChecked(false);
+                                selectNum--;
+                            } else {
+                                contact.setChecked(true);
+                                selectNum++;
+                            }
                         }
+                        notifyDataSetChanged();
                     }
+
                 }
             }
         });
 
-        SortModel contact = contacts.get(position);
+
         if (position == 0 || !contacts.get(position-1).getSortLetters().equals(contact.getSortLetters())) {
             holder.tvIndex.setVisibility(View.VISIBLE);
             holder.tvIndex.setText(contact.getSortLetters());
@@ -65,6 +76,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
             holder.tvIndex.setVisibility(View.GONE);
         }
         holder.tvName.setText(contact.getName());
+        holder.checkBox.setChecked(contact.isChecked());
         if(!hasCheckBox) {
             holder.checkBox.setVisibility(View.GONE);
         }
