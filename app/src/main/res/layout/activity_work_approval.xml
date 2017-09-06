@@ -94,7 +94,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="10dp"
                         android:id="@+id/btn_no_approval"
-                        android:src="@mipmap/icon_approval01"/>
+                        android:src="@mipmap/icon_myapproval_2x"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -133,7 +133,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_centerHorizontal="true"
                         android:id="@+id/btn_work_start_my"
-                        android:src="@mipmap/icon_approval02"/>
+                        android:src="@mipmap/icon_faqi_2x"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -171,7 +171,7 @@
                         android:layout_height="41dp"
                         android:layout_marginTop="10dp"
                         android:layout_centerHorizontal="true"
-                        android:src="@mipmap/icon_approval03" />
+                        android:src="@mipmap/icon_chaosong_2x" />
 
                     <TextView
                         android:id="@+id/bar_tv"

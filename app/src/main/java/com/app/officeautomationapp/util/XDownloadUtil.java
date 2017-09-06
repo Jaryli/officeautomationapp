@@ -15,6 +15,10 @@ public abstract class XDownloadUtil {
     public static final String IMAGE_SDCARD_MADER = Environment
             .getExternalStorageDirectory()
             + "/oa/img/";
+
+    public static final String FILE_SDCARD_MADER = Environment
+            .getExternalStorageDirectory()
+            + "/oa/file/";
     /**
      * 下载文件
      */

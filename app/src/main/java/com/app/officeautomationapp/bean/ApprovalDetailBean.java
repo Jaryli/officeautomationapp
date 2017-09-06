@@ -15,6 +15,7 @@ public class ApprovalDetailBean implements Serializable{
     private List<FlowHistorie> FlowHistories;
     private List<NextStep> NextSteps;
     private String[] ImageUrlList;
+    private List<Attach> Attachs;
 
     public Integer getWorkId() {
         return WorkId;
@@ -70,5 +71,13 @@ public class ApprovalDetailBean implements Serializable{
 
     public void setImageUrlList(String[] imageUrlList) {
         ImageUrlList = imageUrlList;
+    }
+
+    public List<Attach> getAttachs() {
+        return Attachs;
+    }
+
+    public void setAttachs(List<Attach> attachs) {
+        Attachs = attachs;
     }
 }

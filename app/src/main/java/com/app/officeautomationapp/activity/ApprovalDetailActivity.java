@@ -20,6 +20,7 @@ import com.app.officeautomationapp.adapter.ApprovalDetailAdapter;
 import com.app.officeautomationapp.adapter.ApprovalNextStepAdapter;
 import com.app.officeautomationapp.bean.ApprovalDetailBean;
 import com.app.officeautomationapp.bean.ApprovalPostBean;
+import com.app.officeautomationapp.bean.Attach;
 import com.app.officeautomationapp.bean.FlowHistorie;
 import com.app.officeautomationapp.bean.MessageBean;
 import com.app.officeautomationapp.bean.NextStep;
@@ -38,6 +39,7 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,9 +58,13 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     private ListView list_item;
     private MyGridView mygridview;
     private LinearLayout llgridview;
+    private LinearLayout llfujian;
+    private LinearLayout llpicture;
     private ApprovalDetailAdapter adapter;
     private static List<FlowHistorie> listFlowHistories=new ArrayList<FlowHistorie>();
     private static List<NextStep> listNextSteps=new ArrayList<NextStep>();
+    List<Attach> attachs;//附件
+    String[] imageUrlLists;//图片
 
     SpinnerDialog3 spinnerDialog;
     ApprovalDetailBean approvalDetailBean=new ApprovalDetailBean();
@@ -101,6 +107,10 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
         llgridview=(LinearLayout)findViewById(R.id.llgridview);
         iv_approval_back=(ImageView)findViewById(R.id.iv_approval_back);
         iv_approval_back.setOnClickListener(this);
+        llfujian=(LinearLayout)findViewById(R.id.llfujian);
+        llfujian.setOnClickListener(this);
+        llpicture=(LinearLayout)findViewById(R.id.llpicture);
+        llpicture.setOnClickListener(this);
     }
 
 
@@ -120,6 +130,7 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
         {
             params= new RequestParams(Constants.GetWorkInfo);
             params.addQueryStringParameter("workId",Wid+"");
+            approval_type.setVisibility(View.GONE);
 
         }
 
@@ -150,12 +161,26 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
 
                             Type type=new TypeToken<ApprovalDetailBean>(){}.getType();
                             approvalDetailBean=gson.fromJson(jsonObject.get("data").toString(), type);
+                            attachs=approvalDetailBean.getAttachs();//附件
+                            imageUrlLists=approvalDetailBean.getImageUrlList();//图片
+                            if(attachs.size()>0)
+                            {
+                                llfujian.setVisibility(View.VISIBLE);
+                            }
+                            if(imageUrlLists.length>0)
+                            {
+                                llpicture.setVisibility(View.VISIBLE);
+                            }
 
                             listFlowHistories=approvalDetailBean.getFlowHistories();
-                            FlowHistorie flowHistorie=new FlowHistorie();
-                            flowHistorie.setUserTrueName("我");
-                            listFlowHistories.add(flowHistorie);
-                            adapter = new ApprovalDetailAdapter(ApprovalDetailActivity.this,R.layout.item_approval_detail, listFlowHistories);
+                            boolean hasMe=false;
+                            if(Hid>0) {
+                                FlowHistorie flowHistorie=new FlowHistorie();
+                                flowHistorie.setUserTrueName("我");
+                                listFlowHistories.add(flowHistorie);
+                                hasMe=true;
+                            }
+                            adapter = new ApprovalDetailAdapter(ApprovalDetailActivity.this,R.layout.item_approval_detail, listFlowHistories,hasMe);
                             list_item.setAdapter(adapter);
                             setListViewHeightBasedOnChildren(list_item);
                             approval_title.setText(approvalDetailBean.getWorkName());
@@ -257,9 +282,20 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void onClick(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.iv_approval_back:
                 this.finish();
+                break;
+            case R.id.llfujian:
+                intent=new Intent(this,AttachActivity.class);
+                intent.putExtra("attachs", (Serializable)attachs);
+                startActivity(intent);
+                break;
+            case R.id.llpicture:
+                intent=new Intent(this,ViewPagerActivity.class);
+                intent.putExtra("imageUrlLists",imageUrlLists);
+                startActivity(intent);
                 break;
             default:
                 break;

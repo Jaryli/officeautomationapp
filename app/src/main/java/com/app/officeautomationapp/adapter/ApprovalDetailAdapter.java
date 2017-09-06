@@ -34,12 +34,15 @@ public class ApprovalDetailAdapter extends ArrayAdapter<FlowHistorie> {
 
     private  List<FlowHistorie> objectsList;
 
+    private boolean hasMe;
 
-    public ApprovalDetailAdapter(Context context, int resource, List<FlowHistorie> objects) {
+
+    public ApprovalDetailAdapter(Context context, int resource, List<FlowHistorie> objects,boolean hasMe) {
         super(context, resource,objects);
         this.mContext=context;
         resourceId=resource;
         objectsList=objects;
+        this.hasMe=hasMe;
     }
 
     @Override
@@ -73,16 +76,18 @@ public class ApprovalDetailAdapter extends ArrayAdapter<FlowHistorie> {
         }
         viewHolder.hPic.setText("已审批");
         viewHolder.hType.setText(flowHistorie.getAFHMessage());
-        if(position+1==objectsList.size())
-        {
-            viewHolder.hPic2.setBackground(mContext.getResources().getDrawable(R.mipmap.wait_2x));
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) viewHolder.hPic3.getLayoutParams();
-            layoutParams.width = 0;
-            layoutParams.height = 20;
-            viewHolder.hPic3.setLayoutParams(layoutParams);
-            viewHolder.hPic.setText("待审批");
-            viewHolder.hType.setText("审批中");
-            viewHolder.hType.setTextColor(Color.parseColor("#ff7f00"));
+        if(hasMe){
+            if(position+1==objectsList.size())
+            {
+                viewHolder.hPic2.setBackground(mContext.getResources().getDrawable(R.mipmap.wait_2x));
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) viewHolder.hPic3.getLayoutParams();
+                layoutParams.width = 0;
+                layoutParams.height = 20;
+                viewHolder.hPic3.setLayoutParams(layoutParams);
+                viewHolder.hPic.setText("待审批");
+                viewHolder.hType.setText("审批中");
+                viewHolder.hType.setTextColor(Color.parseColor("#ff7f00"));
+            }
         }
         viewHolder.hTitle.setText(flowHistorie.getUserTrueName());
 

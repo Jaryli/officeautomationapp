@@ -45,6 +45,10 @@
         <activity android:name="com.app.officeautomationapp.activity.MyTaskDoActivity" />
         <activity android:name="com.app.officeautomationapp.activity.ApprovalReceiveActivity" />
         <activity android:name="com.app.officeautomationapp.activity.ApprovalDetailActivity" />
+        <activity android:name="com.app.officeautomationapp.activity.ViewPagerActivity" />
+        <activity android:name="com.app.officeautomationapp.activity.AttachActivity" />
+
+
 
 
 
