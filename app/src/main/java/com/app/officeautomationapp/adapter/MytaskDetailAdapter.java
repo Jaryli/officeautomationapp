@@ -11,10 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.officeautomationapp.R;
-import com.app.officeautomationapp.bean.MessageBean;
 import com.app.officeautomationapp.bean.MyTaskBean;
+import com.app.officeautomationapp.bean.MyTaskDoDetailsBean;
 
 import org.xutils.image.ImageOptions;
+import org.xutils.x;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,38 +27,57 @@ import java.util.Locale;
 /**
  * Created by yu on 2017/2/27.
  */
-public class MytaskAdapter extends ArrayAdapter<MyTaskBean> {
+public class MytaskDetailAdapter extends ArrayAdapter<MyTaskDoDetailsBean> {
 
     private int resourceId;
 
+    private ImageOptions options;
 
-    public MytaskAdapter(Context context, int resource, List<MyTaskBean> objects) {
+    public MytaskDetailAdapter(Context context, int resource, List<MyTaskDoDetailsBean> objects) {
         super(context, resource,objects);
         resourceId=resource;
+
+        options= new ImageOptions.Builder().setFadeIn(true) //淡入效果
+                //ImageOptions.Builder()的一些其他属性：
+                .setCircular(false) //设置图片显示为圆形
+                //.setSquare(true) //设置图片显示为正方形
+                //setCrop(true).setSize(200,200) //设置大小
+                //.setAnimation(animation) //设置动画
+//        .setFailureDrawable(gifDrawable) //设置加载失败的动画
+                .setFailureDrawableId(R.mipmap.default_image_circle) //以资源id设置加载失败的动画
+//        .setLoadingDrawable(gifDrawable) //设置加载中的动画
+                .setLoadingDrawableId(R.mipmap.default_image_circle) //以资源id设置加载中的动画
+                //.setIgnoreGif(false) //忽略Gif图片
+                //.setParamsBuilder(ParamsBuilder paramsBuilder) //在网络请求中添加一些参数
+                //.setRaduis(int raduis) //设置拐角弧度
+                //.setUseMemCache(true) //设置使用MemCache，默认true
+                .build();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        MyTaskBean myTaskBean=getItem(position);//获得实例
+        MyTaskDoDetailsBean myTaskDoDetailsBean=getItem(position);//获得实例
         View view;
         ViewHolder viewHolder;//实例缓存
         if(convertView==null) {//布局缓存
             view = LayoutInflater.from(getContext()).inflate(resourceId, null);
 
             viewHolder=new ViewHolder();
-            viewHolder.hPic=(TextView)view.findViewById(R.id.tv_task_p);
-            viewHolder.hTitle=(TextView) view.findViewById(R.id.tv_task_title);
-            viewHolder.hTime=(TextView) view.findViewById(R.id.tv_task_time);
+            viewHolder.hName=(TextView)view.findViewById(R.id.name);
+            viewHolder.hTime=(TextView) view.findViewById(R.id.time);
+            viewHolder.hContent=(TextView) view.findViewById(R.id.content);
+            viewHolder.hPic=(ImageView) view.findViewById(R.id.pic);
             view.setTag(viewHolder);
         }else
         {
             view=convertView;
-
             viewHolder=(ViewHolder)view.getTag();
         }
-        viewHolder.hPic.setText(myTaskBean.getTaskStatusStr());
-        viewHolder.hTitle.setText(myTaskBean.getTaskName().length()>9?myTaskBean.getTaskName().substring(0,9)+"...":myTaskBean.getTaskName());
-        viewHolder.hTime.setText(myTaskBean.getStartDate());
+        viewHolder.hName.setText(myTaskDoDetailsBean.getUserTrueName());
+        viewHolder.hTime.setText(myTaskDoDetailsBean.getCreateTime());
+//        viewHolder.hTime.setText(IsToday(myTaskDoDetailsBean.getCreateTime())?myTaskDoDetailsBean.getCreateTime().split(" ")[1]:myTaskDoDetailsBean.getCreateTime().split(" ")[0]);
+        viewHolder.hContent.setText(myTaskDoDetailsBean.getTodoContent());
+        x.image().bind(viewHolder.hPic, myTaskDoDetailsBean.getImageUrlStr(), options);
         return view;
     }
 
@@ -103,9 +123,9 @@ public class MytaskAdapter extends ArrayAdapter<MyTaskBean> {
 
     //实例缓存
     class ViewHolder{
-        TextView hPic;
-        TextView hTitle;
+        TextView hName;
         TextView hTime;
-        //ImageView detailImage;
+        TextView hContent;
+        ImageView hPic;
     }
 }

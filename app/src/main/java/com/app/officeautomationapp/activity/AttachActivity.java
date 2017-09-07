@@ -81,6 +81,7 @@ public class AttachActivity extends BaseActivity implements View.OnClickListener
 
     private void downloadFile(String path, final String fileName)
     {
+        Log.i("tag", "下载地址："+path);
         //设置请求参数
         RequestParams params = new RequestParams(path);
         params.setAutoResume(true);//设置是否在下载是自动断点续传

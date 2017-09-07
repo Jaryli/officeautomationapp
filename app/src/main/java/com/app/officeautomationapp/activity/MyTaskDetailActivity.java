@@ -9,15 +9,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
+import com.app.officeautomationapp.adapter.MytaskDetailAdapter;
 import com.app.officeautomationapp.bean.MessageBean;
 import com.app.officeautomationapp.bean.MyTaskBean;
+import com.app.officeautomationapp.bean.MyTaskDoDetailsBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
+import com.app.officeautomationapp.view.MyGridView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.common.Callback;
@@ -39,9 +43,12 @@ public class MyTaskDetailActivity extends BaseActivity implements  View.OnClickL
     private TextView taskEndTime;
     private TextView title;
     private TextView content;
+    private MyGridView myGridView;
+    private View line1;
 
     private TextView tv_item_add;
     private ImageView iv_mytask_back;
+    private MyTaskBean myTaskBean;
 
 
     @Override
@@ -64,11 +71,13 @@ public class MyTaskDetailActivity extends BaseActivity implements  View.OnClickL
         tv_item_add.setOnClickListener(this);
         iv_mytask_back=(ImageView)findViewById(R.id.iv_mytask_back);
         iv_mytask_back.setOnClickListener(this);
+        myGridView=(MyGridView)findViewById(R.id.mygridview);
+        line1=(View)findViewById(R.id.line1);
     }
     private void initData()
     {
         Intent intent=getIntent();
-        MyTaskBean myTaskBean = (MyTaskBean) intent.getSerializableExtra("data");
+        myTaskBean = (MyTaskBean) intent.getSerializableExtra("data");
         RequestParams params = new RequestParams(Constants.GetTaskDetail);
         params.addQueryStringParameter("taskId",myTaskBean.getId()+"");
         UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(this.getApplicationContext(),"user");
@@ -94,13 +103,33 @@ public class MyTaskDetailActivity extends BaseActivity implements  View.OnClickL
                         }
                         else
                         {
+
+
                             JSONObject jsonObject1 = new JSONObject(jsonObject.get("data").toString());
-                            JSONObject myJsonObject = new JSONObject(jsonObject1.get("Task").toString());
-                            taskUser.setText("发起人："+myJsonObject.getString("UserTrueName"));
-                            taskStartTime.setText("开始时间："+myJsonObject.getString("StartDate"));
-                            taskEndTime.setText("结束时间："+myJsonObject.getString("EndDate"));
-                            title.setText(myJsonObject.getString("TaskName"));
-                            content.setText(myJsonObject.getString("TaskContent"));
+                            Gson gson = new Gson();
+                            MyTaskBean myTaskBean=new MyTaskBean();
+                            Type type=new TypeToken<MyTaskBean>(){}.getType();
+                            myTaskBean=gson.fromJson(jsonObject1.get("Task").toString(), type);
+
+                            Gson gson2 = new Gson();
+                            List<MyTaskDoDetailsBean> list=new ArrayList<MyTaskDoDetailsBean>();
+                            Type type2=new TypeToken<List<MyTaskDoDetailsBean>>(){}.getType();
+                            list=gson2.fromJson(jsonObject1.get("Details").toString(), type2);
+
+                            if(list !=null&&list.size()>0)
+                            {
+                                MytaskDetailAdapter mytaskDetailAdapter=new MytaskDetailAdapter(MyTaskDetailActivity.this,R.layout.item_task_detail, list);
+                                myGridView.setAdapter(mytaskDetailAdapter);
+                            }
+                            else
+                            {
+                                line1.setVisibility(View.GONE);
+                            }
+                            taskUser.setText("发起人："+myTaskBean.getUserTrueName());
+                            taskStartTime.setText("开始时间："+myTaskBean.getStartDate());
+                            taskEndTime.setText("结束时间："+myTaskBean.getEndDate());
+                            title.setText(myTaskBean.getTaskName());
+                            content.setText(myTaskBean.getTaskContent());
                         }
                     }
                 } catch (JSONException e) {
@@ -136,6 +165,7 @@ public class MyTaskDetailActivity extends BaseActivity implements  View.OnClickL
                 break;
             case R.id.tv_item_add:
                 Intent intent=new Intent(this,MyTaskDoActivity.class);
+                intent.putExtra("taskId",myTaskBean.getId());
                 startActivity(intent);
                 break;
             default:

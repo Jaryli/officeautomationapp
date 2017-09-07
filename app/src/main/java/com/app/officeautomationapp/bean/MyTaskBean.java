@@ -1,6 +1,7 @@
 package com.app.officeautomationapp.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by yu on 2017/7/23.
@@ -98,4 +99,5 @@ public class MyTaskBean  implements Serializable {
     public void setTaskStatusStr(String taskStatusStr) {
         TaskStatusStr = taskStatusStr;
     }
+
 }

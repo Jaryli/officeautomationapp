@@ -23,6 +23,7 @@ import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.adapter.GridImageAdapter;
 import com.app.officeautomationapp.bean.AddArchMachinePostBean;
 import com.app.officeautomationapp.bean.MyProjectBean;
+import com.app.officeautomationapp.bean.MyTaskPostBean;
 import com.app.officeautomationapp.bean.ToUserBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
@@ -70,14 +71,15 @@ public class MyTaskDoActivity extends BaseActivity implements View.OnClickListen
     private int maxSelectNum = 1;// 图片最大可选数量
     private List<LocalMedia> selectMedia = new ArrayList<>();
 
-    private AddArchMachinePostBean addArchMachinePostBean=new AddArchMachinePostBean();
+    private MyTaskPostBean myTaskPostBean=new MyTaskPostBean();
     ProgressDialog progressDialog;
+    private int taskId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mytask_do);
-
+        taskId=getIntent().getIntExtra("taskId",0);
         ivTaskDoBack=(ImageView)findViewById(R.id.iv_taskdo_back);
         ivTaskDoBack.setOnClickListener(this);
         et_jobContent=(EditText)findViewById(R.id.et_jobContent);
@@ -117,19 +119,16 @@ public class MyTaskDoActivity extends BaseActivity implements View.OnClickListen
 
         if(selectMedia.size()>0)
         {
-//            JSONArray jsonArray=new JSONArray();
-            String[] str=new String[selectMedia.size()];
-            for (int i=0;i<selectMedia.size();i++)
-            {
-//                jsonArray.put(PicBase64Util.encode(selectMedia.get(i).getPath(),20));
-                str[i]=PicBase64Util.encode(selectMedia.get(i).getPath(),20);
-            }
-            addArchMachinePostBean.setImagedata(str);
-        }
+            String str="";
+            str=PicBase64Util.encode(selectMedia.get(0).getPath(),20);
+            myTaskPostBean.setImagedata(str);
 
+        }
+        myTaskPostBean.setTaskId(taskId);
+        myTaskPostBean.setTodoContent(et_jobContent.getText().toString());
 
         Gson gson = new Gson();
-        String result = gson.toJson(addArchMachinePostBean);
+        String result = gson.toJson(myTaskPostBean);
         progressDialog= new ProgressDialog(this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setMessage("提交中...");

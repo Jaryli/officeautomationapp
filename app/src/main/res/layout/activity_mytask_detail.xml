@@ -101,7 +101,25 @@
                 android:id="@+id/content"
                 android:text="开始时间：2017-07-10"
                 android:layout_margin="10dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:id="@+id/line1"
+                android:background="@color/line">
+            </View>
+            <com.app.officeautomationapp.view.MyGridView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/mygridview"
+                android:numColumns="2"
+                android:verticalSpacing="1dp"
+                android:horizontalSpacing="1dp"
+                android:stretchMode="columnWidth"
+                android:gravity="center">
+            </com.app.officeautomationapp.view.MyGridView>
         </LinearLayout>
+
     </ScrollView>
 
 
