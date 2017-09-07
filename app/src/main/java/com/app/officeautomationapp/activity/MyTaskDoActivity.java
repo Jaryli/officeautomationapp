@@ -3,6 +3,7 @@ package com.app.officeautomationapp.activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -148,6 +149,7 @@ public class MyTaskDoActivity extends BaseActivity implements View.OnClickListen
                     JSONObject jsonObject = new JSONObject(result);
                     int re=jsonObject.getInt("result");
                     Toast.makeText(MyTaskDoActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                    setResult(1, new Intent());
                     MyTaskDoActivity.this.finish();
                 } catch (JSONException e) {
                     e.printStackTrace();

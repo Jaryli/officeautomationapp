@@ -49,6 +49,7 @@ public class MyTaskDetailActivity extends BaseActivity implements  View.OnClickL
     private TextView tv_item_add;
     private ImageView iv_mytask_back;
     private MyTaskBean myTaskBean;
+    private MytaskDetailAdapter mytaskDetailAdapter;
 
 
     @Override
@@ -56,7 +57,24 @@ public class MyTaskDetailActivity extends BaseActivity implements  View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mytask_detail);
         initView();
+        Intent intent=getIntent();
+        myTaskBean = (MyTaskBean) intent.getSerializableExtra("data");
         initData();
+    }
+
+    /**
+     * 所有的Activity对象的返回值都是由这个方法来接收
+     * requestCode:    表示的是启动一个Activity时传过去的requestCode值
+     * resultCode：表示的是启动后的Activity回传值时的resultCode值
+     * data：表示的是启动后的Activity回传过来的Intent对象
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode>0)
+        {
+            initData();
+        }
     }
 
     private void initView()
@@ -76,8 +94,6 @@ public class MyTaskDetailActivity extends BaseActivity implements  View.OnClickL
     }
     private void initData()
     {
-        Intent intent=getIntent();
-        myTaskBean = (MyTaskBean) intent.getSerializableExtra("data");
         RequestParams params = new RequestParams(Constants.GetTaskDetail);
         params.addQueryStringParameter("taskId",myTaskBean.getId()+"");
         UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(this.getApplicationContext(),"user");
@@ -118,7 +134,7 @@ public class MyTaskDetailActivity extends BaseActivity implements  View.OnClickL
 
                             if(list !=null&&list.size()>0)
                             {
-                                MytaskDetailAdapter mytaskDetailAdapter=new MytaskDetailAdapter(MyTaskDetailActivity.this,R.layout.item_task_detail, list);
+                                mytaskDetailAdapter=new MytaskDetailAdapter(MyTaskDetailActivity.this,R.layout.item_task_detail, list);
                                 myGridView.setAdapter(mytaskDetailAdapter);
                             }
                             else
@@ -166,7 +182,7 @@ public class MyTaskDetailActivity extends BaseActivity implements  View.OnClickL
             case R.id.tv_item_add:
                 Intent intent=new Intent(this,MyTaskDoActivity.class);
                 intent.putExtra("taskId",myTaskBean.getId());
-                startActivity(intent);
+                startActivityForResult(intent,1);//1代表刷新
                 break;
             default:
                 break;
