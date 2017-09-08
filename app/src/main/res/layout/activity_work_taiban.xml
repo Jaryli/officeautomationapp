@@ -371,16 +371,18 @@
                             <!--android:layout_marginLeft="10dp"-->
                             <!--android:textSize="@dimen/title_text_size"-->
                             <!--android:textColor="@color/black"-->
-                            <!--android:text="台费"/>-->
+                            <!--android:text="合计"/>-->
 
                         <!--<EditText-->
                             <!--android:layout_width="0dp"-->
                             <!--android:layout_height="wrap_content"-->
                             <!--android:layout_weight="7"-->
+                            <!--android:id="@+id/et_total"-->
+                            <!--android:enabled="false"-->
                             <!--android:layout_marginLeft="10dp"-->
                             <!--android:textSize="15dp"-->
                             <!--android:background="@null"-->
-                            <!--android:hint="请输入金额"/>-->
+                            <!--android:hint="合计时间"/>-->
                     </LinearLayout>
 
                 </LinearLayout>
