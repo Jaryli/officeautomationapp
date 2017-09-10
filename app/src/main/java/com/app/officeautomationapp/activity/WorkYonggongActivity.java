@@ -112,7 +112,7 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
         layoutSelectDate=(LinearLayout)findViewById(R.id.ll_select_date);
         layoutSelectDate.setOnClickListener(this);
         tvSelectDate=(TextView)findViewById(R.id.tv_select_date);
-        tvWorkAddressGIS=(TextView)findViewById(R.id.tv_work_taiban_address);
+        tvWorkAddressGIS=(TextView)findViewById(R.id.tv_work_yonggong_address);
         tvWorkAddressGIS.setText("当前位置:未知");
         layoutWorkTaibanAddress=(LinearLayout)findViewById(R.id.ll_work_taiban_address);
         layoutWorkTaibanAddress.setOnClickListener(this);

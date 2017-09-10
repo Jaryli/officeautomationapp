@@ -207,33 +207,6 @@
                         android:layout_marginLeft="10dp"
                         android:textSize="@dimen/title_text_size"
                         android:textColor="@color/black"
-                        android:text="承包人"/>
-                    <EditText
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="7"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="15dp"
-                        android:id="@+id/et_cbren"
-                        android:background="@null"
-                        android:hint="请输入承包人"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@color/white"
-                    android:gravity="center|center_vertical"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="@dimen/title_text_size"
-                        android:textColor="@color/black"
                         android:text="作业时间"/>
                     <LinearLayout
                         android:layout_width="0dp"
@@ -255,82 +228,18 @@
                             android:layout_marginLeft="10dp"
                             android:id="@+id/tv_select_date"/>
                     </LinearLayout>
-
-
                 </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@color/white"
-                    android:gravity="center|center_vertical"
-                    android:orientation="horizontal">
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="40dp"
-                        android:background="@color/white"
-                        android:gravity="center|center_vertical"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="3"
-                            android:gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:textSize="@dimen/title_text_size"
-                            android:textColor="@color/black"
-                            android:text="上午"/>
 
-                        <EditText
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="7"
-                            android:layout_marginLeft="10dp"
-                            android:textSize="15dp"
-                            android:id="@+id/et_morning"
-                            android:background="@null"
-                            android:hint="请输入时间"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="40dp"
-                        android:background="@color/white"
-                        android:gravity="center|center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="3"
-                            android:gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:textSize="@dimen/title_text_size"
-                            android:textColor="@color/black"
-                            android:text="下午"/>
-
-                        <EditText
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="7"
-                            android:id="@+id/et_afternoon"
-                            android:layout_marginLeft="10dp"
-                            android:textSize="15dp"
-                            android:background="@null"
-                            android:hint="请输入时间"/>
-                    </LinearLayout>
-
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@color/white"
+                    android:layout_height="wrap_content"
                     android:gravity="center|center_vertical"
-                    android:orientation="horizontal">
+                    android:visibility="gone"
+                    android:id="@+id/ll_nextStep"
+                    android:orientation="vertical">
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:background="@color/white"
                         android:gravity="center|center_vertical"
@@ -343,7 +252,165 @@
                             android:layout_marginLeft="10dp"
                             android:textSize="@dimen/title_text_size"
                             android:textColor="@color/black"
-                            android:text="加班"/>
+                            android:text="承包人"/>
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="7"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="15dp"
+                            android:id="@+id/et_cbren"
+                            android:background="@null"
+                            android:hint="请输入承包人"/>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@color/white"
+                        android:gravity="center|center_vertical"
+                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"
+                            android:background="@color/white"
+                            android:gravity="center|center_vertical"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="3"
+                                android:gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:textSize="@dimen/title_text_size"
+                                android:textColor="@color/black"
+                                android:text="上午"/>
+
+                            <EditText
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="7"
+                                android:layout_marginLeft="10dp"
+                                android:textSize="15dp"
+                                android:id="@+id/et_morning"
+                                android:background="@null"
+                                android:hint="请输入时间"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"
+                            android:background="@color/white"
+                            android:gravity="center|center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="3"
+                                android:gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:textSize="@dimen/title_text_size"
+                                android:textColor="@color/black"
+                                android:text="下午"/>
+
+                            <EditText
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="7"
+                                android:id="@+id/et_afternoon"
+                                android:layout_marginLeft="10dp"
+                                android:textSize="15dp"
+                                android:background="@null"
+                                android:hint="请输入时间"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@color/white"
+                        android:gravity="center|center_vertical"
+                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"
+                            android:background="@color/white"
+                            android:gravity="center|center_vertical"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="3"
+                                android:gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:textSize="@dimen/title_text_size"
+                                android:textColor="@color/black"
+                                android:text="加班"/>
+
+                            <EditText
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="7"
+                                android:layout_marginLeft="10dp"
+                                android:textSize="15dp"
+                                android:id="@+id/et_overTime"
+                                android:background="@null"
+                                android:hint="请输入时间"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"
+                            android:background="@color/white"
+                            android:gravity="center|center_vertical"
+                            android:orientation="horizontal">
+
+                            <!--<TextView-->
+                                <!--android:layout_width="0dp"-->
+                                <!--android:layout_height="match_parent"-->
+                                <!--android:layout_weight="3"-->
+                                <!--android:gravity="center_vertical"-->
+                                <!--android:layout_marginLeft="10dp"-->
+                                <!--android:textSize="@dimen/title_text_size"-->
+                                <!--android:textColor="@color/black"-->
+                                <!--android:text="合计"/>-->
+
+                            <!--<EditText-->
+                                <!--android:layout_width="0dp"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_weight="7"-->
+                                <!--android:id="@+id/et_total"-->
+                                <!--android:enabled="false"-->
+                                <!--android:layout_marginLeft="10dp"-->
+                                <!--android:textSize="15dp"-->
+                                <!--android:background="@null"-->
+                                <!--android:hint="合计时间"/>-->
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@color/white"
+                        android:gravity="center|center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="@dimen/title_text_size"
+                            android:textColor="@color/black"
+                            android:text="单位价格"/>
 
                         <EditText
                             android:layout_width="0dp"
@@ -351,17 +418,69 @@
                             android:layout_weight="7"
                             android:layout_marginLeft="10dp"
                             android:textSize="15dp"
-                            android:id="@+id/et_overTime"
+                            android:id="@+id/et_perPrice"
                             android:background="@null"
-                            android:hint="请输入时间"/>
+                            android:hint="请输入金额（元）"/>
                     </LinearLayout>
+
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="40dp"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="10dp"
                         android:background="@color/white"
-                        android:gravity="center|center_vertical"
-                        android:orientation="horizontal">
+                        android:layout_height="120dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="@dimen/title_text_size"
+                            android:textColor="@color/black"
+                            android:text="用工内容"/>
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="7"
+                            android:layout_marginLeft="10dp"
+                            android:minLines="3"
+                            android:gravity="top"
+                            android:id="@+id/et_jobContent"
+                            android:textSize="15dp"
+                            android:background="@null"
+                            android:hint="请输入用工内容"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/white"
+                        android:layout_height="120dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="@dimen/title_text_size"
+                            android:textColor="@color/black"
+                            android:text="工作量"/>
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="7"
+                            android:layout_marginLeft="10dp"
+                            android:minLines="3"
+                            android:gravity="top"
+                            android:id="@+id/et_jobQuantity"
+                            android:textSize="15dp"
+                            android:background="@null"
+                            android:hint="请输入工作量"/>
+                    </LinearLayout>
+
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="40dp"-->
+                        <!--android:background="@color/white"-->
+                        <!--android:gravity="center|center_vertical"-->
+                        <!--android:orientation="horizontal">-->
 
                         <!--<TextView-->
                             <!--android:layout_width="0dp"-->
@@ -371,183 +490,73 @@
                             <!--android:layout_marginLeft="10dp"-->
                             <!--android:textSize="@dimen/title_text_size"-->
                             <!--android:textColor="@color/black"-->
-                            <!--android:text="合计"/>-->
+                            <!--android:text="工作量"/>-->
 
                         <!--<EditText-->
                             <!--android:layout_width="0dp"-->
                             <!--android:layout_height="wrap_content"-->
                             <!--android:layout_weight="7"-->
-                            <!--android:id="@+id/et_total"-->
-                            <!--android:enabled="false"-->
                             <!--android:layout_marginLeft="10dp"-->
                             <!--android:textSize="15dp"-->
                             <!--android:background="@null"-->
-                            <!--android:hint="合计时间"/>-->
+                            <!--android:hint="请输入工作量"/>-->
+                    <!--</LinearLayout>-->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@color/white"
+                        android:gravity="center|center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="@dimen/title_text_size"
+                            android:textColor="@color/black"
+                            android:text="机械编码"/>
+
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="7"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="15dp"
+                            android:id="@+id/et_machineCode"
+                            android:background="@null"
+                            android:hint="请输入机械编码"/>
                     </LinearLayout>
 
-                </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@color/white"
+                        android:gravity="center|center_vertical"
+                        android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@color/white"
-                    android:gravity="center|center_vertical"
-                    android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="@dimen/title_text_size"
+                            android:textColor="@color/black"
+                            android:text="经办人意见"/>
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="@dimen/title_text_size"
-                        android:textColor="@color/black"
-                        android:text="单位价格"/>
-
-                    <EditText
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="7"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="15dp"
-                        android:id="@+id/et_perPrice"
-                        android:background="@null"
-                        android:hint="请输入金额（元）"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/white"
-                    android:layout_height="120dp">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="@dimen/title_text_size"
-                        android:textColor="@color/black"
-                        android:text="用工内容"/>
-                    <EditText
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="7"
-                        android:layout_marginLeft="10dp"
-                        android:minLines="3"
-                        android:gravity="top"
-                        android:id="@+id/et_jobContent"
-                        android:textSize="15dp"
-                        android:background="@null"
-                        android:hint="请输入用工内容"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/white"
-                    android:layout_height="120dp">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="@dimen/title_text_size"
-                        android:textColor="@color/black"
-                        android:text="工作量"/>
-                    <EditText
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="7"
-                        android:layout_marginLeft="10dp"
-                        android:minLines="3"
-                        android:gravity="top"
-                        android:id="@+id/et_jobQuantity"
-                        android:textSize="15dp"
-                        android:background="@null"
-                        android:hint="请输入工作量"/>
-                </LinearLayout>
-
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="40dp"-->
-                    <!--android:background="@color/white"-->
-                    <!--android:gravity="center|center_vertical"-->
-                    <!--android:orientation="horizontal">-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:layout_weight="3"-->
-                        <!--android:gravity="center_vertical"-->
-                        <!--android:layout_marginLeft="10dp"-->
-                        <!--android:textSize="@dimen/title_text_size"-->
-                        <!--android:textColor="@color/black"-->
-                        <!--android:text="工作量"/>-->
-
-                    <!--<EditText-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_weight="7"-->
-                        <!--android:layout_marginLeft="10dp"-->
-                        <!--android:textSize="15dp"-->
-                        <!--android:background="@null"-->
-                        <!--android:hint="请输入工作量"/>-->
-                <!--</LinearLayout>-->
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@color/white"
-                    android:gravity="center|center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="@dimen/title_text_size"
-                        android:textColor="@color/black"
-                        android:text="机械编码"/>
-
-                    <EditText
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="7"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="15dp"
-                        android:id="@+id/et_machineCode"
-                        android:background="@null"
-                        android:hint="请输入机械编码"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@color/white"
-                    android:gravity="center|center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="@dimen/title_text_size"
-                        android:textColor="@color/black"
-                        android:text="经办人意见"/>
-
-                    <EditText
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="7"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="15dp"
-                        android:id="@+id/et_managerAdver"
-                        android:background="@null"
-                        android:hint="请输入意见"/>
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="7"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="15dp"
+                            android:id="@+id/et_managerAdver"
+                            android:background="@null"
+                            android:hint="请输入意见"/>
+                    </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>
@@ -592,6 +601,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/ll_nextStep2"
+                android:visibility="gone"
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:orientation="vertical">
@@ -643,8 +654,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:id="@+id/tv_work_taiban_address"
-                    android:textColor="#339EEA"
-                    android:text="00000"/>
+                    android:textColor="#339EEA"/>
             </LinearLayout>
 
 
@@ -664,20 +674,51 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/white"
+        android:visibility="gone"
+        android:id="@+id/ll_post"
         android:gravity="center"
         android:layout_alignParentBottom="true">
-
-
         <Button
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:gravity="center"
             android:id="@+id/btn_post"
-            android:background="@color/buttonblue"
+            android:background="@drawable/circle_semi_button_blue"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:textColor="@color/white"
             android:text="提交"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:id="@+id/ll_pve"
+        android:gravity="center"
+        android:layout_alignParentBottom="true">
+        <Button
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:id="@+id/btn_just_post"
+        android:background="@drawable/circle_semi_button_blue"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/white"
+        android:text="暂存"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:id="@+id/btn_nextStep"
+            android:background="@drawable/circle_semi_button_blue"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/white"
+            android:text="下一步"/>
     </LinearLayout>
 
 

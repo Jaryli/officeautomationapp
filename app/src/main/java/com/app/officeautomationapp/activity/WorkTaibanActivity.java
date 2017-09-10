@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.icu.util.TimeZone;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,6 +35,7 @@ import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.FullyGridLayoutManager;
 import com.app.officeautomationapp.util.PicBase64Util;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
+import com.app.officeautomationapp.util.StringUtils;
 import com.app.officeautomationapp.view.OnSpinerItemClick;
 import com.app.officeautomationapp.view.SpinnerDialog;
 import com.google.gson.Gson;
@@ -84,10 +87,16 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
     private EditText et_jobQuantity;
     private EditText et_machineCode;
     private EditText et_managerAdver;
-    private TextView tv_work_taiban_address;
     private ImageView iv_to_user;
     private TextView tv_to_user;
     private Button btn_post;
+    private Button btn_just_post;
+    private Button btn_nextStep;
+
+    private LinearLayout ll_nextStep;
+    private LinearLayout ll_nextStep2;
+    private LinearLayout ll_pve;
+    private LinearLayout ll_post;
 
 
     private RecyclerView recyclerView;
@@ -114,15 +123,21 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_taiban);
 
+        ll_nextStep=(LinearLayout)findViewById(R.id.ll_nextStep);
+        ll_nextStep2=(LinearLayout)findViewById(R.id.ll_nextStep2);
+
         ivWorkBack=(ImageView)findViewById(R.id.iv_taiban_back);
         ivWorkBack.setOnClickListener(this);
-        layoutSelectDate=(LinearLayout)findViewById(R.id.ll_select_date);
-        layoutSelectDate.setOnClickListener(this);
+//        layoutSelectDate=(LinearLayout)findViewById(R.id.ll_select_date);//目前不给点
+//        layoutSelectDate.setOnClickListener(this);
         tvSelectDate=(TextView)findViewById(R.id.tv_select_date);
-        tvWorkTaibanAddress=(TextView)findViewById(R.id.tv_work_taiban_address);
-        tvWorkTaibanAddress.setText("当前位置:未知");
+        setDate();
         layoutWorkTaibanAddress=(LinearLayout)findViewById(R.id.ll_work_taiban_address);
-        layoutWorkTaibanAddress.setOnClickListener(this);
+//        layoutWorkTaibanAddress.setOnClickListener(this);
+        tvWorkTaibanAddress=(TextView)layoutWorkTaibanAddress.findViewById(R.id.tv_work_taiban_address);
+//        tvWorkTaibanAddress.setText("当前位置:中国");
+        tvWorkTaibanAddress.setSaveEnabled(false);
+
 
         llProjectIdSelect=(LinearLayout)findViewById(R.id.ll_project_id_select);
         llProjectIdSelect.setOnClickListener(this);
@@ -140,12 +155,20 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
         et_jobQuantity=(EditText)findViewById(R.id.et_jobQuantity);
         et_machineCode=(EditText)findViewById(R.id.et_machineCode);
         et_managerAdver=(EditText)findViewById(R.id.et_managerAdver);
-        tv_work_taiban_address=(TextView)findViewById(R.id.tv_work_taiban_address);
         iv_to_user= (ImageView) findViewById(R.id.iv_to_user);
         iv_to_user.setOnClickListener(this);
         tv_to_user=(TextView)findViewById(R.id.tv_to_user);
         btn_post=(Button)findViewById(R.id.btn_post);
         btn_post.setOnClickListener(this);
+        btn_just_post=(Button)findViewById(R.id.btn_just_post);
+        btn_just_post.setOnClickListener(this);
+        btn_nextStep=(Button)findViewById(R.id.btn_nextStep);
+        btn_nextStep.setOnClickListener(this);
+        ll_pve=(LinearLayout)findViewById(R.id.ll_pve);
+        ll_post=(LinearLayout)findViewById(R.id.ll_post);
+
+
+
 
         mContext = this;
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
@@ -187,6 +210,17 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
         addArchMachinePostBean.setBussinessType("绿化");
     }
 
+    private Handler mHandler = new Handler(){
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    tvWorkTaibanAddress.setText("当前位置:"+addres);
+                    break;
+            }
+        };
+    };
+
+
 
     private void post()
     {
@@ -203,16 +237,16 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
             addArchMachinePostBean.setImagedata(str);
         }
         addArchMachinePostBean.setFlowGuid(Constants.FlowGuidArchMachine);
-        addArchMachinePostBean.setMorning(Double.parseDouble(etMorning.getText().toString()));
-        addArchMachinePostBean.setOverTime(Double.parseDouble(etOverTime.getText().toString()));
-        addArchMachinePostBean.setAfternoon(Double.parseDouble(etAfternoon.getText().toString()));
-        addArchMachinePostBean.setCbren(etCbren.getText().toString());
-        addArchMachinePostBean.setPerPrice(Double.parseDouble(et_perPrice.getText().toString()));
-        addArchMachinePostBean.setJobContent(et_jobContent.getText().toString());
-        addArchMachinePostBean.setRemark(et_jobQuantity.getText().toString());
-        addArchMachinePostBean.setMachineCode(et_machineCode.getText().toString());
-        addArchMachinePostBean.setManagerAdver(et_managerAdver.getText().toString());
-        addArchMachinePostBean.setGis(tv_work_taiban_address.getText().toString());
+        addArchMachinePostBean.setMorning(StringUtils.parseDouble(StringUtils.isEmpty(etMorning.getText())));
+        addArchMachinePostBean.setOverTime(StringUtils.parseDouble(StringUtils.isEmpty(etOverTime.getText())));
+        addArchMachinePostBean.setAfternoon(StringUtils.parseDouble(StringUtils.isEmpty(etAfternoon.getText())));
+        addArchMachinePostBean.setCbren(StringUtils.isEmpty(etCbren.getText()));
+        addArchMachinePostBean.setPerPrice(StringUtils.parseDouble(StringUtils.isEmpty(et_perPrice.getText())));
+        addArchMachinePostBean.setJobContent(StringUtils.isEmpty(et_jobContent.getText()));
+        addArchMachinePostBean.setRemark(StringUtils.isEmpty(et_jobQuantity.getText()));
+        addArchMachinePostBean.setMachineCode(StringUtils.isEmpty(et_machineCode.getText()));
+        addArchMachinePostBean.setManagerAdver(StringUtils.isEmpty(et_managerAdver.getText()));
+        addArchMachinePostBean.setGis(StringUtils.isEmpty(addres));
 
         Gson gson = new Gson();
         String result = gson.toJson(addArchMachinePostBean);
@@ -268,9 +302,9 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
             case R.id.ll_select_date:
                 getDate(v);
                 break;
-            case R.id.ll_work_taiban_address:
-                mLocationClient.start();
-                break;
+//            case R.id.ll_work_taiban_address:
+//                mLocationClient.start();
+//                break;
             case R.id.ll_project_id_select:
                 getProjectId();
                 break;
@@ -286,6 +320,19 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
             case R.id.btn_post:
                 post();
                 break;
+            case R.id.btn_just_post:
+                post();
+                break;
+            case R.id.btn_nextStep:
+                ll_nextStep.clearAnimation();
+                ll_nextStep2.clearAnimation();
+                ll_post.clearAnimation();
+                ll_nextStep.setVisibility(View.VISIBLE);
+                ll_nextStep2.setVisibility(View.VISIBLE);
+                ll_post.setVisibility(View.VISIBLE);
+                ll_pve.setVisibility(View.GONE);
+                break;
+
             default:
                 break;
         }
@@ -462,6 +509,16 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
         spinnerDialog.showSpinerDialog();
     }
 
+    public void setDate()
+    {
+        Time t=new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料
+        t.setToNow(); // 取得系统时间。
+        int year1 = t.year;
+        int month1 = t.month;
+        int date1 = t.monthDay;
+        tvSelectDate.setText(year1 + "-" + month1 + "-" + date1);//定死当前时间
+        addArchMachinePostBean.setJobDate(year1 + "-" + month1 + "-" + date1);
+    }
 
 
     // 点击事件,日期
@@ -567,10 +624,10 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
 
                     // 先初始化参数配置，在启动相册
                     PictureConfig.init(config);
-                    PictureConfig.getPictureConfig().openPhoto(mContext, resultCallback);
+//                    PictureConfig.getPictureConfig().openPhoto(mContext, resultCallback);
 
                     // 只拍照
-                    //PictureConfig.getPictureConfig().startOpenCamera(mContext, resultCallback);
+                    PictureConfig.getPictureConfig().startOpenCamera(mContext, resultCallback);
                     break;
                 case 1:
                     // 删除图片
@@ -676,7 +733,7 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
                 sb.append("\naddr : ");
                 sb.append(location.getAddrStr());    //获取地址信息
                 addres=location.getAddrStr();//获取当前位置
-                tvWorkTaibanAddress.setText("当前位置:"+addres);
+//                tvWorkTaibanAddress.setText("当前位置:"+addres);
                 sb.append("\ndescribe : ");
                 sb.append("gps定位成功");
 
@@ -686,7 +743,7 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
                 sb.append("\naddr : ");
                 sb.append(location.getAddrStr());    //获取地址信息
                 addres=location.getAddrStr();//获取当前位置
-                tvWorkTaibanAddress.setText("当前位置:"+addres);
+//                tvWorkTaibanAddress.setText("当前位置:"+addres);
 
                 sb.append("\noperationers : ");
                 sb.append(location.getOperators());    //获取运营商信息
@@ -700,7 +757,7 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
                 sb.append("\ndescribe : ");
                 sb.append("离线定位成功，离线定位结果也是有效的");
                 addres=location.getAddrStr();//获取当前位置
-                tvWorkTaibanAddress.setText("当前位置:"+addres);
+//                tvWorkTaibanAddress.setText("当前位置:"+addres);
 
             } else if (location.getLocType() == BDLocation.TypeServerError) {
 
@@ -732,6 +789,9 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
                 }
             }
 
+            Message message = new Message();
+            message.what = 1;
+            mHandler.sendMessage(message);
             Log.i("BaiduLocationApiDem", sb.toString());
         }
 

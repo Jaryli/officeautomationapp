@@ -562,7 +562,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:id="@+id/tv_work_taiban_address"
+                    android:id="@+id/tv_work_yonggong_address"
                     android:textColor="#339EEA"
                     android:text="00000"/>
             </LinearLayout>
