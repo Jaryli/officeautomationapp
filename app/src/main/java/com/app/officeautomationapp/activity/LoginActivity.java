@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.common.Constants;
+import com.app.officeautomationapp.common.InitCommon;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.google.gson.Gson;
@@ -99,6 +100,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
                         Intent intent=new Intent(LoginActivity.this,MainActivity.class);
                         startActivity(intent);
+                        InitCommon.initUserInfo(getApplicationContext());//初始化用户信息
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

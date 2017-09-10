@@ -90,7 +90,7 @@
                     android:layout_marginLeft="8dp"
                     android:textSize="11dp"
                     android:gravity="center_vertical"
-                    android:text="工程信息"
+                    android:text="部门信息"
                     android:id="@+id/textView2" />
 
                 <LinearLayout
@@ -107,27 +107,48 @@
                         android:layout_marginLeft="10dp"
                         android:textSize="@dimen/title_text_size"
                         android:textColor="@color/black"
-                        android:text="工程选择"/>
-                    <LinearLayout  android:layout_width="0dp"
-                        android:id="@+id/ll_project_id_select"
+                        android:text="申请部门"/>
+                    <EditText
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="7"
                         android:layout_marginLeft="10dp"
-                        android:weightSum="1">
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:background="@mipmap/icon_search_normal"
-                             />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/tv_project_name"
-                            android:layout_gravity="center"
-                            android:textColor="#339EEA"
-                            android:text="点我选择"/>
-                    </LinearLayout>
+                        android:textSize="15dp"
+                        android:id="@+id/et_department"
+                        android:background="@null"
+                        android:textColor="@color/black"
+                        android:enabled="false"
+                        />
+
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:gravity="center|center_vertical"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:textSize="@dimen/title_text_size"
+                        android:textColor="@color/black"
+                        android:text="项目名称"/>
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:layout_marginLeft="10dp"
+                        android:textSize="15dp"
+                        android:id="@+id/et_projectName"
+                        android:background="@null"
+                        android:hint="请输入申请项目名称"/>
+
+                </LinearLayout>
+
 
 
 
@@ -177,6 +198,47 @@
                         android:background="@null"
                         android:hint="请输入公章名称"/>
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:visibility="gone"
+                    android:background="@color/white"
+                    android:gravity="center|center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="3"
+                        android:gravity="center_vertical"
+                        android:text="申请时间"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/title_text_size" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_select_date"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="7"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@mipmap/icon_date" />
+
+                        <TextView
+                            android:id="@+id/tv_select_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="10dp" />
+                    </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -251,7 +313,7 @@
                         android:layout_marginLeft="10dp"
                         android:textSize="@dimen/title_text_size"
                         android:textColor="@color/black"
-                        android:text="名称摘要"/>
+                        android:text="文件说明"/>
                     <EditText
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -262,7 +324,7 @@
                         android:id="@+id/et_fileRemark"
                         android:textSize="15dp"
                         android:background="@null"
-                        android:hint="请输入申请文件名称摘要"/>
+                        android:hint="请输入申请文件名称说明"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -345,21 +407,20 @@
         </LinearLayout>
     </ScrollView>
 
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/white"
+        android:id="@+id/ll_post"
         android:gravity="center"
         android:layout_alignParentBottom="true">
-
-
         <Button
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:gravity="center"
             android:id="@+id/btn_post"
-            android:background="@color/buttonblue"
+            android:background="@drawable/circle_semi_button_blue"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:textColor="@color/white"

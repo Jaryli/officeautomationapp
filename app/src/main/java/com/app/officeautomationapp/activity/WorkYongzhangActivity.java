@@ -6,6 +6,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +28,7 @@ import com.app.officeautomationapp.bean.AddArchJobPostBean;
 import com.app.officeautomationapp.bean.AddArchSignPostBean;
 import com.app.officeautomationapp.bean.MyProjectBean;
 import com.app.officeautomationapp.bean.ToUserBean;
+import com.app.officeautomationapp.bean.UserInfoBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.FullyGridLayoutManager;
@@ -61,12 +64,16 @@ public class WorkYongzhangActivity extends BaseActivity implements View.OnClickL
 
     private ImageView ivWorkBack;
 
-    private LinearLayout llProjectIdSelect;
-    private TextView tvProjectName;
+//    private LinearLayout llProjectIdSelect;
+//    private TextView tvProjectName;
     private EditText et_signName;
     private EditText et_fileName;
     private EditText et_signNum;
     private EditText et_fileRemark;
+    private EditText et_department;
+    private EditText et_projectName;
+    private LinearLayout ll_select_date;
+    private TextView tv_select_date;
 
     private ImageView iv_to_user;
     private TextView tv_to_user;
@@ -91,10 +98,6 @@ public class WorkYongzhangActivity extends BaseActivity implements View.OnClickL
         ivWorkBack=(ImageView)findViewById(R.id.iv_taiban_back);
         ivWorkBack.setOnClickListener(this);
 
-
-        llProjectIdSelect=(LinearLayout)findViewById(R.id.ll_project_id_select);
-        llProjectIdSelect.setOnClickListener(this);
-        tvProjectName=(TextView)findViewById(R.id.tv_project_name);
         et_signName=(EditText)findViewById(R.id.et_signName);
         et_fileName=(EditText)findViewById(R.id.et_fileName);
         et_signNum=(EditText)findViewById(R.id.et_signNum);
@@ -104,6 +107,13 @@ public class WorkYongzhangActivity extends BaseActivity implements View.OnClickL
         tv_to_user=(TextView)findViewById(R.id.tv_to_user);
         btn_post=(Button)findViewById(R.id.btn_post);
         btn_post.setOnClickListener(this);
+        et_department=(EditText)findViewById(R.id.et_department);
+        UserInfoBean userInfoBean= (UserInfoBean) SharedPreferencesUtile.readObject(getApplicationContext(),"userInfo");
+        et_department.setText(userInfoBean.getDeptName());
+        et_projectName=(EditText)findViewById(R.id.et_projectName);
+        ll_select_date=(LinearLayout) findViewById(R.id.ll_select_date);
+        ll_select_date.setOnClickListener(this);
+        tv_select_date=(TextView)findViewById(R.id.tv_select_date);
 
         mContext = this;
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
@@ -120,8 +130,6 @@ public class WorkYongzhangActivity extends BaseActivity implements View.OnClickL
             }
         });
 
-
-        initPostData();//初始化postdata
     }
 
     @Override
@@ -133,15 +141,33 @@ public class WorkYongzhangActivity extends BaseActivity implements View.OnClickL
 
     }
 
-    private void initPostData()
-    {
 
+    private boolean initValidate()
+    {
+        if("".equals(et_signName.getText().toString()))
+        {
+            Toast.makeText(this,"请填写公章名称!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if("".equals(et_projectName.getText().toString()))
+        {
+            Toast.makeText(this,"请填写项目名称!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(selectMedia.size()<1)
+        {
+            Toast.makeText(this,"请添加图片!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
+
+
+
 
 
     private void post()
     {
-
         if(selectMedia.size()>0)
         {
             String[] str=new String[selectMedia.size()];
@@ -152,7 +178,6 @@ public class WorkYongzhangActivity extends BaseActivity implements View.OnClickL
             addArchSignPostBean.setImagedata(str);
         }
         addArchSignPostBean.setFlowGuid(Constants.FlowGuidaddArchSign);
-//        addArchMachinePostBean.setMorning(Double.parseDouble(etMorning.getText().toString()));
         addArchSignPostBean.setSignName(et_signName.getText().toString());
         addArchSignPostBean.setFileName(et_fileName.getText().toString());
         addArchSignPostBean.setFileRemark(et_fileRemark.getText().toString());
@@ -209,96 +234,59 @@ public class WorkYongzhangActivity extends BaseActivity implements View.OnClickL
             case R.id.iv_taiban_back:
                 this.finish();
                 break;
-            case R.id.ll_project_id_select:
-                getProjectId();
-                break;
             case R.id.iv_to_user:
                 getToUserId();
                 break;
+            case R.id.ll_select_date:
+                getDate(v);
+                break;
             case R.id.btn_post:
-                post();
+                if(initValidate())
+                {
+                    post();
+                }
                 break;
             default:
                 break;
         }
     }
 
+    // 点击事件,日期
+    public void getDate(View v) {
+        Time t=new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料
+        t.setToNow(); // 取得系统时间。
+        int year1 = t.year;
+        int month1 = t.month;
+        int date1 = t.monthDay;
 
-    private String[] items;
-    private int[] itemsId;
-    private void getProjectId()
-    {
-        progressDialog= new ProgressDialog(this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setMessage("加载中...");
-        progressDialog.setCanceledOnTouchOutside(false);//对话框不消失
-        progressDialog.show();
-        RequestParams params = new RequestParams(Constants.getMyProject);
-        Log.i("MessageDetailActivity", "post-url:" + Constants.getMyProject);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
-        params.addHeader("access_token", userDto.getAccessToken());
+        new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
-        Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
-            public void onSuccess(String result) {
-                Log.i("JAVA", "onSuccess result:" + result);
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-                    int re=jsonObject.getInt("result");
-                    if(re!=1)
-                    {
-                        Toast.makeText(WorkYongzhangActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    else
-                    {
-                        Gson gson = new Gson();
-                        List<MyProjectBean> list=new ArrayList<MyProjectBean>();
-                        Type type=new TypeToken<List<MyProjectBean>>(){}.getType();
-                        list=gson.fromJson(jsonObject.get("dataList").toString(), type);
-                        items=new String[list.size()];
-                        itemsId=new int[list.size()];
-                        for(int i=0;i<list.size();i++)
-                        {
-                            items[i]=list.get(i).getProjectName();
-                            itemsId[i]=list.get(i).getProjectId();
-                        }
-                        new AlertDialog.Builder(WorkYongzhangActivity.this)
-                                .setTitle("选择我的工程")
-                                .setItems(items, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        tvProjectName.setText(items[i]);
-//                                        addArchSignPostBean.setProjectId(itemsId[i]);
-                                        addArchSignPostBean.setWorkName(items[i]);
-//                                        addArchSignPostBean.setProjectName(items[i]);
-                                    }
-                                })
-                                .show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                chooseYear=year;
+                chooseMonth=monthOfYear+1;
+                chooseDay=dayOfMonth;
+                Message message = new Message();
+                message.what = 2;
+                mHandler.sendMessage(message);
             }
-            //请求异常后的回调方法
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                Log.i("JAVA", "onError:" + ex);
-                Toast.makeText(WorkYongzhangActivity.this,"网络或服务器异常！",Toast.LENGTH_SHORT).show();
-            }
-            //主动调用取消请求的回调方法
-            @Override
-            public void onCancelled(CancelledException cex) {
-                Log.i("JAVA", "onCancelled:" + cex);
-            }
-            @Override
-            public void onFinished() {
-                Log.i("JAVA", "onFinished:" + "");
-                progressDialog.hide();
-                progressDialog.dismiss();
-            }
-        });
+        }, year1, month1, date1).show();
     }
+    private int chooseYear;
+    private int chooseMonth;
+    private int chooseDay;
+
+    private Handler mHandler = new Handler(){
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 2:
+                    tv_select_date.setText(chooseYear + "-" + chooseMonth + "-" + chooseDay);
+                    break;
+            }
+        };
+    };
+
 
 
     private String[] users;
@@ -458,10 +446,10 @@ public class WorkYongzhangActivity extends BaseActivity implements View.OnClickL
 
                     // 先初始化参数配置，在启动相册
                     PictureConfig.init(config);
-                    PictureConfig.getPictureConfig().openPhoto(mContext, resultCallback);
+//                    PictureConfig.getPictureConfig().openPhoto(mContext, resultCallback);
 
                     // 只拍照
-                    //PictureConfig.getPictureConfig().startOpenCamera(mContext, resultCallback);
+                    PictureConfig.getPictureConfig().startOpenCamera(mContext, resultCallback);
                     break;
                 case 1:
                     // 删除图片

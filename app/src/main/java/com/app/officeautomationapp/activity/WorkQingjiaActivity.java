@@ -33,6 +33,7 @@ import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.FullyGridLayoutManager;
 import com.app.officeautomationapp.util.PicBase64Util;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
+import com.app.officeautomationapp.util.StringUtils;
 import com.app.officeautomationapp.view.OnSpinerItemClick;
 import com.app.officeautomationapp.view.SpinnerDialog;
 import com.google.gson.Gson;
@@ -108,8 +109,6 @@ public class WorkQingjiaActivity extends BaseActivity implements View.OnClickLis
         btn_post=(Button)findViewById(R.id.btn_post);
         btn_post.setOnClickListener(this);
 
-
-        initPostData();//初始化postdata
     }
 
     @Override
@@ -121,19 +120,47 @@ public class WorkQingjiaActivity extends BaseActivity implements View.OnClickLis
 
     }
 
-    private void initPostData()
+    private boolean initValidate()
     {
+        if("".equals(tv_leaveType1.getText()))
+        {
+            Toast.makeText(this,"请选择请假类型!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if("".equals(tv_leaveType2.getText()))
+        {
+            Toast.makeText(this,"请选择具体类型!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if("".equals(et_leaveDays.getText()))
+        {
+            Toast.makeText(this,"请输入请假天数!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if("".equals(tv_startDate.getText()))
+        {
+            Toast.makeText(this,"请选择请假开始时间!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if("".equals(tv_endDate.getText()))
+        {
+            Toast.makeText(this,"请选择请假结束时间!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
+        if(addArchLeavePostBean.getToUser()<1)
+        {
+            Toast.makeText(this,"请选择审批人!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
+
 
 
     private void post()
     {
-
-//        addArchSignPostBean.setFlowGuid(Constants.FlowGuidaddArchSign);
-//        addArchMachinePostBean.setMorning(Double.parseDouble(etMorning.getText().toString()));
-
-        addArchLeavePostBean.setLeaveDays(Double.parseDouble(et_leaveDays.getText().toString()));
+        addArchLeavePostBean.setLeaveDays(StringUtils.parseDouble(StringUtils.isEmpty(et_leaveDays.getText())));
 
         addArchLeavePostBean.setReason(et_reason.getText().toString());
 
@@ -192,7 +219,9 @@ public class WorkQingjiaActivity extends BaseActivity implements View.OnClickLis
                 getToUserId();
                 break;
             case R.id.btn_post:
-                post();
+                if(initValidate()) {
+                    post();
+                }
                 break;
             case R.id.ll_startDate:
                 getDate(v,0);
@@ -304,7 +333,7 @@ public class WorkQingjiaActivity extends BaseActivity implements View.OnClickLis
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
                 WorkQingjiaActivity.this.year = year;
-                month = monthOfYear;
+                month = monthOfYear+1;
                 day = dayOfMonth;
                 new TimePickerDialog(WorkQingjiaActivity.this,new TimePickerDialog.OnTimeSetListener()
                 {
