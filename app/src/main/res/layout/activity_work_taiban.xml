@@ -653,6 +653,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:text="定位中..."
                     android:id="@+id/tv_work_taiban_address"
                     android:textColor="#339EEA"/>
             </LinearLayout>

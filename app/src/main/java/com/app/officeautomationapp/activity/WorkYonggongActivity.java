@@ -6,6 +6,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +32,7 @@ import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.FullyGridLayoutManager;
 import com.app.officeautomationapp.util.PicBase64Util;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
+import com.app.officeautomationapp.util.StringUtils;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -81,6 +84,13 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
     private ImageView iv_to_user;
     private TextView tv_to_user;
     private Button btn_post;
+    private Button btn_just_post;
+    private Button btn_nextStep;
+
+    private LinearLayout ll_nextStep;
+    private LinearLayout ll_nextStep2;
+    private LinearLayout ll_pve;
+    private LinearLayout ll_post;
 
 
     private RecyclerView recyclerView;
@@ -109,13 +119,13 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
 
         ivWorkBack=(ImageView)findViewById(R.id.iv_taiban_back);
         ivWorkBack.setOnClickListener(this);
-        layoutSelectDate=(LinearLayout)findViewById(R.id.ll_select_date);
-        layoutSelectDate.setOnClickListener(this);
+//        layoutSelectDate=(LinearLayout)findViewById(R.id.ll_select_date);
+//        layoutSelectDate.setOnClickListener(this);
         tvSelectDate=(TextView)findViewById(R.id.tv_select_date);
+        setDate();
         tvWorkAddressGIS=(TextView)findViewById(R.id.tv_work_yonggong_address);
-        tvWorkAddressGIS.setText("当前位置:未知");
-        layoutWorkTaibanAddress=(LinearLayout)findViewById(R.id.ll_work_taiban_address);
-        layoutWorkTaibanAddress.setOnClickListener(this);
+//        layoutWorkTaibanAddress=(LinearLayout)findViewById(R.id.ll_work_taiban_address);
+//        layoutWorkTaibanAddress.setOnClickListener(this);
 
         llProjectIdSelect=(LinearLayout)findViewById(R.id.ll_project_id_select);
         llProjectIdSelect.setOnClickListener(this);
@@ -135,6 +145,14 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
         tv_to_user=(TextView)findViewById(R.id.tv_to_user);
         btn_post=(Button)findViewById(R.id.btn_post);
         btn_post.setOnClickListener(this);
+        btn_just_post=(Button)findViewById(R.id.btn_just_post);
+        btn_just_post.setOnClickListener(this);
+        btn_nextStep=(Button)findViewById(R.id.btn_nextStep);
+        btn_nextStep.setOnClickListener(this);
+        ll_pve=(LinearLayout)findViewById(R.id.ll_pve);
+        ll_post=(LinearLayout)findViewById(R.id.ll_post);
+        ll_nextStep=(LinearLayout)findViewById(R.id.ll_nextStep);
+        ll_nextStep2=(LinearLayout)findViewById(R.id.ll_nextStep2);
 
         mContext = this;
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
@@ -158,8 +176,6 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
         mLocationClient.registerLocationListener( myListener );
         //注册监听函数
         mLocationClient.start();
-
-        initPostData();//初始化postdata
     }
 
     @Override
@@ -170,11 +186,32 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
         super.onDestroy();
 
     }
+    private Handler mHandler = new Handler(){
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    tvWorkAddressGIS.setText("当前位置:"+addres);
+                    break;
+            }
+        };
+    };
 
-    private void initPostData()
+
+    private boolean initValidate()
     {
-
+        if(addArchJobPostBean.getProjectId()<1)
+        {
+            Toast.makeText(this,"请选择工程!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(selectMedia.size()<1)
+        {
+            Toast.makeText(this,"请添加图片!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
+
 
 
     private void post()
@@ -182,11 +219,9 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
 
         if(selectMedia.size()>0)
         {
-//            JSONArray jsonArray=new JSONArray();selectMedia
             String[] str=new String[selectMedia.size()];
             for (int i=0;i<selectMedia.size();i++)
             {
-//                jsonArray.put(PicBase64Util.encode(selectMedia.get(i).getPath(),20));
                 str[i]=PicBase64Util.encode(selectMedia.get(i).getPath(),20);
             }
             addArchJobPostBean.setImagedata(str);
@@ -196,13 +231,13 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
 //        addArchMachinePostBean.setMorning(Double.parseDouble(etMorning.getText().toString()));
         addArchJobPostBean.setCbren(etCbren.getText().toString());
 
-        addArchJobPostBean.setGis(tvWorkAddressGIS.getText().toString());
+        addArchJobPostBean.setGis(addres);
         addArchJobPostBean.setJobAddress(et_jobAddress.getText().toString());
         addArchJobPostBean.setJobType(et_jobType.getText().toString());
         addArchJobPostBean.setJobNum(et_jobNum.getText().toString());
         addArchJobPostBean.setJobContent(et_jobContent.getText().toString());
-        addArchJobPostBean.setJobDay(Double.parseDouble(et_jobDay.getText().toString()));
-        addArchJobPostBean.setJobPrice(Double.parseDouble(et_jobPrice.getText().toString()));
+        addArchJobPostBean.setJobDay(StringUtils.parseDouble(StringUtils.isEmpty(et_jobDay.getText())));
+        addArchJobPostBean.setJobPrice(StringUtils.parseDouble(StringUtils.isEmpty(et_jobPrice.getText())));
         addArchJobPostBean.setJobRegister(et_jobRegister.getText().toString());
         addArchJobPostBean.setJobDayInfo(et_jobContent.getText().toString());
         addArchJobPostBean.setJobType1(et_obType1.getText().toString());
@@ -259,12 +294,12 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
             case R.id.iv_taiban_back:
                 this.finish();
                 break;
-            case R.id.ll_select_date:
-                getDate(v);
-                break;
-            case R.id.ll_work_taiban_address:
-                mLocationClient.start();
-                break;
+//            case R.id.ll_select_date:
+//                getDate(v);
+//                break;
+//            case R.id.ll_work_taiban_address:
+//                mLocationClient.start();
+//                break;
             case R.id.ll_project_id_select:
                 getProjectId();
                 break;
@@ -272,7 +307,23 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
                 getToUserId();
                 break;
             case R.id.btn_post:
-                post();
+                if(initValidate()) {
+                    post();
+                }
+                break;
+            case R.id.btn_just_post:
+                if(initValidate()) {
+                    post();
+                }
+                break;
+            case R.id.btn_nextStep:
+                ll_nextStep.clearAnimation();
+                ll_nextStep2.clearAnimation();
+                ll_post.clearAnimation();
+                ll_nextStep.setVisibility(View.VISIBLE);
+                ll_nextStep2.setVisibility(View.VISIBLE);
+                ll_post.setVisibility(View.VISIBLE);
+                ll_pve.setVisibility(View.GONE);
                 break;
             default:
                 break;
@@ -432,6 +483,16 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
         });
     }
 
+    public void setDate()
+    {
+        Time t=new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料
+        t.setToNow(); // 取得系统时间。
+        int year1 = t.year;
+        int month1 = t.month+1;
+        int date1 = t.monthDay;
+        tvSelectDate.setText(year1 + "-" + month1 + "-" + date1);//定死当前时间
+        addArchJobPostBean.setJobDate(year1 + "-" + month1 + "-" + date1);
+    }
 
 
     // 点击事件,日期
@@ -537,10 +598,10 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
 
                     // 先初始化参数配置，在启动相册
                     PictureConfig.init(config);
-                    PictureConfig.getPictureConfig().openPhoto(mContext, resultCallback);
+//                    PictureConfig.getPictureConfig().openPhoto(mContext, resultCallback);
 
                     // 只拍照
-                    //PictureConfig.getPictureConfig().startOpenCamera(mContext, resultCallback);
+                    PictureConfig.getPictureConfig().startOpenCamera(mContext, resultCallback);
                     break;
                 case 1:
                     // 删除图片
@@ -646,7 +707,7 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
                 sb.append("\naddr : ");
                 sb.append(location.getAddrStr());    //获取地址信息
                 addres=location.getAddrStr();//获取当前位置
-                tvWorkAddressGIS.setText("当前位置:"+addres);
+//                tvWorkAddressGIS.setText("当前位置:"+addres);
                 sb.append("\ndescribe : ");
                 sb.append("gps定位成功");
 
@@ -656,7 +717,7 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
                 sb.append("\naddr : ");
                 sb.append(location.getAddrStr());    //获取地址信息
                 addres=location.getAddrStr();//获取当前位置
-                tvWorkAddressGIS.setText("当前位置:"+addres);
+//                tvWorkAddressGIS.setText("当前位置:"+addres);
 
                 sb.append("\noperationers : ");
                 sb.append(location.getOperators());    //获取运营商信息
@@ -670,7 +731,7 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
                 sb.append("\ndescribe : ");
                 sb.append("离线定位成功，离线定位结果也是有效的");
                 addres=location.getAddrStr();//获取当前位置
-                tvWorkAddressGIS.setText("当前位置:"+addres);
+//                tvWorkAddressGIS.setText("当前位置:"+addres);
 
             } else if (location.getLocType() == BDLocation.TypeServerError) {
 
@@ -701,7 +762,9 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
                     sb.append(p.getId() + " " + p.getName() + " " + p.getRank());
                 }
             }
-
+            Message message = new Message();
+            message.what = 1;
+            mHandler.sendMessage(message);
             Log.i("BaiduLocationApiDem", sb.toString());
         }
 

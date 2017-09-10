@@ -114,7 +114,7 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
     private String addres="";
 
 
-    private int year = 2016;
+    private int year = 2017;
     private int month = 10;
     private int day = 8;
 
@@ -220,18 +220,29 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
         };
     };
 
+    private boolean initValidate()
+    {
+        if(addArchMachinePostBean.getProjectId()<1)
+        {
+            Toast.makeText(this,"请选择工程!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(selectMedia.size()<1)
+        {
+            Toast.makeText(this,"请添加图片!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
 
 
     private void post()
     {
-
         if(selectMedia.size()>0)
         {
-//            JSONArray jsonArray=new JSONArray();
             String[] str=new String[selectMedia.size()];
             for (int i=0;i<selectMedia.size();i++)
             {
-//                jsonArray.put(PicBase64Util.encode(selectMedia.get(i).getPath(),20));
                 str[i]=PicBase64Util.encode(selectMedia.get(i).getPath(),20);
             }
             addArchMachinePostBean.setImagedata(str);
@@ -269,7 +280,9 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
                     JSONObject jsonObject = new JSONObject(result);
                     int re=jsonObject.getInt("result");
                     Toast.makeText(WorkTaibanActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
-                    WorkTaibanActivity.this.finish();
+                    if(re==1) {
+                        WorkTaibanActivity.this.finish();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -318,10 +331,14 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
                 getToUserId();
                 break;
             case R.id.btn_post:
-                post();
+                if(initValidate()) {
+                    post();
+                }
                 break;
             case R.id.btn_just_post:
-                post();
+                if(initValidate()) {
+                    post();
+                }
                 break;
             case R.id.btn_nextStep:
                 ll_nextStep.clearAnimation();
@@ -388,11 +405,10 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
                             @Override
                             public void onClick(String item, int position)
                             {
-                                tvProjectName.setText(items.get(position).length()>10?items.get(position).substring(0,8)+"...":items.get(position));
+                                tvProjectName.setText(items.get(position).length()>15?items.get(position).substring(0,12)+"...":items.get(position));
                                 addArchMachinePostBean.setProjectId(itemsId[position]);
                                 addArchMachinePostBean.setWorkName(items.get(position));
                             }
-
                             @Override
                             public void onTextChange(String text) {
 
@@ -514,7 +530,7 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
         Time t=new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料
         t.setToNow(); // 取得系统时间。
         int year1 = t.year;
-        int month1 = t.month;
+        int month1 = t.month+1;
         int date1 = t.monthDay;
         tvSelectDate.setText(year1 + "-" + month1 + "-" + date1);//定死当前时间
         addArchMachinePostBean.setJobDate(year1 + "-" + month1 + "-" + date1);
