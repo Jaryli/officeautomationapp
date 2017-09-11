@@ -2,6 +2,8 @@ package com.app.officeautomationapp.view;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -80,6 +82,7 @@ public class SpinnerDialog3 {
             }
         });//不同意
         mygridview= (MyGridView) v.findViewById(R.id.mygridview);
+        mygridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
         initData();
         //实例化一个适配器
         myGridAdapter=new PersonAdapter(context,R.layout.item_person,R.layout.item_person2,list1,1,codeNum1);
@@ -93,6 +96,7 @@ public class SpinnerDialog3 {
         });
 
         mygridview2= (MyGridView) v.findViewById(R.id.mygridview2);
+        mygridview2.setSelector(new ColorDrawable(Color.TRANSPARENT));
         //实例化一个适配器
         myGridAdapter2=new PersonAdapter(context,R.layout.item_person,R.layout.item_person2,list2,10,codeNum2);
         //为GridView设置适配器
