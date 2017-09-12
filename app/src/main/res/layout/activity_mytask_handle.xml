@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+    <!--标题-->
+    <RelativeLayout
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/titleColor"
+        android:id="@+id/top">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/iv_mytask_back"
+            android:background="@mipmap/icon_back"/>
+
+        <View
+            android:layout_width="1dip"
+            android:layout_height="30dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginLeft="50dp"
+            android:background="@color/line"
+            android:layout_gravity="center_vertical|center_horizontal"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="50dp"
+            android:text="我督办的任务"
+            android:textSize="@dimen/title_text_size"
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:text="发起任务"
+            android:id="@+id/tv_task_add"
+            android:textSize="@dimen/title_text_size"
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
+            android:paddingRight="@dimen/activity_horizontal_margin"/>
+    </RelativeLayout>
+    <View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/line">
+    </View>
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/sryt_swipe_listview_mytask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/lv_mytask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dividerHeight="0.1dp"
+            android:background="@android:color/white"
+            android:divider="#b0b0b0"
+            android:choiceMode="singleChoice"
+            android:fadingEdge="none"
+            android:scrollbarStyle="outsideOverlay" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>

@@ -22,6 +22,7 @@ import com.app.officeautomationapp.activity.HiddenProjectActivity;
 import com.app.officeautomationapp.activity.ItemContactsActivity;
 import com.app.officeautomationapp.activity.MessageActivity;
 import com.app.officeautomationapp.activity.MyTaskActivity;
+import com.app.officeautomationapp.activity.MyTaskHandleActivity;
 import com.app.officeautomationapp.activity.ProjectItemActivity;
 import com.app.officeautomationapp.activity.ReceiveThingsActivity;
 import com.app.officeautomationapp.activity.StartWorkActivity;
@@ -465,7 +466,6 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
             startActivity(new Intent(getActivity(), MyTaskActivity.class));
         }
 
-
         else if(10==a)//("台班".equals(str))
         {
             startActivity(new Intent(getActivity(), WorkTaibanActivity.class));
@@ -496,7 +496,7 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
         }
         else if(4==a)//("任务督办".equals(str))
         {
-            Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getActivity(), MyTaskHandleActivity.class));
         }
         else if(22==a)//("苗木".equals(str))
         {
@@ -513,10 +513,9 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
             startActivity(new Intent(getActivity(), StartWorkActivity.class));
         }
 
-
         else if(15==a)//("我的工作".equals(str))
         {
-            Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getActivity(), ApprovalWorkActivity.class));
         }
         else if(20==a)//("点工查询".equals(str))
         {

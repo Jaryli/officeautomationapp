@@ -19,9 +19,12 @@ public class HiddenProjectBean implements Serializable {
     private String CreateTime;
     private int Status;
     private int IsComplete;
-    private String BeforeWorkPhotoStr;
-    private String WorkingPhotoStr;
-    private String AfterWorkPhotoStr;
+    private String[] BeforeWorkPhotoStr;
+    private String[] WorkingPhotoStr;
+    private String[] AfterWorkPhotoStr;
+    private boolean IsDeletedInDatabase;
+    private int EntityId;
+
 
     public int getId() {
         return Id;
@@ -119,27 +122,43 @@ public class HiddenProjectBean implements Serializable {
         IsComplete = isComplete;
     }
 
-    public String getBeforeWorkPhotoStr() {
+    public String[] getBeforeWorkPhotoStr() {
         return BeforeWorkPhotoStr;
     }
 
-    public void setBeforeWorkPhotoStr(String beforeWorkPhotoStr) {
+    public void setBeforeWorkPhotoStr(String[] beforeWorkPhotoStr) {
         BeforeWorkPhotoStr = beforeWorkPhotoStr;
     }
 
-    public String getWorkingPhotoStr() {
+    public String[] getWorkingPhotoStr() {
         return WorkingPhotoStr;
     }
 
-    public void setWorkingPhotoStr(String workingPhotoStr) {
+    public void setWorkingPhotoStr(String[] workingPhotoStr) {
         WorkingPhotoStr = workingPhotoStr;
     }
 
-    public String getAfterWorkPhotoStr() {
+    public String[] getAfterWorkPhotoStr() {
         return AfterWorkPhotoStr;
     }
 
-    public void setAfterWorkPhotoStr(String afterWorkPhotoStr) {
+    public void setAfterWorkPhotoStr(String[] afterWorkPhotoStr) {
         AfterWorkPhotoStr = afterWorkPhotoStr;
+    }
+
+    public boolean isDeletedInDatabase() {
+        return IsDeletedInDatabase;
+    }
+
+    public void setDeletedInDatabase(boolean deletedInDatabase) {
+        IsDeletedInDatabase = deletedInDatabase;
+    }
+
+    public int getEntityId() {
+        return EntityId;
+    }
+
+    public void setEntityId(int entityId) {
+        EntityId = entityId;
     }
 }

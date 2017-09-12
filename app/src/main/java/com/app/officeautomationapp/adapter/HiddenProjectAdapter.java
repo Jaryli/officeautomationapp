@@ -89,15 +89,15 @@ public class HiddenProjectAdapter  extends ArrayAdapter<HiddenProjectBean> {
         String pic ="";
         if(hiddenProjectBean.getBeforeWorkPhoto()!=null&&hiddenProjectBean.getBeforeWorkPhoto()!="")
         {
-            pic=hiddenProjectBean.getBeforeWorkPhotoStr();
+            pic=hiddenProjectBean.getBeforeWorkPhotoStr()[0];
         }
         if(hiddenProjectBean.getWorkingPhoto()!=null&&hiddenProjectBean.getWorkingPhoto()!="")
         {
-            pic=hiddenProjectBean.getWorkingPhotoStr();
+            pic=hiddenProjectBean.getWorkingPhotoStr()[0];
         }
         if(hiddenProjectBean.getAfterWorkPhoto()!=null&&hiddenProjectBean.getAfterWorkPhoto()!="")
         {
-            pic=hiddenProjectBean.getAfterWorkPhotoStr();
+            pic=hiddenProjectBean.getAfterWorkPhotoStr()[0];
         }
 
         x.image().bind(viewHolder.hPic, pic, options);

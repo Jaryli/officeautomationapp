@@ -157,44 +157,51 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
             hiddenPorjectPostBean.setProjectId(hiddenProjectBean.getProjectId());
 
             if(!hiddenProjectBean.getBeforeWorkPhoto().equals("")&&hiddenProjectBean.getBeforeWorkPhoto()!=null) {
-                dowloadPic(hiddenProjectBean.getBeforeWorkPhotoStr(), hiddenProjectBean.getBeforeWorkPhoto());
-
-                LocalMedia localMedia = new LocalMedia();
-                localMedia.setCompressed(false);
-                localMedia.setPath(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getBeforeWorkPhoto());
-                localMedia.setThumbnails(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getBeforeWorkPhoto());
-                localMedia.setNum(1);
-                localMedia.setPosition(1);
-                localMedia.setType(1);
-                selectMedia1.add(localMedia);
+                for(String s:hiddenProjectBean.getBeforeWorkPhotoStr())
+                {
+                    dowloadPic(s, hiddenProjectBean.getBeforeWorkPhoto());
+                    LocalMedia localMedia = new LocalMedia();
+                    localMedia.setCompressed(false);
+                    localMedia.setPath(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getBeforeWorkPhoto());
+                    localMedia.setThumbnails(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getBeforeWorkPhoto());
+                    localMedia.setNum(1);
+                    localMedia.setPosition(1);
+                    localMedia.setType(1);
+                    selectMedia1.add(localMedia);
+                }
                 adapter1.setList(selectMedia1);
                 adapter1.notifyDataSetChanged();
             }
             if(!hiddenProjectBean.getWorkingPhoto().equals("")&&hiddenProjectBean.getWorkingPhoto()!=null) {
-                dowloadPic(hiddenProjectBean.getWorkingPhotoStr(), hiddenProjectBean.getWorkingPhoto());
-                LocalMedia localMedia = new LocalMedia();
-                localMedia.setCompressed(false);
-                localMedia.setPath(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getWorkingPhoto());
-                localMedia.setThumbnails(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getWorkingPhoto());
-                localMedia.setNum(1);
-                localMedia.setPosition(1);
-                localMedia.setType(1);
-                selectMedia2.add(localMedia);
+                for(String s:hiddenProjectBean.getWorkingPhotoStr())
+                {
+                    dowloadPic(s, hiddenProjectBean.getWorkingPhoto());
+                    LocalMedia localMedia = new LocalMedia();
+                    localMedia.setCompressed(false);
+                    localMedia.setPath(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getWorkingPhoto());
+                    localMedia.setThumbnails(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getWorkingPhoto());
+                    localMedia.setNum(1);
+                    localMedia.setPosition(1);
+                    localMedia.setType(1);
+                    selectMedia2.add(localMedia);
+                }
                 adapter2.setList(selectMedia2);
                 adapter2.notifyDataSetChanged();
             }
 
             if(!hiddenProjectBean.getAfterWorkPhoto().equals("")&&hiddenProjectBean.getAfterWorkPhoto()!=null) {
-                dowloadPic(hiddenProjectBean.getAfterWorkPhotoStr(), hiddenProjectBean.getAfterWorkPhoto());
+                for(String s:hiddenProjectBean.getAfterWorkPhotoStr()) {
+                    dowloadPic(s, hiddenProjectBean.getAfterWorkPhoto());
 
-                LocalMedia localMedia = new LocalMedia();
-                localMedia.setCompressed(false);
-                localMedia.setPath(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getAfterWorkPhoto());
-                localMedia.setThumbnails(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getAfterWorkPhoto());
-                localMedia.setNum(1);
-                localMedia.setPosition(1);
-                localMedia.setType(1);
-                selectMedia3.add(localMedia);
+                    LocalMedia localMedia = new LocalMedia();
+                    localMedia.setCompressed(false);
+                    localMedia.setPath(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getAfterWorkPhoto());
+                    localMedia.setThumbnails(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getAfterWorkPhoto());
+                    localMedia.setNum(1);
+                    localMedia.setPosition(1);
+                    localMedia.setType(1);
+                    selectMedia3.add(localMedia);
+                }
                 adapter3.setList(selectMedia3);
                 adapter3.notifyDataSetChanged();
             }
