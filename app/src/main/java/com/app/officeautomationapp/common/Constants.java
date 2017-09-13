@@ -92,4 +92,6 @@ public class Constants {
 
     public final static String HandleWork =address+"/api/V1/WorkFlow/HandleWork";//工作办理
 
+    public final static String PublishTask =address+"/api/V1/Task/PublishTask";//任务发起
+
 }

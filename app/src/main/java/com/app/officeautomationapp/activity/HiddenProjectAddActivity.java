@@ -502,7 +502,10 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
                     JSONObject jsonObject = new JSONObject(result);
                     int re=jsonObject.getInt("result");
                     Toast.makeText(HiddenProjectAddActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
-                    HiddenProjectAddActivity.this.finish();
+                    if(re==1) {
+                        setResult(5, new Intent());
+                        HiddenProjectAddActivity.this.finish();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

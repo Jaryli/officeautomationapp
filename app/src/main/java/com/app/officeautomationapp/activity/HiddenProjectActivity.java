@@ -61,6 +61,7 @@ public class HiddenProjectActivity extends BaseActivity implements View.OnClickL
     private SwipeRefreshHelper mSwipeRefreshHelper;
     private Handler mHandler = new Handler();
     private Context mContext;
+    private final int codeNum=5;
 
     int page = 0;
 
@@ -80,15 +81,24 @@ public class HiddenProjectActivity extends BaseActivity implements View.OnClickL
         tvAdd.setOnClickListener(this);
     }
 
+    /**
+     * 所有的Activity对象的返回值都是由这个方法来接收
+     * requestCode:    表示的是启动一个Activity时传过去的requestCode值
+     * resultCode：表示的是启动后的Activity回传值时的resultCode值
+     * data：表示的是启动后的Activity回传过来的Intent对象
+     */
     @Override
-    protected void onResume() {
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefreshHelper.autoRefresh();
-            }
-        });
-        super.onResume();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==codeNum)
+        {
+            swipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeRefreshHelper.autoRefresh();
+                }
+            });
+        }
     }
 
     private void initView() {
@@ -145,7 +155,7 @@ public class HiddenProjectActivity extends BaseActivity implements View.OnClickL
                 Intent intent=new Intent(HiddenProjectActivity.this, HiddenProjectAddActivity.class);
                 intent.putExtra("method","update");
                 intent.putExtra("data",hiddenProjectBeenList.get(i));
-                startActivity(intent);
+                startActivityForResult(intent,codeNum);
             }
         });
 //        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -225,7 +235,7 @@ public class HiddenProjectActivity extends BaseActivity implements View.OnClickL
             case R.id.tv_hidden_add:
                 Intent intent=new Intent(this,HiddenProjectAddActivity.class);
                 intent.putExtra("method","add");
-                startActivity(intent);
+                startActivityForResult(intent,codeNum);
                 break;
             default:
                 break;

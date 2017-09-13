@@ -18,7 +18,7 @@
             android:layout_height="25dp"
             android:layout_marginTop="15dp"
             android:layout_marginLeft="10dp"
-            android:id="@+id/iv_receive_things_back"
+            android:id="@+id/iv_taskstart_back"
             android:background="@mipmap/icon_back"/>
 
         <View
@@ -92,11 +92,11 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="7"
-                        android:id="@+id/et_num"
+                        android:id="@+id/et_name"
                         android:layout_marginLeft="10dp"
                         android:textSize="15dp"
                         android:background="@null"
-                        android:hint="请输入数量"/>
+                        android:hint="请输入任务名称"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -197,7 +197,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="7"
                     android:layout_marginLeft="10dp"
-                    android:id="@+id/et_remark"
+                    android:id="@+id/et_content"
                     android:minLines="3"
                     android:gravity="top"
                     android:textSize="15dp"
@@ -230,21 +230,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp">
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_margin="10dp"
-                        android:id="@+id/iv_to_user"
-                        android:background="@mipmap/icon_add_sign"/>
-                    <TextView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/circle_textview_blue"
-                        android:gravity="center"
-                        android:visibility="gone"
-                        android:id="@+id/tv_to_user"
-                        android:text=""/>
+
+                    <com.app.officeautomationapp.view.MyGridView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/mygridview"
+                        android:numColumns="4"
+                        android:verticalSpacing="1dp"
+                        android:horizontalSpacing="1dp"
+                        android:stretchMode="columnWidth">
+
+                    </com.app.officeautomationapp.view.MyGridView>
+
                 </LinearLayout>
             </LinearLayout>
 
@@ -275,12 +272,13 @@
             android:layout_height="35dp"
             android:gravity="center"
             android:id="@+id/btn_post"
-            android:background="@color/buttonblue"
+            android:background="@drawable/circle_semi_button_blue"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:textColor="@color/white"
             android:text="提交"/>
     </LinearLayout>
+
 
 
 </RelativeLayout>

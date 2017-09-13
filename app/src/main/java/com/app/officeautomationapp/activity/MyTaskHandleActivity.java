@@ -17,6 +17,7 @@ import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.adapter.MytaskAdapter;
 import com.app.officeautomationapp.adapter.MytaskHandleAdapter;
 import com.app.officeautomationapp.bean.MyTaskBean;
+import com.app.officeautomationapp.bean.SortModel;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
@@ -209,6 +210,26 @@ public class MyTaskHandleActivity extends BaseActivity implements  View.OnClickL
         });
     }
 
+    /**
+     * 所有的Activity对象的返回值都是由这个方法来接收
+     * requestCode:    表示的是启动一个Activity时传过去的requestCode值
+     * resultCode：表示的是启动后的Activity回传值时的resultCode值
+     * data：表示的是启动后的Activity回传过来的Intent对象
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==codeNum)
+        {
+            swipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeRefreshHelper.autoRefresh();
+                }
+            });
+        }
+    }
+    private final int codeNum=4;
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -216,7 +237,8 @@ public class MyTaskHandleActivity extends BaseActivity implements  View.OnClickL
                 this.finish();
                 break;
             case R.id.tv_task_add:
-                //zengjia
+                Intent intent=new Intent(this,MyTaskStartActivity.class);
+                startActivityForResult(intent,codeNum);
                 break;
             default:
                 break;

@@ -193,7 +193,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="待我审批"/>
+                                android:text="待办事项"/>
                         </LinearLayout>
                         <View
                             android:layout_width="1dip"
