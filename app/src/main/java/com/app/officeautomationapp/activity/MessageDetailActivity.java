@@ -52,13 +52,14 @@ public class MessageDetailActivity extends BaseActivity implements  View.OnClick
 
     private String[] items;
     private String messageID;
+    private UserDto userDto;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_detail);
-
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         ivmessageBack=(ImageView)findViewById(R.id.iv_message_back);
         ivmessageBack.setOnClickListener(this);
         progressBar=(LinearLayout)findViewById(R.id.ll_progressBar);
@@ -98,7 +99,6 @@ public class MessageDetailActivity extends BaseActivity implements  View.OnClick
         RequestParams params = new RequestParams(Constants.getGetMessageDetail);
         Log.i("MessageDetailActivity", "post-url:" + Constants.getGetMessageDetail);
         params.addQueryStringParameter("noticeId",messageID);
-        UserDto userDto= (UserDto)SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
@@ -133,7 +133,6 @@ public class MessageDetailActivity extends BaseActivity implements  View.OnClick
         RequestParams params = new RequestParams(Constants.getReadRecords);
         Log.i("MessageDetailActivity", "post-url:" + Constants.getReadRecords);
         params.addQueryStringParameter("noticeId",messageID);
-        UserDto userDto= (UserDto)SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
 
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {

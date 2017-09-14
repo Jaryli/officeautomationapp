@@ -61,10 +61,12 @@ public class ItemContactsActivity extends BaseActivity implements View.OnClickLi
     private boolean hasDone;
     private int code;
     private int maxNum;
+    private UserDto userDto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         initData();
     }
 
@@ -149,7 +151,6 @@ public class ItemContactsActivity extends BaseActivity implements View.OnClickLi
         characterParser = CharacterParser.getInstance();
         pinyinComparator = new PinyinComparator();
         RequestParams params = new RequestParams(Constants.GetPersonList+"?pageIndex=1&pageSize=9999");
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(this.getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
             @Override

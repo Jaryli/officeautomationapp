@@ -75,11 +75,13 @@ public class MyTaskDoActivity extends BaseActivity implements View.OnClickListen
     private MyTaskPostBean myTaskPostBean=new MyTaskPostBean();
     ProgressDialog progressDialog;
     private int taskId;
+    private UserDto userDto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mytask_do);
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         taskId=getIntent().getIntExtra("taskId",0);
         ivTaskDoBack=(ImageView)findViewById(R.id.iv_taskdo_back);
         ivTaskDoBack.setOnClickListener(this);
@@ -137,7 +139,6 @@ public class MyTaskDoActivity extends BaseActivity implements View.OnClickListen
         progressDialog.show();
         RequestParams params = new RequestParams(Constants.AddTodoDetail);
         Log.i("", "post-url:" + Constants.AddTodoDetail);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         params.setBodyContent("'"+result+"'");
         Log.i("JAVA", "body:" + params.getBodyContent());

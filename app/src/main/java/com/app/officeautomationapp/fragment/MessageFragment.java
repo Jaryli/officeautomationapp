@@ -52,12 +52,13 @@ public class MessageFragment extends Fragment {
     private Handler mHandler = new Handler();
 
     int page = 0;
-
+    private UserDto userDto;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_message,null);
+        userDto= (UserDto)SharedPreferencesUtile.readObject(getContext().getApplicationContext(),"user");
         initView(view);
         initData(view);
         return view;
@@ -146,7 +147,6 @@ public class MessageFragment extends Fragment {
         RequestParams params = new RequestParams(Constants.getMessage);
         params.addQueryStringParameter("pageIndex",(page+1)+"");
         params.addQueryStringParameter("pageSize","10");
-        UserDto userDto= (UserDto)SharedPreferencesUtile.readObject(getContext().getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
             @Override

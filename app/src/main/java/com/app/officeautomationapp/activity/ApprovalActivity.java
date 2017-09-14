@@ -90,13 +90,13 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
     private String[] text;
     private String flowType="";
     private String url;
-
+    private UserDto userDto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_approval);
-
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         layoutCondition=(LinearLayout)findViewById(R.id.layout2);
         view1=(View)findViewById(R.id.view1);
 
@@ -172,7 +172,6 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
     private void initType()
     {
         RequestParams params = new RequestParams(Constants.GetFlowList);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
             @Override

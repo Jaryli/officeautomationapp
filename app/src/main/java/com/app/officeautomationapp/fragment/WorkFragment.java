@@ -85,11 +85,13 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
     private ArrayList<ProjectItemBean> list2;
     private ArrayList<ProjectItemBean> list3;
     private View Tview;
+    private UserDto userDto;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_work,null);
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getActivity().getApplicationContext(),"user");
         //work header图片轮播
         rollPagerViewSet(view);
         //dot
@@ -127,7 +129,7 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
         gv3 = (MyGridView)view.findViewById(R.id.mygridview3);
         //准备要添加的数据条目
         RequestParams params = new RequestParams(Constants.getMyMenu);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getActivity().getApplicationContext(),"user");
+
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
@@ -244,7 +246,6 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
     {
         //准备要添加的数据条目
         RequestParams params = new RequestParams(Constants.GetIndexTip);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getActivity().getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
             @Override

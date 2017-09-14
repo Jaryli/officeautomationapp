@@ -47,7 +47,7 @@ public class MyTaskHandleActivity extends BaseActivity implements  View.OnClickL
     private MytaskHandleAdapter adapter;
     private ImageView ivMytaskBack;
     private TextView tv_task_add;
-
+    private UserDto userDto;
 
     SwipeRefreshLayout swipeRefreshLayout;
     private SwipeRefreshHelper mSwipeRefreshHelper;
@@ -59,6 +59,7 @@ public class MyTaskHandleActivity extends BaseActivity implements  View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mytask_handle);
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         initView();
         initData();
     }
@@ -149,7 +150,6 @@ public class MyTaskHandleActivity extends BaseActivity implements  View.OnClickL
         RequestParams params = new RequestParams(Constants.GetMyTaskList);
         params.addQueryStringParameter("pageIndex",(page+1)+"");
         params.addQueryStringParameter("pageSize","10");
-        UserDto userDto= (UserDto)SharedPreferencesUtile.readObject(this.getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
             @Override

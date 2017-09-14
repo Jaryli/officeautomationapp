@@ -106,7 +106,7 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
     public LocationClient mLocationClient = null;
     public BDLocationListener myListener = new MyLocationListener();
     private String addres="";
-
+    private UserDto userDto;
 
     private int year = 2016;
     private int month = 10;
@@ -116,7 +116,7 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_yonggong);
-
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         ivWorkBack=(ImageView)findViewById(R.id.iv_taiban_back);
         ivWorkBack.setOnClickListener(this);
 //        layoutSelectDate=(LinearLayout)findViewById(R.id.ll_select_date);
@@ -252,7 +252,6 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
         progressDialog.show();
         RequestParams params = new RequestParams(Constants.addArchJob);
         Log.i("", "post-url:" + Constants.addArchJob);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         params.setBodyContent("'"+result+"'");
         Log.i("JAVA", "body:" + params.getBodyContent());
@@ -342,7 +341,6 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
         progressDialog.show();
         RequestParams params = new RequestParams(Constants.getMyProject);
         Log.i("MessageDetailActivity", "post-url:" + Constants.getMyProject);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
 
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
@@ -419,7 +417,6 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
         progressDialog.show();
         RequestParams params = new RequestParams(Constants.getToUser);
         Log.i("MessageDetailActivity", "post-url:" + Constants.getToUser);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         params.addBodyParameter("realName","");
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {

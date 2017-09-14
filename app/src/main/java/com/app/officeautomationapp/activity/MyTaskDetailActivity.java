@@ -50,12 +50,13 @@ public class MyTaskDetailActivity extends BaseActivity implements  View.OnClickL
     private ImageView iv_mytask_back;
     private MyTaskBean myTaskBean;
     private MytaskDetailAdapter mytaskDetailAdapter;
-
+    private UserDto userDto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mytask_detail);
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         initView();
         Intent intent=getIntent();
         myTaskBean = (MyTaskBean) intent.getSerializableExtra("data");
@@ -96,7 +97,6 @@ public class MyTaskDetailActivity extends BaseActivity implements  View.OnClickL
     {
         RequestParams params = new RequestParams(Constants.GetTaskDetail);
         params.addQueryStringParameter("taskId",myTaskBean.getId()+"");
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(this.getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
             @Override

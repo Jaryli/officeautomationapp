@@ -73,9 +73,7 @@ public class WorkQingjiaActivity extends BaseActivity implements View.OnClickLis
     private EditText et_reason;
 
     private Button btn_post;
-
-
-
+    private UserDto userDto;
 
     private AddArchLeavePostBean addArchLeavePostBean=new AddArchLeavePostBean();
     ProgressDialog progressDialog;
@@ -85,7 +83,7 @@ public class WorkQingjiaActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_qingjia);
-
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         ivWorkBack=(ImageView)findViewById(R.id.iv_taiban_back);
         ivWorkBack.setOnClickListener(this);
 
@@ -173,7 +171,6 @@ public class WorkQingjiaActivity extends BaseActivity implements View.OnClickLis
         progressDialog.show();
         RequestParams params = new RequestParams(Constants.addArchLeave);
         Log.i("", "post-url:" + Constants.addArchLeave);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         params.setBodyContent("'"+result+"'");
         Log.i("JAVA", "body:" + params.getBodyContent());
@@ -386,7 +383,6 @@ public class WorkQingjiaActivity extends BaseActivity implements View.OnClickLis
                 progressDialog.show();
                 RequestParams params = new RequestParams(Constants.getToUser);
                 Log.i("MessageDetailActivity", "post-url:" + Constants.getToUser);
-                UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
                 params.addHeader("access_token", userDto.getAccessToken());
                 params.addBodyParameter("realName",text);
                 Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {

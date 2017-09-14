@@ -78,6 +78,7 @@ public class ApprovalFragment extends Fragment {
     private Handler mHandler = new Handler();
 
     static int page = 0;
+    private UserDto userDto;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,6 +89,7 @@ public class ApprovalFragment extends Fragment {
             workName = bundle.get("workName").toString();
             workGuid = bundle.get("workGuid").toString();
         }
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getContext().getApplicationContext(),"user");
     }
 
     @Override
@@ -202,7 +204,6 @@ public class ApprovalFragment extends Fragment {
         }
         params.addQueryStringParameter("pageIndex",(page+1)+"");
         params.addQueryStringParameter("pageSize","10");
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getContext().getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
             @Override

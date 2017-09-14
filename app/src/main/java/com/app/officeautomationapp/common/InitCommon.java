@@ -22,11 +22,10 @@ import java.lang.reflect.Type;
 
 public abstract class InitCommon {
 
-    public static void initUserInfo(final Context context)
+    public static void initUserInfo(final Context context,UserDto userDto)
     {
         RequestParams params = new RequestParams(Constants.GetUserInfo);
         Log.i("initUserInfo", "post-url:" + Constants.GetUserInfo);
-        final UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(context,"user");
         params.addHeader("access_token", userDto.getAccessToken());
 
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {

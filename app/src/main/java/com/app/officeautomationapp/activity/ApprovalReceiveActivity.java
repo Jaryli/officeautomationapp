@@ -48,12 +48,14 @@ public class ApprovalReceiveActivity extends BaseActivity implements View.OnClic
     static int page = 0;
     private static List<ReceiveThingsCheckBean> listReceiveThingsCheck=new ArrayList<ReceiveThingsCheckBean>();
     ApprovalReceiveThingsAdapter approvalReceiveThingsAdapter;
+    private UserDto userDto;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_approval_receive);
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         initView();
         initData();
     }
@@ -75,7 +77,7 @@ public class ApprovalReceiveActivity extends BaseActivity implements View.OnClic
 
 
     private void initData() {
-        approvalReceiveThingsAdapter = new ApprovalReceiveThingsAdapter(this,R.layout.approval_receive_item, listReceiveThingsCheck,this);
+        approvalReceiveThingsAdapter = new ApprovalReceiveThingsAdapter(this,R.layout.approval_receive_item, listReceiveThingsCheck,this,userDto);
         listView.setAdapter(approvalReceiveThingsAdapter);
         mSwipeRefreshHelper = new SwipeRefreshHelper(swipeRefreshLayout);
 
@@ -128,10 +130,6 @@ public class ApprovalReceiveActivity extends BaseActivity implements View.OnClic
 
     private void initProjects(final String str){
         RequestParams params = new RequestParams(Constants.GetUnCheckApplyResList);
-
-//        params.addQueryStringParameter("pageIndex",(page+1)+"");
-//        params.addQueryStringParameter("pageSize","10");
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(this.getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
             @Override

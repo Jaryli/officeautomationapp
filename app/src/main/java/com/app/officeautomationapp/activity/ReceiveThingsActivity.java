@@ -59,7 +59,7 @@ public class ReceiveThingsActivity extends BaseActivity implements View.OnClickL
     private EditText et_num;
     private EditText et_remark;
     private Button btn_post;
-
+    private UserDto userDto;
 
     private ReceiveThingsPostBean receiveThingsPostBean=new ReceiveThingsPostBean();
     ProgressDialog progressDialog;
@@ -69,7 +69,7 @@ public class ReceiveThingsActivity extends BaseActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receive_things);
-
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         ivReceiveThingsBack=(ImageView)findViewById(R.id.iv_receive_things_back);
         ivReceiveThingsBack.setOnClickListener(this);
         ll_project_select=(LinearLayout)findViewById(R.id.ll_project_select);
@@ -132,7 +132,6 @@ public class ReceiveThingsActivity extends BaseActivity implements View.OnClickL
         progressDialog.show();
         RequestParams params = new RequestParams(Constants.addReceiveThing);
         Log.i("", "post-url:" + Constants.addReceiveThing);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         params.setBodyContent("'"+result+"'");
         Log.i("JAVA", "body:" + params.getBodyContent());
@@ -197,7 +196,6 @@ public class ReceiveThingsActivity extends BaseActivity implements View.OnClickL
         progressDialog.show();
         RequestParams params = new RequestParams(Constants.getMyProject);
         Log.i("MessageDetailActivity", "post-url:" + Constants.getMyProject);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
 
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
@@ -297,7 +295,6 @@ public class ReceiveThingsActivity extends BaseActivity implements View.OnClickL
                 progressDialog.show();
                 RequestParams params = new RequestParams(Constants.getToUser);
                 Log.i("MessageDetailActivity", "post-url:" + Constants.getToUser);
-                UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
                 params.addHeader("access_token", userDto.getAccessToken());
                 params.addBodyParameter("realName",text);
                 Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {

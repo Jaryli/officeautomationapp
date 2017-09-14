@@ -50,13 +50,14 @@ public class MyTaskActivity extends BaseActivity implements  View.OnClickListene
     SwipeRefreshLayout swipeRefreshLayout;
     private SwipeRefreshHelper mSwipeRefreshHelper;
     private Handler mHandler = new Handler();
-
+    private UserDto userDto;
     int page = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mytask);
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         initView();
         initData();
     }
@@ -145,7 +146,6 @@ public class MyTaskActivity extends BaseActivity implements  View.OnClickListene
         RequestParams params = new RequestParams(Constants.GetMyTaskList);
         params.addQueryStringParameter("pageIndex",(page+1)+"");
         params.addQueryStringParameter("pageSize","10");
-        UserDto userDto= (UserDto)SharedPreferencesUtile.readObject(this.getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
             @Override

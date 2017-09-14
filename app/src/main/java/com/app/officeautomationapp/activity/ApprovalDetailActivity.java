@@ -71,11 +71,13 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     private int nextStepSort=0;
     private int Hid;
     private int Wid;
+    private UserDto userDto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_approval_detail);
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         initView();
         initData();
     }
@@ -133,8 +135,6 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
             approval_type.setVisibility(View.GONE);
 
         }
-
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(this.getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
@@ -338,7 +338,6 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
         String result = gson.toJson(approvalPostBean);
 
         RequestParams params = new RequestParams(Constants.HandleWork);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(this.getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         params.setBodyContent("'"+result+"'");
         Callback.Cancelable cancelable = x.http().post(params, new Callback.CommonCallback<String>() {

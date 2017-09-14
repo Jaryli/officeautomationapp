@@ -44,11 +44,13 @@ public class ApprovalWorkActivity extends BaseActivity implements View.OnClickLi
 
     private MyGridView mygridview;
     ArrayList<ProjectItemBean> mList=new ArrayList<ProjectItemBean>();
+    private UserDto userDto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_approval);
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         bar_num = (TextView) findViewById(R.id.bar_num);
 
         ivWorkApprovalBack=(ImageView)findViewById(R.id.iv_work_approval_back);
@@ -72,6 +74,7 @@ public class ApprovalWorkActivity extends BaseActivity implements View.OnClickLi
                 clickBtn(position);
             }
         });
+
         initNum(myGridAdapter1);
     }
 
@@ -79,7 +82,6 @@ public class ApprovalWorkActivity extends BaseActivity implements View.OnClickLi
     {
         //准备要添加的数据条目
         RequestParams params = new RequestParams(Constants.GetTodoTip);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(this.getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
             @Override

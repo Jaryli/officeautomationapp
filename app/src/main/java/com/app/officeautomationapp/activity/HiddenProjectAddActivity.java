@@ -80,7 +80,7 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
     private int pic1=0;//用来标记图标是否有变动，变动就压缩
     private int pic2=0;
     private int pic3=0;
-
+    private UserDto userDto;
 
 
     private HiddenPorjectPostBean hiddenPorjectPostBean;
@@ -89,7 +89,7 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hidden_project_add);
-
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
 
         Intent intent = getIntent();
         value = intent.getStringExtra("method");
@@ -556,7 +556,6 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
         progressDialog.show();
         RequestParams params = new RequestParams(Constants.getSaveHiddenProject);
         Log.i("HiddenProjectAdd", "post-url:" + Constants.getSaveHiddenProject);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         params.setBodyContent("'"+result+"'");
         Log.i("JAVA", "body:" + params.getBodyContent());
@@ -610,7 +609,6 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
         progressDialog.show();
         RequestParams params = new RequestParams(Constants.getMyProject);
         Log.i("MessageDetailActivity", "post-url:" + Constants.getMyProject);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
 
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {

@@ -62,7 +62,7 @@ public class HiddenProjectActivity extends BaseActivity implements View.OnClickL
     private Handler mHandler = new Handler();
     private Context mContext;
     private final int codeNum=5;
-
+    private UserDto userDto;
     int page = 0;
 
 
@@ -71,6 +71,7 @@ public class HiddenProjectActivity extends BaseActivity implements View.OnClickL
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hidden_project);
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         mContext=this;
         initView();
         initData();
@@ -248,7 +249,6 @@ public class HiddenProjectActivity extends BaseActivity implements View.OnClickL
         params.addQueryStringParameter("projectName","");
         params.addQueryStringParameter("pageIndex",(page+1)+"");
         params.addQueryStringParameter("pageSize","10");
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
@@ -312,7 +312,6 @@ public class HiddenProjectActivity extends BaseActivity implements View.OnClickL
     private void removeData(int position)
     {
         RequestParams params = new RequestParams(Constants.deleteHiddenProject+"/"+hiddenProjectBeenList.get(position).getId());
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().post(params, new Callback.CommonCallback<String>() {
             @Override

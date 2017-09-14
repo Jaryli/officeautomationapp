@@ -55,11 +55,13 @@ public class MyTaskStartActivity  extends BaseActivity implements  View.OnClickL
     private final int codeNum1=3;
     TaskPostBean taskPostBean=new TaskPostBean();
     private Button btn_post;
+    private UserDto userDto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mytask_start);
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         initView();
         initData();
     }
@@ -178,7 +180,6 @@ public class MyTaskStartActivity  extends BaseActivity implements  View.OnClickL
         progressDialog.show();
         RequestParams params = new RequestParams(Constants.PublishTask);
         Log.i("", "post-url:" + Constants.PublishTask);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         params.setBodyContent("'"+result+"'");
         Log.i("JAVA", "body:" + params.getBodyContent());

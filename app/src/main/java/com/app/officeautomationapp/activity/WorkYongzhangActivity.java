@@ -78,7 +78,7 @@ public class WorkYongzhangActivity extends BaseActivity implements View.OnClickL
     private ImageView iv_to_user;
     private TextView tv_to_user;
     private Button btn_post;
-
+    private UserDto userDto;
 
     private RecyclerView recyclerView;
     private GridImageAdapter adapter;
@@ -89,12 +89,11 @@ public class WorkYongzhangActivity extends BaseActivity implements View.OnClickL
     private AddArchSignPostBean addArchSignPostBean=new AddArchSignPostBean();
     ProgressDialog progressDialog;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_yongzhang);
-
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         ivWorkBack=(ImageView)findViewById(R.id.iv_taiban_back);
         ivWorkBack.setOnClickListener(this);
 
@@ -192,7 +191,6 @@ public class WorkYongzhangActivity extends BaseActivity implements View.OnClickL
         progressDialog.show();
         RequestParams params = new RequestParams(Constants.addArchSign);
         Log.i("", "post-url:" + Constants.addArchSign);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         params.setBodyContent("'"+result+"'");
         Log.i("JAVA", "body:" + params.getBodyContent());
@@ -300,7 +298,6 @@ public class WorkYongzhangActivity extends BaseActivity implements View.OnClickL
         progressDialog.show();
         RequestParams params = new RequestParams(Constants.getToUser);
         Log.i("MessageDetailActivity", "post-url:" + Constants.getToUser);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         params.addBodyParameter("realName","");
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {

@@ -39,7 +39,7 @@ public class ThingsGetActivity extends BaseActivity implements View.OnClickListe
 
     ProgressDialog progressDialog;
     private EditText searchBox;
-
+    private UserDto userDto;
 
     ArrayAdapter<String> adapter;
     ListView listView;
@@ -48,6 +48,7 @@ public class ThingsGetActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_things_get);
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         searchBox=(EditText)findViewById(R.id.searchBox);
         listView = (ListView) findViewById(R.id.list);
         searchBox.addTextChangedListener(new TextWatcher() {
@@ -82,7 +83,6 @@ public class ThingsGetActivity extends BaseActivity implements View.OnClickListe
         progressDialog.show();
         RequestParams params = new RequestParams(Constants.getThings);
         Log.i("MessageDetailActivity", "post-url:" + Constants.getThings);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         params.addBodyParameter("resNameOrSpecial",searchBox.getText().toString());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {

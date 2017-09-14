@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.app.officeautomationapp.R;
@@ -32,6 +33,7 @@ public class ViewPagerActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_view_pager);
         options= new ImageOptions.Builder().setFadeIn(true) //淡入效果
                 //ImageOptions.Builder()的一些其他属性：

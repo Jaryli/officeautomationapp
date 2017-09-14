@@ -113,7 +113,7 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
     public BDLocationListener myListener = new MyLocationListener();
     private String addres="";
 
-
+    private UserDto userDto;
     private int year = 2017;
     private int month = 10;
     private int day = 8;
@@ -122,7 +122,7 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_taiban);
-
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         ll_nextStep=(LinearLayout)findViewById(R.id.ll_nextStep);
         ll_nextStep2=(LinearLayout)findViewById(R.id.ll_nextStep2);
 
@@ -268,7 +268,6 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
         progressDialog.show();
         RequestParams params = new RequestParams(Constants.addArchMachine);
         Log.i("", "post-url:" + Constants.addArchMachine);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         params.setBodyContent("'"+result+"'");
         Log.i("JAVA", "body:" + params.getBodyContent());
@@ -367,7 +366,6 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
         progressDialog.show();
         RequestParams params = new RequestParams(Constants.getMyProject);
         Log.i("MessageDetailActivity", "post-url:" + Constants.getMyProject);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
 
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
@@ -467,7 +465,6 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
                 progressDialog.show();
                 RequestParams params = new RequestParams(Constants.getToUser);
                 Log.i("MessageDetailActivity", "post-url:" + Constants.getToUser);
-                UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
                 params.addHeader("access_token", userDto.getAccessToken());
                 params.addBodyParameter("realName",text);
                 Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {

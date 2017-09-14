@@ -52,11 +52,14 @@ public class ApprovalReceiveThingsAdapter extends ArrayAdapter<ReceiveThingsChec
 
     ProgressDialog progressDialog;
 
-    public ApprovalReceiveThingsAdapter(Context context, int resource, List<ReceiveThingsCheckBean> objects,ApprovalReceiveActivity activity) {
+    private UserDto userDto;
+
+    public ApprovalReceiveThingsAdapter(Context context, int resource, List<ReceiveThingsCheckBean> objects,ApprovalReceiveActivity activity,UserDto userDto) {
         super(context, resource,objects);
         this.mContext=context;
         this.activity=activity;
         resourceId=resource;
+        this.userDto=userDto;
     }
 
     @Override
@@ -113,7 +116,6 @@ public class ApprovalReceiveThingsAdapter extends ArrayAdapter<ReceiveThingsChec
         progressDialog.show();
         RequestParams params = new RequestParams(Constants.HandleResApply);
         Log.i("", "post-url:" + Constants.HandleResApply);
-        UserDto userDto= (UserDto) SharedPreferencesUtile.readObject(getContext().getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         params.setBodyContent("'"+result+"'");
         Log.i("JAVA", "body:" + params.getBodyContent());

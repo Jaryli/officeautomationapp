@@ -71,10 +71,12 @@ public class ProjectItemActivity extends BaseActivity  implements AdapterView.On
 
     ImageView ivItemBack;
     TextView tvItemAdd;
+    private UserDto userDto;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_item);
+        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         initView();
         initData();
     }
@@ -109,7 +111,6 @@ public class ProjectItemActivity extends BaseActivity  implements AdapterView.On
     /** 初始化数据*/
     private void initData() {
         RequestParams params = new RequestParams(Constants.getMyMenu);
-        UserDto userDto= (UserDto)SharedPreferencesUtile.readObject(this.getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
@@ -443,7 +444,6 @@ public class ProjectItemActivity extends BaseActivity  implements AdapterView.On
             otherStr=otherStr.substring(0,otherStr.length()-1);
         }
         RequestParams params = new RequestParams(Constants.updateMenuIndex+"?indexIds="+userStr+"&notIndexIds="+otherStr);
-        UserDto userDto= (UserDto)SharedPreferencesUtile.readObject(this.getApplicationContext(),"user");
         params.addHeader("access_token", userDto.getAccessToken());
 //        params.addParameter("indexIds",userStr);
 //        params.addParameter("notIndexIds",otherStr);
