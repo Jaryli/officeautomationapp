@@ -10,9 +10,9 @@ public class HiddenPorjectPostBean implements Serializable {
 
     private int Id;
     private int ProjectId;
-    private String BeforeWorkPhoto;
-    private String WorkingPhoto;
-    private String AfterWorkPhoto;
+    private String[] BeforeWorkPhoto;
+    private String[] WorkingPhoto;
+    private String[] AfterWorkPhoto;
     private String SupplyName;
     private String WorkContent;
 
@@ -32,27 +32,27 @@ public class HiddenPorjectPostBean implements Serializable {
         ProjectId = projectId;
     }
 
-    public String getBeforeWorkPhoto() {
+    public String[] getBeforeWorkPhoto() {
         return BeforeWorkPhoto;
     }
 
-    public void setBeforeWorkPhoto(String beforeWorkPhoto) {
+    public void setBeforeWorkPhoto(String[] beforeWorkPhoto) {
         BeforeWorkPhoto = beforeWorkPhoto;
     }
 
-    public String getWorkingPhoto() {
+    public String[] getWorkingPhoto() {
         return WorkingPhoto;
     }
 
-    public void setWorkingPhoto(String workingPhoto) {
+    public void setWorkingPhoto(String[] workingPhoto) {
         WorkingPhoto = workingPhoto;
     }
 
-    public String getAfterWorkPhoto() {
+    public String[] getAfterWorkPhoto() {
         return AfterWorkPhoto;
     }
 
-    public void setAfterWorkPhoto(String afterWorkPhoto) {
+    public void setAfterWorkPhoto(String[] afterWorkPhoto) {
         AfterWorkPhoto = afterWorkPhoto;
     }
 

@@ -64,7 +64,7 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
 
 
 
-    private int maxSelectNum = 1;// 图片最大可选数量
+    private int maxSelectNum = 3;// 图片最大可选数量
     private Context mContext;
     private List<LocalMedia> selectMedia1 = new ArrayList<>();
     private RecyclerView recyclerView1;
@@ -90,6 +90,20 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hidden_project_add);
 
+
+        Intent intent = getIntent();
+        value = intent.getStringExtra("method");
+        HiddenProjectBean hiddenProjectBean=new HiddenProjectBean();
+        boolean b1=false;
+        boolean b2=false;
+        boolean b3=false;
+        if(value.equals("update")) {
+            hiddenProjectBean = (HiddenProjectBean) intent.getSerializableExtra("data");
+            b1=!"".equals(hiddenProjectBean.getBeforeWorkPhoto());//是否显示删除和增加
+            b2=!"".equals(hiddenProjectBean.getWorkingPhoto());
+            b3=!"".equals(hiddenProjectBean.getAfterWorkPhoto());
+        }
+
         hiddenPorjectPostBean=new HiddenPorjectPostBean();
         ivBack=(ImageView)findViewById(R.id.iv_hidden_add_back);
         ivBack.setOnClickListener(this);
@@ -105,7 +119,8 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
         recyclerView1 = (RecyclerView) findViewById(R.id.recycler1);
         FullyGridLayoutManager manager1 = new FullyGridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false);
         recyclerView1.setLayoutManager(manager1);
-        adapter1 = new GridImageAdapter(this, onAddPicClickListener1);
+
+        adapter1 = new GridImageAdapter(this, onAddPicClickListener1,b1);
         adapter1.setSelectMax(maxSelectNum);
         recyclerView1.setAdapter(adapter1);
         adapter1.setOnItemClickListener(new GridImageAdapter.OnItemClickListener() {
@@ -119,7 +134,7 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
         recyclerView2 = (RecyclerView) findViewById(R.id.recycler2);
         FullyGridLayoutManager manager2 = new FullyGridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false);
         recyclerView2.setLayoutManager(manager2);
-        adapter2 = new GridImageAdapter(this, onAddPicClickListener2);
+        adapter2 = new GridImageAdapter(this, onAddPicClickListener2,b2);
         adapter2.setSelectMax(maxSelectNum);
         recyclerView2.setAdapter(adapter2);
         adapter2.setOnItemClickListener(new GridImageAdapter.OnItemClickListener() {
@@ -133,7 +148,7 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
         recyclerView3 = (RecyclerView) findViewById(R.id.recycler3);
         FullyGridLayoutManager manager3 = new FullyGridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false);
         recyclerView3.setLayoutManager(manager3);
-        adapter3 = new GridImageAdapter(this, onAddPicClickListener3);
+        adapter3 = new GridImageAdapter(this, onAddPicClickListener3,b3);
         adapter3.setSelectMax(maxSelectNum);
         recyclerView3.setAdapter(adapter3);
         adapter3.setOnItemClickListener(new GridImageAdapter.OnItemClickListener() {
@@ -145,11 +160,9 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
         });
 
 
-        Intent intent = getIntent();
-        value = intent.getStringExtra("method");
+
         if(value.equals("update"))
         {
-            HiddenProjectBean hiddenProjectBean = (HiddenProjectBean) intent.getSerializableExtra("data");
             tvHiddenProjectName.setText(hiddenProjectBean.getProjectName());
             etHiddenWorkContent.setText(hiddenProjectBean.getWorkContent());
             etHiddenSupplyName.setText(hiddenProjectBean.getSupplyName());
@@ -159,11 +172,13 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
             if(!hiddenProjectBean.getBeforeWorkPhoto().equals("")&&hiddenProjectBean.getBeforeWorkPhoto()!=null) {
                 for(String s:hiddenProjectBean.getBeforeWorkPhotoStr())
                 {
-                    dowloadPic(s, hiddenProjectBean.getBeforeWorkPhoto());
+//                    dowloadPic(s, hiddenProjectBean.getBeforeWorkPhoto());
                     LocalMedia localMedia = new LocalMedia();
                     localMedia.setCompressed(false);
-                    localMedia.setPath(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getBeforeWorkPhoto());
-                    localMedia.setThumbnails(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getBeforeWorkPhoto());
+//                    localMedia.setPath(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getBeforeWorkPhoto());
+//                    localMedia.setThumbnails(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getBeforeWorkPhoto());
+                    localMedia.setPath(s);
+                    localMedia.setThumbnails(s);
                     localMedia.setNum(1);
                     localMedia.setPosition(1);
                     localMedia.setType(1);
@@ -175,11 +190,13 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
             if(!hiddenProjectBean.getWorkingPhoto().equals("")&&hiddenProjectBean.getWorkingPhoto()!=null) {
                 for(String s:hiddenProjectBean.getWorkingPhotoStr())
                 {
-                    dowloadPic(s, hiddenProjectBean.getWorkingPhoto());
+//                    dowloadPic(s, hiddenProjectBean.getWorkingPhoto());
                     LocalMedia localMedia = new LocalMedia();
                     localMedia.setCompressed(false);
-                    localMedia.setPath(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getWorkingPhoto());
-                    localMedia.setThumbnails(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getWorkingPhoto());
+//                    localMedia.setPath(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getWorkingPhoto());
+//                    localMedia.setThumbnails(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getWorkingPhoto());
+                    localMedia.setPath(s);
+                    localMedia.setThumbnails(s);
                     localMedia.setNum(1);
                     localMedia.setPosition(1);
                     localMedia.setType(1);
@@ -191,12 +208,14 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
 
             if(!hiddenProjectBean.getAfterWorkPhoto().equals("")&&hiddenProjectBean.getAfterWorkPhoto()!=null) {
                 for(String s:hiddenProjectBean.getAfterWorkPhotoStr()) {
-                    dowloadPic(s, hiddenProjectBean.getAfterWorkPhoto());
+//                    dowloadPic(s, hiddenProjectBean.getAfterWorkPhoto());
 
                     LocalMedia localMedia = new LocalMedia();
                     localMedia.setCompressed(false);
-                    localMedia.setPath(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getAfterWorkPhoto());
-                    localMedia.setThumbnails(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getAfterWorkPhoto());
+//                    localMedia.setPath(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getAfterWorkPhoto());
+//                    localMedia.setThumbnails(XDownloadUtil.IMAGE_SDCARD_MADER + hiddenProjectBean.getAfterWorkPhoto());
+                    localMedia.setPath(s);
+                    localMedia.setThumbnails(s);
                     localMedia.setNum(1);
                     localMedia.setPosition(1);
                     localMedia.setType(1);
@@ -212,23 +231,23 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
 
 
     //下载缓存图片
-    private void dowloadPic(String downloadUrl,String saveFileName)
-    {
-        XDownloadUtil.DownLoadFile(downloadUrl, saveFileName, new MyCallBack<File>() {
-
-            @Override
-            public void onSuccess(File result) {
-                super.onSuccess(result);
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                super.onError(ex, isOnCallback);
-                Toast.makeText(HiddenProjectAddActivity.this, "图片加载失败",Toast.LENGTH_SHORT).show();
-            }
-
-        });
-    }
+//    private void dowloadPic(String downloadUrl,String saveFileName)
+//    {
+//        XDownloadUtil.DownLoadFile(downloadUrl, saveFileName, new MyCallBack<File>() {
+//
+//            @Override
+//            public void onSuccess(File result) {
+//                super.onSuccess(result);
+//            }
+//
+//            @Override
+//            public void onError(Throwable ex, boolean isOnCallback) {
+//                super.onError(ex, isOnCallback);
+//                Toast.makeText(HiddenProjectAddActivity.this, "图片加载失败",Toast.LENGTH_SHORT).show();
+//            }
+//
+//        });
+//    }
 
 
 
@@ -240,7 +259,7 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
                     FunctionConfig config = new FunctionConfig();
                     config.setType(1);
                     config.setCopyMode(FunctionConfig.CROP_MODEL_1_1);
-                    config.setCompress(true);
+                    config.setCompress(false);
                     config.setEnablePixelCompress(true);
                     config.setEnableQualityCompress(true);
                     config.setMaxSelectNum(maxSelectNum);
@@ -263,10 +282,10 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
                     config.setCompressH(0);
                     // 先初始化参数配置，在启动相册
                     PictureConfig.init(config);
-                    PictureConfig.getPictureConfig().openPhoto(mContext, resultCallback1);
+//                    PictureConfig.getPictureConfig().openPhoto(mContext, resultCallback1);
 
                     // 只拍照
-                    //PictureConfig.getPictureConfig().startOpenCamera(mContext, resultCallback);
+                    PictureConfig.getPictureConfig().startOpenCamera(mContext, resultCallback1);
                     break;
                 case 1:
                     // 删除图片
@@ -283,7 +302,14 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
     private PictureConfig.OnSelectResultCallback resultCallback1 = new PictureConfig.OnSelectResultCallback() {
         @Override
         public void onSelectSuccess(List<LocalMedia> resultList) {
-            selectMedia1 = resultList;
+//            selectMedia1 = resultList;//选址图片的时候
+            if(resultList.size()>0)//只拍照的时候
+            {
+                for(LocalMedia localMedia:resultList)
+                {
+                    selectMedia1.add(localMedia);
+                }
+            }
             Log.i("callBack_result", selectMedia1.size() + "");
             if (selectMedia1 != null) {
                 adapter1.setList(selectMedia1);
@@ -301,7 +327,7 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
                     FunctionConfig config = new FunctionConfig();
                     config.setType(1);
                     config.setCopyMode(FunctionConfig.CROP_MODEL_1_1);
-                    config.setCompress(true);
+                    config.setCompress(false);
                     config.setEnablePixelCompress(true);
                     config.setEnableQualityCompress(true);
                     config.setMaxSelectNum(maxSelectNum);
@@ -324,10 +350,10 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
                     config.setCompressH(0);
                     // 先初始化参数配置，在启动相册
                     PictureConfig.init(config);
-                    PictureConfig.getPictureConfig().openPhoto(mContext, resultCallback2);
+//                    PictureConfig.getPictureConfig().openPhoto(mContext, resultCallback2);
 
                     // 只拍照
-                    //PictureConfig.getPictureConfig().startOpenCamera(mContext, resultCallback);
+                    PictureConfig.getPictureConfig().startOpenCamera(mContext, resultCallback2);
                     break;
                 case 1:
                     // 删除图片
@@ -344,7 +370,14 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
     private PictureConfig.OnSelectResultCallback resultCallback2 = new PictureConfig.OnSelectResultCallback() {
         @Override
         public void onSelectSuccess(List<LocalMedia> resultList) {
-            selectMedia2 = resultList;
+            //            selectMedia2 = resultList;//选址图片的时候
+            if(resultList.size()>0)//只拍照的时候
+            {
+                for(LocalMedia localMedia:resultList)
+                {
+                    selectMedia2.add(localMedia);
+                }
+            }
             Log.i("callBack_result", selectMedia2.size() + "");
             if (selectMedia2 != null) {
                 adapter2.setList(selectMedia2);
@@ -362,7 +395,7 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
                     FunctionConfig config = new FunctionConfig();
                     config.setType(1);
                     config.setCopyMode(FunctionConfig.CROP_MODEL_1_1);
-                    config.setCompress(true);
+                    config.setCompress(false);
                     config.setEnablePixelCompress(true);
                     config.setEnableQualityCompress(true);
                     config.setMaxSelectNum(maxSelectNum);
@@ -385,10 +418,10 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
                     config.setCompressH(0);
                     // 先初始化参数配置，在启动相册
                     PictureConfig.init(config);
-                    PictureConfig.getPictureConfig().openPhoto(mContext, resultCallback3);
+//                    PictureConfig.getPictureConfig().openPhoto(mContext, resultCallback3);
 
                     // 只拍照
-                    //PictureConfig.getPictureConfig().startOpenCamera(mContext, resultCallback);
+                    PictureConfig.getPictureConfig().startOpenCamera(mContext, resultCallback3);
                     break;
                 case 1:
                     // 删除图片
@@ -406,7 +439,14 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
     private PictureConfig.OnSelectResultCallback resultCallback3 = new PictureConfig.OnSelectResultCallback() {
         @Override
         public void onSelectSuccess(List<LocalMedia> resultList) {
-            selectMedia3 = resultList;
+            //            selectMedia3 = resultList;//选址图片的时候
+            if(resultList.size()>0)//只拍照的时候
+            {
+                for(LocalMedia localMedia:resultList)
+                {
+                    selectMedia3.add(localMedia);
+                }
+            }
             Log.i("callBack_result", selectMedia3.size() + "");
             if (selectMedia3 != null) {
                 adapter3.setList(selectMedia3);
@@ -419,62 +459,88 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
 
     private void post()
     {
-        if(value.equals("update")){//更新
-            if(selectMedia1.size()>0&&pic1>0) {//改变图了
-                hiddenPorjectPostBean.setBeforeWorkPhoto(PicBase64Util.encode(selectMedia1.get(0).getCompressPath(),20));
-            }
-            else if(selectMedia1.size()>0&&pic1==0) {//图没变
-                hiddenPorjectPostBean.setBeforeWorkPhoto(PicBase64Util.encode(selectMedia1.get(0).getPath(),100));
-            }
-            else
-            {
-                hiddenPorjectPostBean.setBeforeWorkPhoto("");
-            }
-            if(selectMedia2.size()>0&&pic2>0) {
-                hiddenPorjectPostBean.setWorkingPhoto(PicBase64Util.encode(selectMedia2.get(0).getCompressPath(),20));
-            }
-            else if(selectMedia2.size()>0&&pic2==0) {
-                hiddenPorjectPostBean.setWorkingPhoto(PicBase64Util.encode(selectMedia2.get(0).getPath(),100));
-            }
-            else
-            {
-                hiddenPorjectPostBean.setWorkingPhoto("");
-            }
-            if(selectMedia3.size()>0&&pic3>0) {
-                hiddenPorjectPostBean.setAfterWorkPhoto(PicBase64Util.encode(selectMedia3.get(0).getCompressPath(),20));
-            }
-            else if(selectMedia3.size()>0&&pic3==0) {
-                hiddenPorjectPostBean.setAfterWorkPhoto(PicBase64Util.encode(selectMedia3.get(0).getPath(),100));
-            }
-            else
-            {
-                hiddenPorjectPostBean.setAfterWorkPhoto("");
-            }
-        }
-        else
+        if(selectMedia1.size()>0&&pic1>0)
         {
-            if(selectMedia1.size()>0) {
-                hiddenPorjectPostBean.setBeforeWorkPhoto(PicBase64Util.encode(selectMedia1.get(0).getCompressPath(),20));
-            }
-            else
+            String[] str=new String[selectMedia1.size()];
+            for(int i=0;i<selectMedia1.size();i++)
             {
-                hiddenPorjectPostBean.setBeforeWorkPhoto("");
+                str[i]=PicBase64Util.encode(selectMedia1.get(i).getPath(),20);
             }
-            if(selectMedia2.size()>0) {
-                hiddenPorjectPostBean.setWorkingPhoto(PicBase64Util.encode(selectMedia2.get(0).getCompressPath(),20));
-            }
-            else
-            {
-                hiddenPorjectPostBean.setWorkingPhoto("");
-            }
-            if(selectMedia3.size()>0) {
-                hiddenPorjectPostBean.setAfterWorkPhoto(PicBase64Util.encode(selectMedia3.get(0).getCompressPath(),20));
-            }
-            else
-            {
-                hiddenPorjectPostBean.setAfterWorkPhoto("");
-            }
+            hiddenPorjectPostBean.setBeforeWorkPhoto(str);
+
         }
+        if(selectMedia2.size()>0&&pic2>0) {
+            String[] str=new String[selectMedia2.size()];
+            for(int i=0;i<selectMedia2.size();i++)
+            {
+                str[i]=PicBase64Util.encode(selectMedia2.get(i).getPath(),20);
+            }
+            hiddenPorjectPostBean.setWorkingPhoto(str);
+        }
+        if(selectMedia3.size()>0&&pic3>0) {
+            String[] str=new String[selectMedia3.size()];
+            for(int i=0;i<selectMedia3.size();i++)
+            {
+                str[i]=PicBase64Util.encode(selectMedia3.get(i).getPath(),20);
+            }
+            hiddenPorjectPostBean.setAfterWorkPhoto(str);
+        }
+//        if(value.equals("update")){//更新
+//            if(selectMedia1.size()>0&&pic1>0) {//改变图了
+//                hiddenPorjectPostBean.setBeforeWorkPhoto(PicBase64Util.encode(selectMedia1.get(0).getCompressPath(),20));
+//            }
+//            else if(selectMedia1.size()>0&&pic1==0) {//图没变
+//                hiddenPorjectPostBean.setBeforeWorkPhoto(PicBase64Util.encode(selectMedia1.get(0).getPath(),100));
+//            }
+//            else
+//            {
+//                hiddenPorjectPostBean.setBeforeWorkPhoto("");
+//            }
+//            if(selectMedia2.size()>0&&pic2>0) {
+//                hiddenPorjectPostBean.setWorkingPhoto(PicBase64Util.encode(selectMedia2.get(0).getCompressPath(),20));
+//            }
+//            else if(selectMedia2.size()>0&&pic2==0) {
+//                hiddenPorjectPostBean.setWorkingPhoto(PicBase64Util.encode(selectMedia2.get(0).getPath(),100));
+//            }
+//            else
+//            {
+//                hiddenPorjectPostBean.setWorkingPhoto("");
+//            }
+//            if(selectMedia3.size()>0&&pic3>0) {
+//                hiddenPorjectPostBean.setAfterWorkPhoto(PicBase64Util.encode(selectMedia3.get(0).getCompressPath(),20));
+//            }
+//            else if(selectMedia3.size()>0&&pic3==0) {
+//                hiddenPorjectPostBean.setAfterWorkPhoto(PicBase64Util.encode(selectMedia3.get(0).getPath(),100));
+//            }
+//            else
+//            {
+//                hiddenPorjectPostBean.setAfterWorkPhoto("");
+//            }
+//        }
+//        else
+//        {
+//            if(selectMedia1.size()>0) {
+//                hiddenPorjectPostBean.setBeforeWorkPhoto(PicBase64Util.encode(selectMedia1.get(0).getCompressPath(),20));
+//            }
+//            else
+//            {
+//                hiddenPorjectPostBean.setBeforeWorkPhoto("");
+//            }
+//            if(selectMedia2.size()>0) {
+//                hiddenPorjectPostBean.setWorkingPhoto(PicBase64Util.encode(selectMedia2.get(0).getCompressPath(),20));
+//            }
+//            else
+//            {
+//                hiddenPorjectPostBean.setWorkingPhoto("");
+//            }
+//            if(selectMedia3.size()>0) {
+//                hiddenPorjectPostBean.setAfterWorkPhoto(PicBase64Util.encode(selectMedia3.get(0).getCompressPath(),20));
+//            }
+//            else
+//            {
+//                hiddenPorjectPostBean.setAfterWorkPhoto("");
+//            }
+//        }
 
         hiddenPorjectPostBean.setSupplyName(etHiddenSupplyName.getText().toString());
         hiddenPorjectPostBean.setWorkContent(etHiddenWorkContent.getText().toString());

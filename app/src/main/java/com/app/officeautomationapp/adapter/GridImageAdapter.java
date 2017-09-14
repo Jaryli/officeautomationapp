@@ -30,6 +30,7 @@ public class GridImageAdapter extends
     private Context mContext;
     private List<LocalMedia> list = new ArrayList<>();
     private int selectMax = 9;
+    private boolean hasDel;
     /**
      * 点击添加图片跳转
      */
@@ -39,10 +40,11 @@ public class GridImageAdapter extends
         void onAddPicClick(int type, int position);
     }
 
-    public GridImageAdapter(Context context, onAddPicClickListener mOnAddPicClickListener) {
+    public GridImageAdapter(Context context, onAddPicClickListener mOnAddPicClickListener,boolean hasDel) {
         mInflater = LayoutInflater.from(context);
         this.mContext = context;
         this.mOnAddPicClickListener = mOnAddPicClickListener;
+        this.hasDel=hasDel;
     }
 
     public void setSelectMax(int selectMax) {
@@ -114,7 +116,6 @@ public class GridImageAdapter extends
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
         //少于8张，显示继续添加的图标
-
         if (getItemViewType(position) == TYPE_CAMERA) {
             viewHolder.mImg.setImageResource(R.mipmap.addimg_1x);
             viewHolder.mImg.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +125,10 @@ public class GridImageAdapter extends
                 }
             });
             viewHolder.ll_del.setVisibility(View.INVISIBLE);
+            if(hasDel)//老图片
+            {
+                viewHolder.mImg.setVisibility(View.INVISIBLE);
+            }
         } else {
             viewHolder.ll_del.setVisibility(View.VISIBLE);
             viewHolder.ll_del.setOnClickListener(new View.OnClickListener() {
@@ -132,20 +137,29 @@ public class GridImageAdapter extends
                     mOnAddPicClickListener.onAddPicClick(1, viewHolder.getAdapterPosition());
                 }
             });
+            if(hasDel)//老图片
+            {
+                viewHolder.ll_del.setVisibility(View.INVISIBLE);
+            }
             LocalMedia media = list.get(position);
             int type = media.getType();
             String path = "";
-            if (media.isCut() && !media.isCompressed()) {
-                // 裁剪过
-                path = media.getCutPath();
-            } else if (media.isCompressed() || (media.isCut() && media.isCompressed())) {
-                // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
-                path = media.getCompressPath();
-            } else {
-                // 原图
+            if(!hasDel)//老图片
+            {
+                if (media.isCut() && !media.isCompressed()) {
+                    // 裁剪过
+                    path = media.getCutPath();
+                } else if (media.isCompressed() || (media.isCut() && media.isCompressed())) {
+                    // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
+                    path = media.getCompressPath();
+                } else {
+                    // 原图
+                    path = media.getPath();
+                }
+            }
+            else {
                 path = media.getPath();
             }
-
             switch (type) {
                 case 1:
                     // 图片

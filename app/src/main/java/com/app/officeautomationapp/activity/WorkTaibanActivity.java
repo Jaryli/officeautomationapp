@@ -174,7 +174,7 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         FullyGridLayoutManager manager = new FullyGridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
-        adapter = new GridImageAdapter(this, onAddPicClickListener);
+        adapter = new GridImageAdapter(this, onAddPicClickListener,false);
         adapter.setSelectMax(maxSelectNum);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new GridImageAdapter.OnItemClickListener() {
