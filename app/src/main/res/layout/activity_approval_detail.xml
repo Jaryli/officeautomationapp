@@ -18,7 +18,7 @@
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginTop="15dp"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:id="@+id/iv_approval_back"
             android:background="@mipmap/icon_back"/>
@@ -26,7 +26,7 @@
         <View
             android:layout_width="1dip"
             android:layout_height="30dp"
-            android:layout_marginTop="14dp"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="50dp"
             android:background="@color/line"
             android:layout_gravity="center_vertical|center_horizontal"

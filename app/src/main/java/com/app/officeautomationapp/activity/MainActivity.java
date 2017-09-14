@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.WorkerThread;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
@@ -48,9 +50,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Button buttonMy;
 
     private RadioGroup radioGroup;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

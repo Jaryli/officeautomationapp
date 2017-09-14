@@ -11,15 +11,15 @@
     android:background="@color/titleColor"
     android:id="@+id/top">
 
-    <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:layout_alignParentLeft="true"
-    android:text="我的"
-    android:textSize="@dimen/title_text_size"
-    android:textColor="@color/black"
-    android:gravity="center_vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"/>
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:text="我的"-->
+    <!--android:textSize="@dimen/title_text_size"-->
+    <!--android:textColor="@color/black"-->
+    <!--android:gravity="center_vertical"-->
+    <!--android:paddingLeft="@dimen/activity_horizontal_margin"/>-->
 
     <!--<TextView-->
     <!--android:layout_width="wrap_content"-->
@@ -31,17 +31,17 @@
     <!--android:gravity="center_vertical"-->
     <!--android:paddingRight="@dimen/activity_horizontal_margin"/>-->
 
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:text="@string/app_name"-->
-    <!--android:textSize="@dimen/title_text_size"-->
-    <!--android:textColor="@color/colorPrimaryDark"-->
-    <!--android:gravity="center_vertical"-->
-    <!--android:layout_gravity="center_horizontal"-->
-    <!--android:paddingLeft="@dimen/activity_horizontal_margin"-->
-    <!--android:layout_alignParentTop="true"-->
-    <!--android:layout_centerHorizontal="true" />-->
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:text="个人中心"
+    android:textSize="@dimen/title_text_size"
+    android:textColor="@color/colorPrimaryDark"
+    android:gravity="center_vertical"
+    android:layout_gravity="center_horizontal"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
     <View

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -288,22 +288,19 @@
 
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/ll1"
         android:id="@+id/viewPager"
         ></android.support.v4.view.ViewPager>
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#00FFFFFF"
-        >
+
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_alignParentBottom="true"
             android:id="@+id/ll1">
 
             <View
@@ -315,8 +312,8 @@
                 android:id="@+id/mainMenu"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
                 android:orientation="horizontal">
 
                 <!--<RadioButton-->
@@ -382,25 +379,7 @@
                     android:textColor="@color/tab_selector_tv_color" />
             </RadioGroup>
         </RelativeLayout>
-        <com.fangxu.allangleexpandablebutton.AllAngleExpandableButton
-            android:id="@+id/button_expandable_30_150"
-            android:layout_above="@+id/v2"
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:aebAnimDurationMillis="175"
-            app:aebButtonElevation="4dp"
-            app:aebButtonGapDp="45dp"
-            app:aebStartAngleDegree="15"
-            app:aebEndAngleDegree="165"
-            app:aebIsSelectionMode="false"
-            app:aebMainButtonRotateAnimDurationMillis="300"
-            app:aebMainButtonRotateDegree="-135"
-            app:aebMainButtonSizeDp="45dp"
-            app:aebMaskBackgroundColor="@color/transparent"
-            app:aebRippleEffect="true"
-            app:aebBlurBackground="true"
-            app:aebSubButtonSizeDp="45dp"/>
+
 
 
         <View
@@ -409,9 +388,27 @@
             android:id="@+id/v2"
             android:layout_below="@+id/ll1">
         </View>
-    </RelativeLayout>
 
 
+    <com.fangxu.allangleexpandablebutton.AllAngleExpandableButton
+        android:id="@+id/button_expandable_30_150"
+        android:layout_above="@+id/v2"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:aebAnimDurationMillis="175"
+        app:aebButtonElevation="4dp"
+        app:aebButtonGapDp="45dp"
+        app:aebStartAngleDegree="15"
+        app:aebEndAngleDegree="165"
+        app:aebIsSelectionMode="false"
+        app:aebMainButtonRotateAnimDurationMillis="300"
+        app:aebMainButtonRotateDegree="-135"
+        app:aebMainButtonSizeDp="45dp"
+        app:aebMaskBackgroundColor="@color/transparent"
+        app:aebRippleEffect="true"
+        app:aebBlurBackground="true"
+        app:aebSubButtonSizeDp="45dp"/>
 
 
-</LinearLayout>
+</RelativeLayout>
