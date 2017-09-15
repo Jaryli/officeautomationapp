@@ -63,12 +63,13 @@
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:src="@mipmap/icon_sun"/>
+                            android:id="@+id/iv_time"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_alignParentLeft="true"
                             android:gravity="center_vertical"
+                            android:id="@+id/tv_welcome"
                             android:paddingLeft="8dp"
                             android:text="早上好，管理员"
                             android:textColor="#8a8a8a"

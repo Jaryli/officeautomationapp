@@ -22,9 +22,9 @@ public abstract class XutilImageOptions {
                 //setCrop(true).setSize(200,200) //设置大小
                 //.setAnimation(animation) //设置动画
                 //.setFailureDrawable(Drawable failureDrawable) //设置加载失败的动画
-                .setFailureDrawableId(R.mipmap.default_image) //以资源id设置加载失败的动画
+                .setFailureDrawableId(R.mipmap.default_image_circle) //以资源id设置加载失败的动画
                 //.setLoadingDrawable(Drawable loadingDrawable) //设置加载中的动画
-                .setLoadingDrawableId(R.mipmap.default_image) //以资源id设置加载中的动画
+                .setLoadingDrawableId(R.mipmap.default_image_circle) //以资源id设置加载中的动画
                 //.setIgnoreGif(false) //忽略Gif图片
                 //.setParamsBuilder(ParamsBuilder paramsBuilder) //在网络请求中添加一些参数
                 //.setRaduis(int raduis) //设置拐角弧度

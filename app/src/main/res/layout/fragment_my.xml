@@ -72,6 +72,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/tv_username"
                     android:text="王小川"
                     android:textStyle="bold"
                     android:textColor="#000000"
@@ -81,6 +82,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/tv_department"
                     android:text="市政园林"
                     android:layout_marginTop="30dp"
                     android:layout_marginLeft="25dp"
@@ -112,6 +114,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:id="@+id/rl_userinfo"
         android:gravity="center_vertical|center"
         android:background="@color/white">
         <ImageView

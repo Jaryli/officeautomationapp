@@ -50,11 +50,7 @@
         <activity android:name="com.app.officeautomationapp.activity.AttachActivity" />
         <activity android:name="com.app.officeautomationapp.activity.MyTaskHandleActivity" />
         <activity android:name="com.app.officeautomationapp.activity.MyTaskStartActivity" />
-
-
-
-
-
+        <activity android:name="com.app.officeautomationapp.activity.WebViewActivity" />
 
 
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
@@ -26,12 +28,14 @@ import com.app.officeautomationapp.activity.MyTaskHandleActivity;
 import com.app.officeautomationapp.activity.ProjectItemActivity;
 import com.app.officeautomationapp.activity.ReceiveThingsActivity;
 import com.app.officeautomationapp.activity.StartWorkActivity;
+import com.app.officeautomationapp.activity.WebViewActivity;
 import com.app.officeautomationapp.activity.WorkQingjiaActivity;
 import com.app.officeautomationapp.activity.WorkTaibanActivity;
 import com.app.officeautomationapp.activity.WorkYonggongActivity;
 import com.app.officeautomationapp.activity.WorkYongzhangActivity;
 import com.app.officeautomationapp.adapter.MyGridAdapter;
 import com.app.officeautomationapp.bean.ProjectItemBean;
+import com.app.officeautomationapp.bean.UserInfoBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
@@ -49,6 +53,7 @@ import org.xutils.x;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -73,7 +78,8 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
     private Button btnReceiveThings;
     private Button btnStartWork;
     private Button btnMessage;
-
+    private ImageView iv_time;
+    private TextView tv_welcome;
 
     private LinearLayout llMessage;
     private LinearLayout llManageItem;
@@ -115,9 +121,47 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
 //        btnMessage.setOnClickListener(this);
         this.Tview=view;
 //        initGV(view);
+
+        iv_time=(ImageView)view.findViewById(R.id.iv_time);
+        if(getDate()==3)
+        {
+            iv_time.setBackgroundResource(R.mipmap.icon_moon);
+        }
+        else
+        {
+            iv_time.setBackgroundResource(R.mipmap.icon_sun);
+        }
+        tv_welcome=(TextView)view.findViewById(R.id.tv_welcome);
+        UserInfoBean userInfoBean= (UserInfoBean) SharedPreferencesUtile.readObject(getContext().getApplicationContext(),"userInfo");
+        tv_welcome.setText(getDate()==0?"早上好，"+userInfoBean.getUserTrueName():(getDate()==1?"中午好，"+userInfoBean.getUserTrueName():(getDate()==2?"下午好，"+userInfoBean.getUserTrueName():"晚上好，"+userInfoBean.getUserTrueName())));
         return view;
     }
 
+    //日期
+    public int getDate() {
+        long times=System.currentTimeMillis();
+        final Calendar mCalendar= Calendar.getInstance();
+        mCalendar.setTimeInMillis(times);
+        int time=mCalendar.get(Calendar.HOUR_OF_DAY);
+        if(time>=6&&time<11)//早上
+        {
+            return 0;
+        }
+        else if(time>=11&&time<14)//中午
+        {
+            return 1;
+        }
+        else if(time>=14&&time<18)//下午
+        {
+            return 2;
+        }
+        else
+        {
+            //晚上
+            return 3;
+        }
+
+    }
 
     private void initGV(View view)
     {
@@ -460,6 +504,7 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
 
     private void clickBtn(ArrayList<ProjectItemBean> list,int position)
     {
+        Intent intent=new Intent();
         int a=list.get(position).getMenuType();
         if(5==a)//("公告通知".equals(str))
         {
@@ -506,12 +551,12 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
         {
             startActivity(new Intent(getActivity(), MyTaskHandleActivity.class));
         }
-        else if(22==a)//("苗木".equals(str))
+        else if(16==a)//("苗木".equals(str))
         {
             Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
         }
 
-        else if(23==a)//("土建".equals(str))
+        else if(17==a)//("土建".equals(str))
         {
             Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
         }
@@ -527,19 +572,34 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
         }
         else if(20==a)//("点工查询".equals(str))
         {
-            Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
+//            WebViewActivity
+            intent=new Intent(getContext(),WebViewActivity.class);
+            intent.putExtra("title","点工查询");
+            intent.putExtra("url","http://wap.baidu.com");
+            startActivity(intent);
+
         }
         else if(21==a)//("点工台班".equals(str))
         {
-            Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
+            intent=new Intent(getContext(),WebViewActivity.class);
+            intent.putExtra("title","点工台班");
+            intent.putExtra("url","http://wap.baidu.com");
+            startActivity(intent);
         }
         else if(22==a)//("苗木明细".equals(str))
         {
-            Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
+            intent=new Intent(getContext(),WebViewActivity.class);
+            intent.putExtra("title","苗木明细");
+            intent.putExtra("url","http://wap.baidu.com");
+            startActivity(intent);
         }
         else if(23==a)//("土建明细".equals(str))
         {
-            Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
+            intent=new Intent(getContext(),WebViewActivity.class);
+            intent.putExtra("title","土建明细");
+            intent.putExtra("url","http://wap.baidu.com");
+            startActivity(intent);
         }
         else if(14==a)//("联系人".equals(str))
         {
