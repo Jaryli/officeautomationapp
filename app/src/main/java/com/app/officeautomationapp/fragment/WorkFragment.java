@@ -113,7 +113,7 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
 //        btnMessage=(Button)view.findViewById(R.id.btn_message);
 //        btnMessage.setOnClickListener(this);
         this.Tview=view;
-//        initGV(view);
+        initGV(view);
         return view;
     }
 
@@ -544,9 +544,9 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
         }
     }
 
-    @Override
-    public void onResume() {
-        initGV(Tview);
-        super.onResume();
-    }
+//    @Override
+//    public void onResume() {
+//        initGV(Tview);
+//        super.onResume();
+//    }
 }
