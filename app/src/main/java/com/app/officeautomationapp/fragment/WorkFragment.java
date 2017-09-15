@@ -81,9 +81,10 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
     private MyGridView gv1;
     private MyGridView gv2;
     private MyGridView gv3;
-    private ArrayList<ProjectItemBean> list1;
-    private ArrayList<ProjectItemBean> list2;
-    private ArrayList<ProjectItemBean> list3;
+    private ArrayList<ProjectItemBean> list1=new ArrayList<ProjectItemBean>();
+    private ArrayList<ProjectItemBean> list2=new ArrayList<ProjectItemBean>();
+    private ArrayList<ProjectItemBean> list3=new ArrayList<ProjectItemBean>();
+
     private View Tview;
     private UserDto userDto;
 
@@ -113,16 +114,19 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
 //        btnMessage=(Button)view.findViewById(R.id.btn_message);
 //        btnMessage.setOnClickListener(this);
         this.Tview=view;
-        initGV(view);
+//        initGV(view);
         return view;
     }
 
 
     private void initGV(View view)
     {
-        list1=new ArrayList<ProjectItemBean>();
-        list2=new ArrayList<ProjectItemBean>();
-        list3=new ArrayList<ProjectItemBean>();
+
+        final ArrayList<ProjectItemBean> list11=new ArrayList<ProjectItemBean>();
+        final ArrayList<ProjectItemBean> list22=new ArrayList<ProjectItemBean>();
+        final ArrayList<ProjectItemBean> list33=new ArrayList<ProjectItemBean>();
+
+
         //获得GridView实例
         gv1 = (MyGridView)view.findViewById(R.id.mygridview1);
         gv2 = (MyGridView)view.findViewById(R.id.mygridview2);
@@ -160,15 +164,18 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
                             for(int i=0;i<list.size();i++)
                             {
                                 if(list.get(i).getMenuCate()==1&&list.get(i).getIsIndex()==1) {
-                                    list1.add(list.get(i));
+                                    list11.add(list.get(i));
                                 }
                                 else if(list.get(i).getMenuCate()==2&&list.get(i).getIsIndex()==1) {
-                                    list2.add(list.get(i));
+                                    list22.add(list.get(i));
                                 }
                                 else if(list.get(i).getMenuCate()==3&&list.get(i).getIsIndex()==1) {
-                                    list3.add(list.get(i));
+                                    list33.add(list.get(i));
                                 }
                             }
+                            list1=list11;
+                            list2=list22;
+                            list3=list33;
                             if(list1.size()>0)
                             {
                                 sortList(list1);
@@ -544,9 +551,9 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
         }
     }
 
-//    @Override
-//    public void onResume() {
-//        initGV(Tview);
-//        super.onResume();
-//    }
+    @Override
+    public void onResume() {
+        initGV(Tview);
+        super.onResume();
+    }
 }
