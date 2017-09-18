@@ -576,7 +576,7 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
 //            WebViewActivity
             intent=new Intent(getContext(),WebViewActivity.class);
             intent.putExtra("title","点工查询");
-            intent.putExtra("url","http://wap.baidu.com");
+            intent.putExtra("url",Constants.DIANGONG_URL+userDto.getUserId());
             startActivity(intent);
 
         }
@@ -584,21 +584,21 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
         {
             intent=new Intent(getContext(),WebViewActivity.class);
             intent.putExtra("title","点工台班");
-            intent.putExtra("url","http://wap.baidu.com");
+            intent.putExtra("url",Constants.TAIBAN_URL+userDto.getUserId());
             startActivity(intent);
         }
         else if(22==a)//("苗木明细".equals(str))
         {
             intent=new Intent(getContext(),WebViewActivity.class);
             intent.putExtra("title","苗木明细");
-            intent.putExtra("url","http://wap.baidu.com");
+            intent.putExtra("url",Constants.MIAOMU_URL+userDto.getUserId());
             startActivity(intent);
         }
         else if(23==a)//("土建明细".equals(str))
         {
             intent=new Intent(getContext(),WebViewActivity.class);
             intent.putExtra("title","土建明细");
-            intent.putExtra("url","http://wap.baidu.com");
+            intent.putExtra("url",Constants.TUJIAN_URL+userDto.getUserId());
             startActivity(intent);
         }
         else if(14==a)//("联系人".equals(str))

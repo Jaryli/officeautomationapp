@@ -96,4 +96,20 @@ public class Constants {
 
     public final static String PublishTask =address+"/api/V1/Task/PublishTask";//任务发起
 
+
+
+    //点工查询url：
+    public final static String DIANGONG_URL=address+"/Home/JobList?userId=";
+
+    //台班查询url：
+    public final static String TAIBAN_URL=address+"/Home/MachineList?userId=";
+
+    //苗木明细url：
+    public final static String MIAOMU_URL=address+"/Home/TreeCheckList?userId=";
+
+    //土建明细url：
+    public final static String TUJIAN_URL=address+"/Home/CivilCheckList?userId=";
+
+
+
 }

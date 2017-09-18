@@ -1,7 +1,9 @@
 package com.app.officeautomationapp.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,15 +21,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
-import com.app.officeautomationapp.activity.WorkQingjiaActivity;
-import com.app.officeautomationapp.adapter.GridImageAdapter;
 import com.app.officeautomationapp.bean.UpdatePhotoPostBean;
 import com.app.officeautomationapp.bean.UserInfoBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
+import com.app.officeautomationapp.util.CacheUtils;
+import com.app.officeautomationapp.util.CleanUtils;
 import com.app.officeautomationapp.util.PicBase64Util;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
-import com.app.officeautomationapp.util.StringUtils;
 import com.app.officeautomationapp.view.RoundImageView;
 import com.app.officeautomationapp.view.XutilImageOptions;
 import com.google.gson.Gson;
@@ -38,9 +40,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
-import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +59,9 @@ public class MyFragment extends Fragment implements View.OnClickListener{
     ProgressDialog progressDialog;
     public static final int UPDATE_PHOTO = 1;
     private String photoUrl;
+
+    private RelativeLayout rl_cache;
+    private TextView tv_cache;
 
     @Nullable
     @Override
@@ -78,6 +83,11 @@ public class MyFragment extends Fragment implements View.OnClickListener{
         x.image().bind(ivMyPhoto,userInfoBean.getPhotoUrl(), XutilImageOptions.getCommonOptions());
         ivMyPhoto.setOnClickListener(this);
         rl_userinfo=(RelativeLayout)getActivity().findViewById(R.id.rl_userinfo);
+
+        rl_cache=(RelativeLayout)view.findViewById(R.id.rl_cache);
+        rl_cache.setOnClickListener(this);
+        tv_cache=(TextView)view.findViewById(R.id.tv_cache);
+        caculateCacheSize();
     }
     //创建一个Handler
     private Handler handler = new Handler() {
@@ -90,6 +100,12 @@ public class MyFragment extends Fragment implements View.OnClickListener{
                     {
                         x.image().bind(ivMyPhoto,Constants.IMG_PATH+photoUrl, XutilImageOptions.getCommonOptions());
                     }
+                    break;
+                case CLEAN_FAIL:
+                    Toast.makeText(getActivity(),"清除失败",Toast.LENGTH_SHORT).show();
+                    break;
+                case CLEAN_SUC:
+                    Toast.makeText(getActivity(),"清除成功",Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     break;
@@ -239,6 +255,131 @@ public class MyFragment extends Fragment implements View.OnClickListener{
         });
     }
 
+
+    //------****** 缓存相关****----------
+    private final int CLEAN_SUC=1001;
+    private final int CLEAN_FAIL=1002;
+    private void onClickCleanCache() {
+        getConfirmDialog(getActivity(), "是否清空缓存?", new DialogInterface.OnClickListener
+                () {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                clearAppCache();
+                tv_cache.setText("0KB");
+            }
+        }).show();
+    }
+    public static AlertDialog.Builder getConfirmDialog(Context context, String message, DialogInterface.OnClickListener onClickListener) {
+        AlertDialog.Builder builder = getDialog(context);
+        builder.setMessage(Html.fromHtml(message));
+        builder.setPositiveButton("确定", onClickListener);
+        builder.setNegativeButton("取消", null);
+        return builder;
+    }
+    public static AlertDialog.Builder getDialog(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        return builder;
+    }
+
+
+    private CacheUtils mCacheUtils1;
+    private CacheUtils mCacheUtils2;
+    String  cachedir=Environment.getExternalStorageDirectory()+ "/oa/";
+
+    /**
+     * 计算缓存的大小
+     */
+    private void caculateCacheSize() {
+        long fileSize = 0;
+        String cacheSize = "0KB";
+//        File filesDir = getActivity().getFilesDir();
+//        File cacheDir = getActivity().getCacheDir();
+
+        //缓存
+//        mCacheUtils1= CacheUtils.getInstance(filesDir);
+//        mCacheUtils2= CacheUtils.getInstance(cacheDir);
+//        fileSize += mCacheUtils1.getCacheSize();
+//        fileSize += mCacheUtils2.getCacheSize();
+        fileSize += getDirSize(new File(cachedir));
+        if (fileSize > 0)
+            cacheSize = formatFileSize(fileSize);
+        tv_cache.setText(cacheSize);
+    }
+
+    /**
+     * 获取目录文件大小
+     *
+     * @param dir
+     * @return
+     */
+    public static long getDirSize(File dir) {
+        if (dir == null) {
+            return 0;
+        }
+        if (!dir.isDirectory()) {
+            return 0;
+        }
+        long dirSize = 0;
+        File[] files = dir.listFiles();
+        for (File file : files) {
+            if (file.isFile()) {
+                dirSize += file.length();
+            } else if (file.isDirectory()) {
+                dirSize += file.length();
+                dirSize += getDirSize(file); // 递归调用继续统计
+            }
+        }
+        return dirSize;
+    }
+
+    /**
+     * 转换文件大小
+     *
+     * @param fileS
+     * @return B/KB/MB/GB
+     */
+    public static String formatFileSize(long fileS) {
+        java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
+        String fileSizeString = "";
+        if (fileS < 1024) {
+            fileSizeString = df.format((double) fileS) + "B";
+        } else if (fileS < 1048576) {
+            fileSizeString = df.format((double) fileS / 1024) + "KB";
+        } else if (fileS < 1073741824) {
+            fileSizeString = df.format((double) fileS / 1048576) + "MB";
+        } else {
+            fileSizeString = df.format((double) fileS / 1073741824) + "G";
+        }
+        return fileSizeString;
+    }
+
+    /**
+     * 清除app缓存
+     *
+     * @param
+     */
+    public void clearAppCache() {
+
+        new Thread() {
+            @Override
+            public void run() {
+                Message msg = new Message();
+                try {
+//                    mCacheUtils1.clear();
+//                    mCacheUtils2.clear();
+                    CleanUtils.cleanCustomCache(cachedir);
+                    msg.what = CLEAN_SUC;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    msg.what = CLEAN_FAIL;
+                }
+                handler.sendMessage(msg);
+            }
+        }.start();
+    }
+
+
+
     @Override
     public void onClick(View view) {
         switch (view.getId())
@@ -267,6 +408,9 @@ public class MyFragment extends Fragment implements View.OnClickListener{
                 // 显示
                 normalDialog.show();
 
+                break;
+            case R.id.rl_cache:
+                onClickCleanCache();
                 break;
             default:
                 break;
