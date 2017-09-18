@@ -34,6 +34,7 @@ import com.app.officeautomationapp.activity.WorkTaibanActivity;
 import com.app.officeautomationapp.activity.WorkYonggongActivity;
 import com.app.officeautomationapp.activity.WorkYongzhangActivity;
 import com.app.officeautomationapp.adapter.MyGridAdapter;
+import com.app.officeautomationapp.bean.BannerBean;
 import com.app.officeautomationapp.bean.ProjectItemBean;
 import com.app.officeautomationapp.bean.UserInfoBean;
 import com.app.officeautomationapp.common.Constants;
@@ -379,26 +380,91 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
 
 
     //work header图片轮播 strat
-    private void rollPagerViewSet(View view) {
-        rollPagerView= (RollPagerView) view.findViewById(R.id.rollViewpager);//获取对应控件
-        rollPagerView.setPlayDelay(3000);//*播放间隔
-        rollPagerView.setAnimationDurtion(500);//透明度
-        rollPagerView.setAdapter(new rollViewpagerAdapter());//配置适配器
+    private void rollPagerViewSet(final View view) {
+        x.Ext.init(getActivity().getApplication());//xutils初始化
+        //获取轮播图
+        RequestParams params = new RequestParams(Constants.GetBanner);
+        params.addHeader("access_token", userDto.getAccessToken());
+        Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.e("JAVA", "onSuccess result:" + result);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int re=jsonObject.getInt("result");
+                    if(re!=1)
+                    {
+                        Toast.makeText(getActivity(),jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    else
+                    {
+                        if(jsonObject.get("data")==null||jsonObject.get("data").equals("")||jsonObject.get("data").toString().equals("[]"))
+                        {
+                            Toast.makeText(getActivity(),"没有数据",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        else
+                        {
+                            Gson gson = new Gson();
+                            List<BannerBean> list=new ArrayList<BannerBean>();
+                            Type type=new TypeToken<List<BannerBean>>(){}.getType();
+                            list=gson.fromJson(jsonObject.get("data").toString(), type);
+                            if(list.size()>0)
+                            {
+                                imageRes=new String[list.size()];
+                                for(int i=0;i<list.size();i++)
+                                {
+                                    imageRes[i]=list.get(0).getImageUrl();
+                                }
+                            }
+                            rollPagerView= (RollPagerView) view.findViewById(R.id.rollViewpager);//获取对应控件
+                            rollPagerView.setPlayDelay(3000);//*播放间隔
+                            rollPagerView.setAnimationDurtion(500);//透明度
+                            rollPagerView.setAdapter(new rollViewpagerAdapter());//配置适配器
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            //请求异常后的回调方法
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Log.e("JAVA", "onError:" + ex);
+                Toast.makeText(getActivity(),"网络或服务器异常！",Toast.LENGTH_SHORT).show();
+            }
+            //主动调用取消请求的回调方法
+            @Override
+            public void onCancelled(CancelledException cex) {
+                Log.e("JAVA", "onCancelled:" + cex);
+
+            }
+            @Override
+            public void onFinished() {
+                Log.e("JAVA", "onFinished:" + "");
+            }
+        });
+
+
 
     }
-
+    private String[] imageRes;
 
     private class rollViewpagerAdapter extends StaticPagerAdapter {
 
-        private int[] res={R.mipmap.timg1
-                ,R.mipmap.timg2,
-                R.mipmap.timg3,
-                R.mipmap.timg4};
+//        private int[] res={R.mipmap.timg1
+//                ,R.mipmap.timg2,
+//                R.mipmap.timg3,
+//                R.mipmap.timg4};
+
+
 
         @Override
         public View getView(ViewGroup container, int position) {
             ImageView imageView=new ImageView(container.getContext());
-            imageView.setImageResource(res[position]);
+//            imageView.setImageResource(res[position]);
+            x.image().bind(imageView,imageRes[position]);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -407,7 +473,7 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
 
         @Override
         public int getCount() {
-            return res.length;
+            return imageRes.length;
         }
     }
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -45,6 +46,25 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         etPassword = (EditText) findViewById(R.id.etPassword);
         etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
         loginButton.setOnClickListener(this);
+    }
+
+    // 捕获返回键的方法1
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            // 按下BACK，同时没有重复
+            ActivityCollector.finishAll();//退出应用
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
+
+    // 捕获返回键的方法2
+    @Override
+    public void onBackPressed() {
+        ActivityCollector.finishAll();//退出应用
+        super.onBackPressed();
     }
 
 

@@ -12,6 +12,8 @@ public class Constants {
 
     public final static String login=address+"/api/V1/Login/Login";//登录
 
+    public final static String GetBanner=address+"/api/V1/Sys/GetBanner";//获取banner信息
+
     public final static String UpdatePhoto=address+"/api/V1/User/UpdatePhoto";//更新头像
 
     public final static String  GetUserInfo=address+"/api/V1/User/GetUserInfo";//获取我的资料

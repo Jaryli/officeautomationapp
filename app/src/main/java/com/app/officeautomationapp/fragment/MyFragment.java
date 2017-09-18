@@ -3,6 +3,7 @@ package com.app.officeautomationapp.fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
@@ -21,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
+import com.app.officeautomationapp.activity.ManageActivity;
+import com.app.officeautomationapp.activity.UserinfoActivity;
 import com.app.officeautomationapp.bean.UpdatePhotoPostBean;
 import com.app.officeautomationapp.bean.UserInfoBean;
 import com.app.officeautomationapp.common.Constants;
@@ -55,6 +58,8 @@ public class MyFragment extends Fragment implements View.OnClickListener{
     private TextView tv_username;
     private TextView tv_department;
     RelativeLayout rl_userinfo;
+    RelativeLayout rl_password;
+    RelativeLayout rl_manage;
     private UserDto userDto;
     ProgressDialog progressDialog;
     public static final int UPDATE_PHOTO = 1;
@@ -82,8 +87,12 @@ public class MyFragment extends Fragment implements View.OnClickListener{
         ivMyPhoto=(RoundImageView)view.findViewById(R.id.iv_my_photo);
         x.image().bind(ivMyPhoto,userInfoBean.getPhotoUrl(), XutilImageOptions.getCommonOptions());
         ivMyPhoto.setOnClickListener(this);
-        rl_userinfo=(RelativeLayout)getActivity().findViewById(R.id.rl_userinfo);
-
+        rl_userinfo=(RelativeLayout)view.findViewById(R.id.rl_userinfo);
+        rl_userinfo.setOnClickListener(this);
+        rl_password=(RelativeLayout)view.findViewById(R.id.rl_password);
+        rl_password.setOnClickListener(this);
+        rl_manage=(RelativeLayout)view.findViewById(R.id.rl_manage);
+        rl_manage.setOnClickListener(this);
         rl_cache=(RelativeLayout)view.findViewById(R.id.rl_cache);
         rl_cache.setOnClickListener(this);
         tv_cache=(TextView)view.findViewById(R.id.tv_cache);
@@ -385,7 +394,13 @@ public class MyFragment extends Fragment implements View.OnClickListener{
         switch (view.getId())
         {
             case R.id.rl_userinfo:
-
+                startActivity(new Intent(getActivity(),UserinfoActivity.class));
+                break;
+            case R.id.rl_password:
+                Toast.makeText(getActivity(),"暂未开放!",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.rl_manage:
+                startActivity(new Intent(getActivity(), ManageActivity.class));
                 break;
             case R.id.iv_my_photo:
                 AlertDialog.Builder normalDialog = new AlertDialog.Builder(getActivity());
