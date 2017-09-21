@@ -97,7 +97,7 @@
                     android:layout_centerVertical="true"
                     android:layout_margin="10dp"
                     android:layout_width="30dp"
-                    android:background="@mipmap/icon_great"
+                    android:background="@mipmap/icon_great_64"
                     android:layout_height="30dp" />
             </RelativeLayout>
             <View
@@ -133,7 +133,7 @@
                     android:layout_centerVertical="true"
                     android:layout_margin="10dp"
                     android:layout_width="30dp"
-                    android:background="@mipmap/icon_great"
+                    android:background="@mipmap/icon_great_64"
                     android:layout_height="30dp" />
             </RelativeLayout>
             <View
@@ -169,7 +169,7 @@
                     android:layout_centerVertical="true"
                     android:layout_margin="10dp"
                     android:layout_width="30dp"
-                    android:background="@mipmap/icon_great"
+                    android:background="@mipmap/icon_great_64"
                     android:layout_height="30dp" />
             </RelativeLayout>
             <View
@@ -205,7 +205,7 @@
                     android:layout_centerVertical="true"
                     android:layout_margin="10dp"
                     android:layout_width="30dp"
-                    android:background="@mipmap/icon_great"
+                    android:background="@mipmap/icon_great_64"
                     android:layout_height="30dp" />
             </RelativeLayout>
             <View
@@ -241,7 +241,7 @@
                     android:layout_centerVertical="true"
                     android:layout_margin="10dp"
                     android:layout_width="30dp"
-                    android:background="@mipmap/icon_great"
+                    android:background="@mipmap/icon_great_64"
                     android:layout_height="30dp" />
             </RelativeLayout>
             <View
@@ -278,7 +278,7 @@
                     android:layout_centerVertical="true"
                     android:layout_margin="10dp"
                     android:layout_width="30dp"
-                    android:background="@mipmap/icon_great"
+                    android:background="@mipmap/icon_great_64"
                     android:layout_height="30dp" />
             </RelativeLayout>
             <View
