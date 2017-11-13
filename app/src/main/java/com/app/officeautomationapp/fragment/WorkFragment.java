@@ -134,7 +134,8 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
         }
         tv_welcome=(TextView)view.findViewById(R.id.tv_welcome);
         UserInfoBean userInfoBean= (UserInfoBean) SharedPreferencesUtile.readObject(getContext().getApplicationContext(),"userInfo");
-        tv_welcome.setText(getDate()==0?"早上好，"+userInfoBean.getUserTrueName():(getDate()==1?"中午好，"+userInfoBean.getUserTrueName():(getDate()==2?"下午好，"+userInfoBean.getUserTrueName():"晚上好，"+userInfoBean.getUserTrueName())));
+        String trueName=userInfoBean.getUserTrueName()==null?"":userInfoBean.getUserTrueName();
+        tv_welcome.setText(getDate()==0?"早上好，"+trueName:(getDate()==1?"中午好，"+trueName:(getDate()==2?"下午好，"+trueName:"晚上好，"+trueName)));
         return view;
     }
 

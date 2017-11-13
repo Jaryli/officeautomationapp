@@ -46,6 +46,7 @@ dependencies {
     compile 'com.baoyz.swipemenulistview:library:1.3.0'
     compile 'com.gjiazhe:wavesidebar:1.3'
     compile 'com.bm.photoview:library:1.4.1'
+    compile'com.ramotion.foldingcell:folding-cell:1.2.1'
 //    compile 'com.github.mirrajabi:search-dialog:1.0'
 //    compile 'com.github.MdFarhanRaja:SearchableSpinner:1.2'
 }
