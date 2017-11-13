@@ -6,7 +6,8 @@ package com.app.officeautomationapp.common;
 
 public class Constants {
     public static final String ip="http://101.132.162.181";
-    public static final String port="89";
+//    public static final String port="89";//正式环境
+    public static final String port="8083";//测试环境
 
     public final static String address=ip+":"+port;
 

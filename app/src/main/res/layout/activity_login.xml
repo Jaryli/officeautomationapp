@@ -57,7 +57,7 @@
         android:layout_below="@+id/top"
         android:orientation="vertical">
 
-        <!--用户名密码-->
+        <!--用户名密码admin12-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/username">
@@ -79,7 +79,7 @@
                 android:layout_height="match_parent"
                 android:layout_toRightOf="@+id/tvUserName"
                 android:hint="请输入用户名"
-                android:text="admin12"
+                android:text=""
                 android:singleLine="true"
                 android:background="@color/transparent"
                 android:textColorHint="@color/edit_hint_color"
@@ -96,7 +96,7 @@
             android:layout_marginRight="@dimen/activity_horizontal_margin">
         </View>
 
-        <!--用户名密码-->
+        <!--用户名密码615327-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/username"
@@ -121,7 +121,7 @@
                 android:layout_marginLeft="25dp"
                 android:inputType="textPassword"
                 android:hint="请输入密码"
-                android:text="615327"
+                android:text=""
                 android:id="@+id/etPassword"
                 android:singleLine="true"
                 android:background="@color/transparent"
