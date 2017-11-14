@@ -23,6 +23,7 @@ import com.app.officeautomationapp.activity.ApprovalWorkActivity;
 import com.app.officeautomationapp.activity.HiddenProjectActivity;
 import com.app.officeautomationapp.activity.ItemContactsActivity;
 import com.app.officeautomationapp.activity.MessageActivity;
+import com.app.officeautomationapp.activity.MiaomuActivity;
 import com.app.officeautomationapp.activity.MyTaskActivity;
 import com.app.officeautomationapp.activity.MyTaskHandleActivity;
 import com.app.officeautomationapp.activity.ProjectItemActivity;
@@ -134,7 +135,16 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
         }
         tv_welcome=(TextView)view.findViewById(R.id.tv_welcome);
         UserInfoBean userInfoBean= (UserInfoBean) SharedPreferencesUtile.readObject(getContext().getApplicationContext(),"userInfo");
-        String trueName=userInfoBean.getUserTrueName()==null?"":userInfoBean.getUserTrueName();
+        String trueName="";
+        try
+        {
+            trueName=userInfoBean.getUserTrueName()==null?"":userInfoBean.getUserTrueName();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
         tv_welcome.setText(getDate()==0?"早上好，"+trueName:(getDate()==1?"中午好，"+trueName:(getDate()==2?"下午好，"+trueName:"晚上好，"+trueName)));
         return view;
     }
@@ -620,7 +630,8 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
         }
         else if(16==a)//("苗木".equals(str))
         {
-            Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getActivity(), MiaomuActivity.class));
+//            Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
         }
 
         else if(17==a)//("土建".equals(str))

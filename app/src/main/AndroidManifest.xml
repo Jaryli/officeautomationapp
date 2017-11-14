@@ -53,6 +53,7 @@
         <activity android:name="com.app.officeautomationapp.activity.WebViewActivity" />
         <activity android:name="com.app.officeautomationapp.activity.UserinfoActivity" />
         <activity android:name="com.app.officeautomationapp.activity.ManageActivity" />
+        <activity android:name="com.app.officeautomationapp.activity.MiaomuActivity" />
 
 
 
