@@ -43,13 +43,13 @@ public class FoldingCellListAdapter extends ArrayAdapter<Item> {
             LayoutInflater vi = LayoutInflater.from(getContext());
             cell = (FoldingCell) vi.inflate(R.layout.cell1, parent, false);
             // binding view parts to view holder
-            viewHolder.price = (TextView) cell.findViewById(R.id.title_price);
-            viewHolder.time = (TextView) cell.findViewById(R.id.title_time_label);
-            viewHolder.date = (TextView) cell.findViewById(R.id.title_date_label);
-            viewHolder.fromAddress = (TextView) cell.findViewById(R.id.title_from_address);
-            viewHolder.toAddress = (TextView) cell.findViewById(R.id.title_to_address);
-            viewHolder.requestsCount = (TextView) cell.findViewById(R.id.title_requests_count);
-            viewHolder.pledgePrice = (TextView) cell.findViewById(R.id.title_pledge);
+//            viewHolder.price = (TextView) cell.findViewById(R.id.title_price);
+//            viewHolder.time = (TextView) cell.findViewById(R.id.title_time_label);
+//            viewHolder.date = (TextView) cell.findViewById(R.id.title_date_label);
+//            viewHolder.fromAddress = (TextView) cell.findViewById(R.id.title_from_address);
+//            viewHolder.toAddress = (TextView) cell.findViewById(R.id.title_to_address);
+//            viewHolder.requestsCount = (TextView) cell.findViewById(R.id.title_requests_count);
+//            viewHolder.pledgePrice = (TextView) cell.findViewById(R.id.title_pledge);
             viewHolder.contentRequestBtn = (TextView) cell.findViewById(R.id.content_request_btn);
             cell.setTag(viewHolder);
         } else {
@@ -63,13 +63,13 @@ public class FoldingCellListAdapter extends ArrayAdapter<Item> {
         }
 
         // bind data from selected element to view through view holder
-        viewHolder.price.setText(item.getPrice());
-        viewHolder.time.setText(item.getTime());
-        viewHolder.date.setText(item.getDate());
-        viewHolder.fromAddress.setText(item.getFromAddress());
-        viewHolder.toAddress.setText(item.getToAddress());
-        viewHolder.requestsCount.setText(String.valueOf(item.getRequestsCount()));
-        viewHolder.pledgePrice.setText(item.getPledgePrice());
+//        viewHolder.price.setText(item.getPrice());
+//        viewHolder.time.setText(item.getTime());
+//        viewHolder.date.setText(item.getDate());
+//        viewHolder.fromAddress.setText(item.getFromAddress());
+//        viewHolder.toAddress.setText(item.getToAddress());
+//        viewHolder.requestsCount.setText(String.valueOf(item.getRequestsCount()));
+//        viewHolder.pledgePrice.setText(item.getPledgePrice());
 
         // set custom btn handler for list item from that item
         if (item.getRequestBtnClickListener() != null) {
@@ -109,13 +109,13 @@ public class FoldingCellListAdapter extends ArrayAdapter<Item> {
 
     // View lookup cache
     private static class ViewHolder {
-        TextView price;
+//        TextView price;
         TextView contentRequestBtn;
-        TextView pledgePrice;
-        TextView fromAddress;
-        TextView toAddress;
-        TextView requestsCount;
-        TextView date;
-        TextView time;
+//        TextView pledgePrice;
+//        TextView fromAddress;
+//        TextView toAddress;
+//        TextView requestsCount;
+//        TextView date;
+//        TextView time;
     }
 }

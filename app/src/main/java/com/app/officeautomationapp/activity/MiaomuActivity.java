@@ -32,6 +32,7 @@ public class MiaomuActivity extends BaseActivity implements  View.OnClickListene
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "123123", Toast.LENGTH_SHORT).show();
+                ((FoldingCell) v).toggle(false);
             }
         });
 
@@ -42,6 +43,7 @@ public class MiaomuActivity extends BaseActivity implements  View.OnClickListene
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "321312", Toast.LENGTH_SHORT).show();
+
             }
         });
 
