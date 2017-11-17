@@ -100,9 +100,11 @@ public class Constants {
     public final static String PublishTask =address+"/api/V1/Task/PublishTask";//任务发起
 
 
-    public final static String GetTreeMainList=address+"/api/V1/Flow/GetTreeMainList";//任务发起?orderCode={orderCode}&projectName={projectName}&pageIndex={pageIndex}&pageSize={pageSize}
+    public final static String GetTreeMainList=address+"/api/V1/Flow/GetTreeMainList";//获取苗木采购列表?orderCode={orderCode}&projectName={projectName}&pageIndex={pageIndex}&pageSize={pageSize}
+    public final static String GetCivilMainList=address+"/api/V1/Flow/GetCivilMainList";//获取土建采购列表?orderCode={orderCode}&projectName={projectName}&pageIndex={pageIndex}&pageSize={pageSize}
 
-
+    public final static String AddTreeApply=address+"api/V1/Flow/AddTreeApply";//添加苗木验收表头
+    public final static String AddCivilApply=address+"api/V1/Flow/AddCivilApply";//添加土建验收表头
 
     //点工查询url：
     public final static String DIANGONG_URL=address+"/Home/JobList?userId=";

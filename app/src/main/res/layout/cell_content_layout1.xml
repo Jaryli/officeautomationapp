@@ -14,6 +14,10 @@
             android:layout_height="wrap_content"
             android:src="@mipmap/addimg_1x"
             android:id="@+id/aaa"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/title_price"/>
 
         <TextView
             android:id="@+id/content_request_btn"

@@ -21,8 +21,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
+            android:id="@+id/title"
             android:textColor="@android:color/white"
-            android:text="标题"
+            android:text="验收单"
             android:textSize="26sp" />
 
 

@@ -115,12 +115,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                     {
                         Gson gson = new Gson();
                         UserDto userDto = (UserDto) gson.fromJson(jsonObject.get("user").toString(),UserDto.class);
+                        InitCommon.initUserInfo(getApplicationContext(),userDto);//初始化用户信息
                         SharedPreferencesUtile.saveObject(getApplicationContext(),"user",userDto);//单例有问题
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
                         Intent intent=new Intent(LoginActivity.this,MainActivity.class);
                         startActivity(intent);
-                        InitCommon.initUserInfo(getApplicationContext(),userDto);//初始化用户信息
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

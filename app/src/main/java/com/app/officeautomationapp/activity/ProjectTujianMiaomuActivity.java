@@ -28,6 +28,7 @@ import com.app.officeautomationapp.bean.ProjectMiaomuTujianBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
+import com.app.officeautomationapp.view.ProjectDialog;
 import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
 import com.chanven.lib.cptr.loadmore.SwipeRefreshHelper;
 import com.google.gson.Gson;
@@ -159,10 +160,10 @@ public class ProjectTujianMiaomuActivity extends BaseActivity implements  View.O
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Intent intent=new Intent(ProjectActivity.this, MyTaskDetailActivity.class);
-//                intent.putExtra("data",listProject.get(i));
-//                startActivity(intent);
-                Toast.makeText(view.getContext(), listProjectMiaomuTujianBean.get(i).getProjectName(), Toast.LENGTH_SHORT).show();
+
+                ProjectDialog projectDialog=new ProjectDialog(ProjectTujianMiaomuActivity.this,listProjectMiaomuTujianBean.get(i),type,R.style.DialogAnimations_SmileWindow);
+                projectDialog.showSpinerDialog();
+//                Toast.makeText(view.getContext(), listProjectMiaomuTujianBean.get(i).getProjectName(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -170,7 +171,12 @@ public class ProjectTujianMiaomuActivity extends BaseActivity implements  View.O
 
 
     private void initProjects(final String str){
-        RequestParams params = new RequestParams(Constants.GetTreeMainList);
+        String url=Constants.GetTreeMainList;
+        if(type.equals("tujian"))
+        {
+            url=Constants.GetCivilMainList;
+        }
+        RequestParams params = new RequestParams(url);
         params.addQueryStringParameter("pageIndex",(page+1)+"");
         params.addQueryStringParameter("pageSize","10");
         params.addQueryStringParameter("projectName",myProjectBean.getProjectName());

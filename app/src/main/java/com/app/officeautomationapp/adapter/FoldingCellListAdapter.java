@@ -46,13 +46,9 @@ public class FoldingCellListAdapter extends ArrayAdapter<Item> {
             cell = (FoldingCell) vi.inflate(R.layout.cell1, parent, false);
             viewHolder = new ViewHolder(cell);
             // binding view parts to view holder
-//            viewHolder.price = (TextView) cell.findViewById(R.id.title_price);
-//            viewHolder.time = (TextView) cell.findViewById(R.id.title_time_label);
-//            viewHolder.date = (TextView) cell.findViewById(R.id.title_date_label);
-//            viewHolder.fromAddress = (TextView) cell.findViewById(R.id.title_from_address);
-//            viewHolder.toAddress = (TextView) cell.findViewById(R.id.title_to_address);
-//            viewHolder.requestsCount = (TextView) cell.findViewById(R.id.title_requests_count);
-//            viewHolder.pledgePrice = (TextView) cell.findViewById(R.id.title_pledge);
+
+            viewHolder.title = (TextView) cell.findViewById(R.id.title);
+            viewHolder.price = (TextView) cell.findViewById(R.id.title_price);
             viewHolder.contentRequestBtn = (TextView) cell.findViewById(R.id.content_request_btn);
             cell.setTag(viewHolder);
         } else {
@@ -66,21 +62,18 @@ public class FoldingCellListAdapter extends ArrayAdapter<Item> {
         }
 
         // bind data from selected element to view through view holder
-//        viewHolder.price.setText(item.getPrice());
-//        viewHolder.time.setText(item.getTime());
-//        viewHolder.date.setText(item.getDate());
-//        viewHolder.fromAddress.setText(item.getFromAddress());
-//        viewHolder.toAddress.setText(item.getToAddress());
-//        viewHolder.requestsCount.setText(String.valueOf(item.getRequestsCount()));
-//        viewHolder.pledgePrice.setText(item.getPledgePrice());
+        if(position==0)
+        {
+            viewHolder.price.setVisibility(View.GONE);
+            viewHolder.title.setText("验收单"+list.get(position).getFromAddress());
+        }
+        else
+        {
+            viewHolder.price.setText(list.get(position).getPrice());
+            viewHolder.title.setText("验收明细单"+list.get(position).getFromAddress());
+        }
 
-        // set custom btn handler for list item from that item
-//        if (item.getRequestBtnClickListener() != null) {
-//            viewHolder.contentRequestBtn.setOnClickListener(item.getRequestBtnClickListener());
-//        } else {
-//            // (optionally) add "default" handler if no handler found in item
-//            viewHolder.contentRequestBtn.setOnClickListener(item.getRequestBtnClickListener());
-//        }
+
         list.get(position).setCell(cell);
         final FoldingCell finalCell = cell;
         viewHolder.contentRequestBtn.setOnClickListener(new View.OnClickListener() {
@@ -129,8 +122,9 @@ public class FoldingCellListAdapter extends ArrayAdapter<Item> {
 
     // View lookup cache
     private static class ViewHolder extends RecyclerView.ViewHolder{
-//        TextView price;
+        TextView price;
         TextView contentRequestBtn;
+        TextView title;
 
         public ViewHolder(View itemView) {
             super(itemView);

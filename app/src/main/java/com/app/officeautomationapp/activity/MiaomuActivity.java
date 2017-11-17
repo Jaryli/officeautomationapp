@@ -1,5 +1,6 @@
 package com.app.officeautomationapp.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,7 +27,11 @@ import java.util.ArrayList;
 
 public class MiaomuActivity extends BaseActivity implements  View.OnClickListener{
 
+    private String type;//miaomu tujian
+
     final ArrayList<Item> items = Item.getTestingList();
+
+    int openid=0;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -51,6 +56,8 @@ public class MiaomuActivity extends BaseActivity implements  View.OnClickListene
 
 
         setContentView(R.layout.activity_miaomu);
+        Intent intent=getIntent();
+        type=intent.getStringExtra("type");
         final int[] temp = {0};
 
         final ListView theListView = (ListView) findViewById(R.id.miaomuListView);
@@ -66,10 +73,14 @@ public class MiaomuActivity extends BaseActivity implements  View.OnClickListene
                 if(items.size()<position+2)
                 {
                     //最后一位
+                    items.add(new Item("$5", "$300", "666"+position, "W 36th St, NY, 10029", 0, "TODAY", "06:15 PM"));
+                    adapter.notifyDataSetChanged();
+//                    items.get(position+1).getCell().toggle(false);
                 }
                 else
                 {
                     items.get(position+1).getCell().toggle(false);
+                    openid=position+1;
                 }
 
             }
@@ -79,11 +90,18 @@ public class MiaomuActivity extends BaseActivity implements  View.OnClickListene
         theListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-                if(pos==0&& temp[0] ==0)
-                {
-                    ((FoldingCell) view).toggle(false);
-                    temp[0]++;
-                }
+                ((FoldingCell) view).toggle(false);
+//                if(pos==0&& temp[0] ==0)
+//                {
+//                    ((FoldingCell) view).toggle(false);
+//                    temp[0]++;
+//                }
+//                else if(pos!=0)
+//                {
+//                    items.remove(pos);
+//                    adapter.notifyDataSetChanged();
+////                    items.get(openid).getCell().toggle(false);
+//                }
 
             }
         });
