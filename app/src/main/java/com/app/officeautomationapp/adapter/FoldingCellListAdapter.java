@@ -2,6 +2,7 @@ package com.app.officeautomationapp.adapter;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.dto.Item;
 import com.ramotion.foldingcell.FoldingCell;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -24,24 +26,25 @@ public class FoldingCellListAdapter extends ArrayAdapter<Item> {
 
     private HashSet<Integer> unfoldedIndexes = new HashSet<>();
     //    private View.OnClickListener defaultRequestBtnClickListener;
-    private View.OnClickListener defaultRequestBtnClickListener;
+//    private View.OnClickListener defaultRequestBtnClickListener;
 
+    List<Item> list=new ArrayList<Item>();
 
     public FoldingCellListAdapter(Context context, List<Item> objects) {
         super(context, 0, objects);
+        this.list=objects;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        // get item for selected view
-        Item item = getItem(position);
+    public View getView(final int position, View convertView, ViewGroup parent) {
+
         // if cell is exists - reuse it, if not - create the new one from resource
         FoldingCell cell = (FoldingCell) convertView;
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
         if (cell == null) {
-            viewHolder = new ViewHolder();
             LayoutInflater vi = LayoutInflater.from(getContext());
             cell = (FoldingCell) vi.inflate(R.layout.cell1, parent, false);
+            viewHolder = new ViewHolder(cell);
             // binding view parts to view holder
 //            viewHolder.price = (TextView) cell.findViewById(R.id.title_price);
 //            viewHolder.time = (TextView) cell.findViewById(R.id.title_time_label);
@@ -72,13 +75,20 @@ public class FoldingCellListAdapter extends ArrayAdapter<Item> {
 //        viewHolder.pledgePrice.setText(item.getPledgePrice());
 
         // set custom btn handler for list item from that item
-        if (item.getRequestBtnClickListener() != null) {
-            viewHolder.contentRequestBtn.setOnClickListener(item.getRequestBtnClickListener());
-        } else {
-            // (optionally) add "default" handler if no handler found in item
-            viewHolder.contentRequestBtn.setOnClickListener(item.getRequestBtnClickListener());
-        }
-
+//        if (item.getRequestBtnClickListener() != null) {
+//            viewHolder.contentRequestBtn.setOnClickListener(item.getRequestBtnClickListener());
+//        } else {
+//            // (optionally) add "default" handler if no handler found in item
+//            viewHolder.contentRequestBtn.setOnClickListener(item.getRequestBtnClickListener());
+//        }
+        list.get(position).setCell(cell);
+        final FoldingCell finalCell = cell;
+        viewHolder.contentRequestBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mItemClickListener.onItemClick(finalCell,position, view);
+            }
+        });
 
         return cell;
     }
@@ -99,18 +109,32 @@ public class FoldingCellListAdapter extends ArrayAdapter<Item> {
         unfoldedIndexes.add(position);
     }
 
-    public View.OnClickListener getDefaultRequestBtnClickListener() {
-        return defaultRequestBtnClickListener;
+//    public View.OnClickListener getDefaultRequestBtnClickListener() {
+//        return defaultRequestBtnClickListener;
+//    }
+//
+//    public void setDefaultRequestBtnClickListener(View.OnClickListener defaultRequestBtnClickListener) {
+//        this.defaultRequestBtnClickListener = defaultRequestBtnClickListener;
+//    }
+
+    protected OnItemClickListener mItemClickListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(FoldingCell cell,int position, View v);
     }
 
-    public void setDefaultRequestBtnClickListener(View.OnClickListener defaultRequestBtnClickListener) {
-        this.defaultRequestBtnClickListener = defaultRequestBtnClickListener;
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mItemClickListener = listener;
     }
 
     // View lookup cache
-    private static class ViewHolder {
+    private static class ViewHolder extends RecyclerView.ViewHolder{
 //        TextView price;
         TextView contentRequestBtn;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+        }
 //        TextView pledgePrice;
 //        TextView fromAddress;
 //        TextView toAddress;

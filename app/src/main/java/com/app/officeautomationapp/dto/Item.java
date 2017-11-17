@@ -2,7 +2,10 @@ package com.app.officeautomationapp.dto;
 
 import android.view.View;
 
+import com.ramotion.foldingcell.FoldingCell;
+
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -17,6 +20,7 @@ public class Item {
     private int requestsCount;
     private String date;
     private String time;
+    private FoldingCell cell;
 
     private View.OnClickListener requestBtnClickListener;
 
@@ -95,6 +99,14 @@ public class Item {
 
     public void setRequestBtnClickListener(View.OnClickListener requestBtnClickListener) {
         this.requestBtnClickListener = requestBtnClickListener;
+    }
+
+    public FoldingCell getCell() {
+        return cell;
+    }
+
+    public void setCell(FoldingCell cell) {
+        this.cell = cell;
     }
 
     @Override

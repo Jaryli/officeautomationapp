@@ -19,51 +19,50 @@ import java.util.ArrayList;
 
 public class MiaomuActivity extends BaseActivity implements  View.OnClickListener{
 
+    final ArrayList<Item> items = Item.getTestingList();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_miaomu);
+        final int[] temp = {0};
 
-        ListView theListView = (ListView) findViewById(R.id.miaomuListView);
-
-        final ArrayList<Item> items = Item.getTestingList();
-
-        items.get(0).setRequestBtnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "123123", Toast.LENGTH_SHORT).show();
-                ((FoldingCell) v).toggle(false);
-            }
-        });
+        final ListView theListView = (ListView) findViewById(R.id.miaomuListView);
 
         final FoldingCellListAdapter adapter = new FoldingCellListAdapter(this, items);
 
-        // add default btn handler for each request btn on each item if custom handler not found
-        adapter.setDefaultRequestBtnClickListener(new View.OnClickListener() {
+        adapter.setOnItemClickListener(new FoldingCellListAdapter.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "321312", Toast.LENGTH_SHORT).show();
+            public void onItemClick(FoldingCell cell, int position, View v) {
+                Toast.makeText(getApplicationContext(), "22222", Toast.LENGTH_SHORT).show();
+//                cell.toggle(false);
+                items.get(position).getCell().toggle(false);
+                if(items.size()<position+2)
+                {
+                    //最后一位
+                }
+                else
+                {
+                    items.get(position+1).getCell().toggle(false);
+                }
 
             }
         });
-
-        // set elements to adapter
         theListView.setAdapter(adapter);
 
-        // set on click event listener to list view
         theListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-                // toggle clicked cell state
-                ((FoldingCell) view).toggle(false);
-                // register in adapter that state for selected cell is toggled
-//                adapter.registerToggle(pos);
+                if(pos==0&& temp[0] ==0)
+                {
+                    ((FoldingCell) view).toggle(false);
+                    temp[0]++;
+                }
+
             }
         });
 
     }
-
-
 
 
     @Override
