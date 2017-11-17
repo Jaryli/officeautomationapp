@@ -100,6 +100,9 @@ public class Constants {
     public final static String PublishTask =address+"/api/V1/Task/PublishTask";//任务发起
 
 
+    public final static String GetTreeMainList=address+"/api/V1/Flow/GetTreeMainList";//任务发起?orderCode={orderCode}&projectName={projectName}&pageIndex={pageIndex}&pageSize={pageSize}
+
+
 
     //点工查询url：
     public final static String DIANGONG_URL=address+"/Home/JobList?userId=";

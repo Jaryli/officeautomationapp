@@ -54,6 +54,8 @@
         <activity android:name="com.app.officeautomationapp.activity.UserinfoActivity" />
         <activity android:name="com.app.officeautomationapp.activity.ManageActivity" />
         <activity android:name="com.app.officeautomationapp.activity.MiaomuActivity" />
+        <activity android:name="com.app.officeautomationapp.activity.ProjectActivity" />
+        <activity android:name="com.app.officeautomationapp.activity.ProjectTujianMiaomuActivity" />
 
 
 

@@ -26,6 +26,7 @@ import com.app.officeautomationapp.activity.MessageActivity;
 import com.app.officeautomationapp.activity.MiaomuActivity;
 import com.app.officeautomationapp.activity.MyTaskActivity;
 import com.app.officeautomationapp.activity.MyTaskHandleActivity;
+import com.app.officeautomationapp.activity.ProjectActivity;
 import com.app.officeautomationapp.activity.ProjectItemActivity;
 import com.app.officeautomationapp.activity.ReceiveThingsActivity;
 import com.app.officeautomationapp.activity.StartWorkActivity;
@@ -630,13 +631,18 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
         }
         else if(16==a)//("苗木".equals(str))
         {
-            startActivity(new Intent(getActivity(), MiaomuActivity.class));
+            intent=new Intent(getContext(),ProjectActivity.class);
+            intent.putExtra("type","miaomu");
+            startActivity(intent);
 //            Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
         }
 
         else if(17==a)//("土建".equals(str))
         {
-            Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
+            intent=new Intent(getContext(),ProjectActivity.class);
+            intent.putExtra("type","tujian");
+            startActivity(intent);
+//            Toast.makeText(getActivity(),"暂未开放此功能",Toast.LENGTH_SHORT).show();
         }
 
         else if(3==a)//("工作发起".equals(str))

@@ -254,6 +254,7 @@
                 android:id="@+id/et_approval_search"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="20dp"
+                android:singleLine="true"
                 style="@style/StyleEditText" />
             <Button
                 android:layout_width="50dp"
