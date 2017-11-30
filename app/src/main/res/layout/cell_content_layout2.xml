@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/buttonyellow"
+    android:visibility="gone">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="400dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center|center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:text="物资名称"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/title_text_size" />
+
+                <EditText
+                    android:id="@+id/projectName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="7"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:hint="请选择物资"
+                    android:singleLine="true"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center|center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:text="验收数量"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/title_text_size" />
+
+                <EditText
+                    android:id="@+id/projectName2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="7"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:hint="请输入验收数量"
+                    android:singleLine="true"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center|center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:text="修剪要求"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/title_text_size" />
+
+                <EditText
+                    android:id="@+id/projectName3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="7"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:hint="请输入修剪要求"
+                    android:singleLine="true"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center|center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:text="绕干要求"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/title_text_size" />
+
+                <EditText
+                    android:id="@+id/projectName4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="7"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:hint="请输入绕干要求"
+                    android:singleLine="true"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center|center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:text="到场时间"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/title_text_size" />
+
+                <EditText
+                    android:id="@+id/projectName54"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="7"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:hint="请输入绕干要求"
+                    android:singleLine="true"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center|center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:text="供应商"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/title_text_size" />
+
+                <EditText
+                    android:id="@+id/projectName5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="7"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:hint="请选择供应商"
+                    android:singleLine="true"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center|center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:text="验收胸径"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/title_text_size" />
+
+                <EditText
+                    android:id="@+id/projectName6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="7"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:hint="请输入验收胸径"
+                    android:singleLine="true"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center|center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:text="验收高度"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/title_text_size" />
+
+                <EditText
+                    android:id="@+id/projectName7"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="7"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:hint="请输入验收高度"
+                    android:singleLine="true"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center|center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:text="验收蓬型"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/title_text_size" />
+
+                <EditText
+                    android:id="@+id/projectName8"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="7"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:hint="请输入验收蓬型"
+                    android:singleLine="true"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center|center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:text="付款状态"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/title_text_size" />
+
+                <EditText
+                    android:id="@+id/projectName9"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="7"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:hint="请输入付款状态"
+                    android:singleLine="true"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center|center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:text="选择照片"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/title_text_size" />
+
+                <EditText
+                    android:id="@+id/projectName10"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="7"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:hint="请输入付款状态"
+                    android:singleLine="true"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_post"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btn_post"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/circle_semi_button_blue"
+                    android:gravity="center"
+                    android:text="提交"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

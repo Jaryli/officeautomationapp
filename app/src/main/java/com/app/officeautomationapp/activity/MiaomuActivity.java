@@ -31,8 +31,6 @@ public class MiaomuActivity extends BaseActivity implements  View.OnClickListene
 
     final ArrayList<Item> items = Item.getTestingList();
 
-    int openid=0;
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +60,7 @@ public class MiaomuActivity extends BaseActivity implements  View.OnClickListene
 
         final ListView theListView = (ListView) findViewById(R.id.miaomuListView);
 
-        final FoldingCellListAdapter adapter = new FoldingCellListAdapter(this, items);
+        final FoldingCellListAdapter adapter = new FoldingCellListAdapter(this, items,type.equals("miaomu")?"苗木":"土建");
 
         adapter.setOnItemClickListener(new FoldingCellListAdapter.OnItemClickListener() {
             @Override
@@ -73,14 +71,15 @@ public class MiaomuActivity extends BaseActivity implements  View.OnClickListene
                 if(items.size()<position+2)
                 {
                     //最后一位
-                    items.add(new Item("$5", "$300", "666"+position, "W 36th St, NY, 10029", 0, "TODAY", "06:15 PM"));
+                    items.add(new Item(""));
                     adapter.notifyDataSetChanged();
 //                    items.get(position+1).getCell().toggle(false);
                 }
                 else
                 {
-                    items.get(position+1).getCell().toggle(false);
-                    openid=position+1;
+                    if(items.get(position+1).getCell().isUnfolded()) {
+                        items.get(position + 1).getCell().toggle(false);
+                    }
                 }
 
             }

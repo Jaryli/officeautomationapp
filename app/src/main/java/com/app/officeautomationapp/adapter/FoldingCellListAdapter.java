@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.officeautomationapp.R;
@@ -29,28 +31,40 @@ public class FoldingCellListAdapter extends ArrayAdapter<Item> {
 //    private View.OnClickListener defaultRequestBtnClickListener;
 
     List<Item> list=new ArrayList<Item>();
+    private String type="";
 
-    public FoldingCellListAdapter(Context context, List<Item> objects) {
+    public FoldingCellListAdapter(Context context, List<Item> objects,String type) {
         super(context, 0, objects);
         this.list=objects;
+        this.type=type;
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-
-        // if cell is exists - reuse it, if not - create the new one from resource
         FoldingCell cell = (FoldingCell) convertView;
-        final ViewHolder viewHolder;
-        if (cell == null) {
+        ViewHolder viewHolder = null;
+        if (viewHolder == null) {
+            viewHolder= new ViewHolder();;
             LayoutInflater vi = LayoutInflater.from(getContext());
-            cell = (FoldingCell) vi.inflate(R.layout.cell1, parent, false);
-            viewHolder = new ViewHolder(cell);
-            // binding view parts to view holder
+            if(position==0) {
+                cell = (FoldingCell) vi.inflate(R.layout.cell1, parent, false);
 
-            viewHolder.title = (TextView) cell.findViewById(R.id.title);
-            viewHolder.price = (TextView) cell.findViewById(R.id.title_price);
-            viewHolder.contentRequestBtn = (TextView) cell.findViewById(R.id.content_request_btn);
-            cell.setTag(viewHolder);
+                viewHolder.title = (TextView) cell.findViewById(R.id.title);
+                viewHolder.projectName = (TextView) cell.findViewById(R.id.projectName);
+                viewHolder.contentRequestBtn = (Button) cell.findViewById(R.id.btn_post);
+                cell.setTag(viewHolder);
+            }
+            else
+            {
+
+                cell = (FoldingCell) vi.inflate(R.layout.cell2, parent, false);
+                viewHolder.title = (TextView) cell.findViewById(R.id.title);
+                viewHolder.projectName = (TextView) cell.findViewById(R.id.projectName);
+                viewHolder.contentRequestBtn = (Button) cell.findViewById(R.id.btn_post);
+                cell.setTag(viewHolder);
+            }
+
+
         } else {
             // for existing cell set valid valid state(without animation)
             if (unfoldedIndexes.contains(position)) {
@@ -59,29 +73,41 @@ public class FoldingCellListAdapter extends ArrayAdapter<Item> {
                 cell.fold(true);
             }
             viewHolder = (ViewHolder) cell.getTag();
+
         }
 
-        // bind data from selected element to view through view holder
         if(position==0)
         {
-            viewHolder.price.setVisibility(View.GONE);
-            viewHolder.title.setText("验收单"+list.get(position).getFromAddress());
+            viewHolder.title.setText(type+"验收单");
+            viewHolder.projectName.setText(list.get(position).getTitle());
         }
         else
         {
-            viewHolder.price.setText(list.get(position).getPrice());
-            viewHolder.title.setText("验收明细单"+list.get(position).getFromAddress());
+
+            viewHolder.title.setText("验收明细单"+position);
+            viewHolder.projectName.setText(list.get(position).getTitle());
         }
 
 
         list.get(position).setCell(cell);
         final FoldingCell finalCell = cell;
-        viewHolder.contentRequestBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mItemClickListener.onItemClick(finalCell,position, view);
-            }
-        });
+        if(position==0) {
+            viewHolder.contentRequestBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mItemClickListener.onItemClick(finalCell, position, view);
+                }
+            });
+        }
+        else
+        {
+            viewHolder.contentRequestBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mItemClickListener.onItemClick(finalCell, position, view);
+                }
+            });
+        }
 
         return cell;
     }
@@ -121,19 +147,11 @@ public class FoldingCellListAdapter extends ArrayAdapter<Item> {
     }
 
     // View lookup cache
-    private static class ViewHolder extends RecyclerView.ViewHolder{
-        TextView price;
-        TextView contentRequestBtn;
+    private static class ViewHolder {
+        TextView projectName;
+        Button contentRequestBtn;
         TextView title;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-        }
-//        TextView pledgePrice;
-//        TextView fromAddress;
-//        TextView toAddress;
-//        TextView requestsCount;
-//        TextView date;
-//        TextView time;
     }
+
+
 }
