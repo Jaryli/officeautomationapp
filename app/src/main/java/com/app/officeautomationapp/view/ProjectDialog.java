@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.app.officeautomationapp.R;
+import com.app.officeautomationapp.activity.AcceptanceActivity;
 import com.app.officeautomationapp.activity.MiaomuActivity;
 import com.app.officeautomationapp.activity.ProjectActivity;
 import com.app.officeautomationapp.bean.ProjectMiaomuTujianBean;
@@ -71,7 +72,7 @@ public class ProjectDialog {
         btn_post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(context,MiaomuActivity.class);
+                Intent intent=new Intent(context,AcceptanceActivity.class);
                 intent.putExtra("type",type);
                 context.startActivity(intent);
             }
