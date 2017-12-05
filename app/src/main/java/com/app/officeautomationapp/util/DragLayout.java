@@ -94,7 +94,7 @@ public class DragLayout extends FrameLayout {
     }
 
     // 跳转到下一页
-    private void gotoDetailActivity() {
+    public void gotoDetailActivity() {
         if (null != gotoDetailListener) {
             gotoDetailListener.gotoDetail();
         }

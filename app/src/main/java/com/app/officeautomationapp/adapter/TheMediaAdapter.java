@@ -4,7 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.view.View;
+import android.widget.TextView;
 
+import com.app.officeautomationapp.bean.AcceptanceItem;
 import com.app.officeautomationapp.fragment.CommonFragment;
 
 import java.util.ArrayList;
@@ -17,38 +20,42 @@ public class TheMediaAdapter extends FragmentStatePagerAdapter {
     private ArrayList<CommonFragment> fragments;
     private final String[] imageArray = {"assets://image1.jpg", "assets://image2.jpg", "assets://image3.jpg", "assets://image4.jpg", "assets://image5.jpg"};
     private FragmentManager fm;
+    ArrayList<AcceptanceItem> fragementsData=new ArrayList<>();
 
-    public TheMediaAdapter(FragmentManager fm, ArrayList<CommonFragment> fragments) {
+    public TheMediaAdapter(FragmentManager fm, ArrayList<CommonFragment> fragments,ArrayList<AcceptanceItem> fragementsData) {
         super(fm);
         this.fm = fm;
         this.fragments = fragments;
+        this.fragementsData=fragementsData;
 
     }
 
 
     @Override
-
     public Fragment getItem(int arg0) {
         CommonFragment commonFragment=fragments.get(arg0);
-        commonFragment.bindData(imageArray[arg0 % imageArray.length]);
+        if(arg0==0)
+        {
+            commonFragment.bindData(fragementsData,arg0);
+        }
+        else
+        {
+            commonFragment.bindData(fragementsData,arg0);
+        }
         return commonFragment;
-
     }
 
 
-    @Override
 
+    @Override
     public int getCount() {
         return fragments.size();
     }
 
-
     @Override
-
     public int getItemPosition(Object object) {
         return POSITION_NONE;
     }
-
 
     public void setFragments(ArrayList fragments) {
         if (this.fragments != null) {
@@ -61,7 +68,6 @@ public class TheMediaAdapter extends FragmentStatePagerAdapter {
             fm.executePendingTransactions();
 
         }
-
         this.fragments = fragments;
         notifyDataSetChanged();
 

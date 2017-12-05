@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.adapter.TheMediaAdapter;
+import com.app.officeautomationapp.bean.AcceptanceItem;
 import com.app.officeautomationapp.fragment.CommonFragment;
 import com.app.officeautomationapp.util.CustPagerTransformer;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
@@ -31,15 +32,17 @@ import java.util.ArrayList;
 
 public class AcceptanceActivity  extends BaseActivity  {
 
-    private TextView indicatorTv;
+    private static TextView indicatorTv;
     private View positionView;
-    private ViewPager viewPager;
-    private ArrayList<CommonFragment> fragments = new ArrayList<>(); // 供ViewPager使用
+    private static ViewPager viewPager;
+    private static ArrayList<CommonFragment> fragments = new ArrayList<>(); // 供ViewPager使用
+
+    public static ArrayList<AcceptanceItem> fragementsData=new ArrayList<>();//ViewPager数据
 
     private View del;
     private View add;
 
-    TheMediaAdapter theAdapter;
+    static TheMediaAdapter theAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +68,8 @@ public class AcceptanceActivity  extends BaseActivity  {
             public void onClick(View view) {
 
                 fragments.remove(viewPager.getCurrentItem());
+//                fragments.get(viewPager.getCurrentItem()-1).dragLayout.computeScroll();
+                fragementsData.remove(viewPager.getCurrentItem());
                 theAdapter.notifyDataSetChanged();
                 viewPager.setAdapter(theAdapter);
                 viewPager.setCurrentItem(currentItem);
@@ -76,6 +81,7 @@ public class AcceptanceActivity  extends BaseActivity  {
             @Override
             public void onClick(View view) {
                 fragments.add(new CommonFragment());
+                fragementsData.add(new AcceptanceItem("bbb",viewPager.getAdapter().getCount()));
                 theAdapter.notifyDataSetChanged();
                 viewPager.setAdapter(theAdapter);
                 viewPager.setCurrentItem(currentItem);
@@ -90,8 +96,22 @@ public class AcceptanceActivity  extends BaseActivity  {
         // 3. 填充ViewPager
         fillViewPager();
     }
-    int currentItem = 0;
-    int size=10;
+    static int currentItem = 0;
+    int size=1;
+
+    public static void refresh(int position,String str)
+    {
+        currentItem++;
+        fragementsData.get(position).sethProjectType(str);
+        fragments.add(new CommonFragment());
+        fragementsData.add(new AcceptanceItem("ccc",viewPager.getAdapter().getCount()));
+
+        viewPager.setAdapter(theAdapter);
+        viewPager.setCurrentItem(currentItem);
+        theAdapter.notifyDataSetChanged();
+        updateIndicatorTv();
+//        theAdapter.notifyDataSetChanged();
+    }
     /**
      * 填充ViewPager
      */
@@ -104,10 +124,11 @@ public class AcceptanceActivity  extends BaseActivity  {
 
         // 2. viewPager添加adapter
         for (int i = 0; i < size; i++) {
-            // 预先准备10个fragment
+            // 预先准备1个fragment
             fragments.add(new CommonFragment());
+            fragementsData.add(new AcceptanceItem("aaa",0));
         }
-        theAdapter=new TheMediaAdapter(getSupportFragmentManager(),fragments);
+        theAdapter=new TheMediaAdapter(getSupportFragmentManager(),fragments,fragementsData);
         viewPager.setAdapter(theAdapter);
 
 
@@ -134,7 +155,7 @@ public class AcceptanceActivity  extends BaseActivity  {
     /**
      * 更新指示器
      */
-    private void updateIndicatorTv() {
+    private static void updateIndicatorTv() {
         int totalNum = viewPager.getAdapter().getCount();
         int currentItem= viewPager.getCurrentItem() + 1;
         indicatorTv.setText(Html.fromHtml("<font color='#12edf0'>" + currentItem + "</font>  /  " + totalNum));
