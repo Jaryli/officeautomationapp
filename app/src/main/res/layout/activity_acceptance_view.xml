@@ -175,7 +175,7 @@
                                 android:layout_height="50dp"
                                 android:id="@+id/ll_post"
                                 android:gravity="center"
-                                android:layout_marginTop="1200dp">
+                                android:layout_marginTop="50dp">
                                 <Button
                                     android:layout_width="match_parent"
                                     android:layout_height="35dp"

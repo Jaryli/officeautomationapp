@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.adapter.AcceptanceAdapter;
@@ -31,6 +32,7 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
     private AcceptanceAdapter myPagerAdapter;//适配器
     private ViewPager viewPager;
     private int count = 0; //页面展示的数据，无实际作用
+    private int totalCount = 0;
     private View positionView;
     private View del;
     private View add;
@@ -71,6 +73,7 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
             public void onClick(View view) {
                 String text = "页面" + count;
                 count++;
+                totalCount++;
                 addPage(text);
             }
         });
@@ -82,6 +85,7 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
     {
         String text = "页面" + count;
         count++;
+        totalCount++;
         addPage(text);
     }
 
@@ -124,6 +128,7 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
             case 1://添加页面的点击事件
                 String text = "页面" + count;
                 count++;
+                totalCount++;
                 addPage(text);
                 break;
             case 2://删除页面的点击事件
@@ -137,10 +142,20 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
      */
     public void addPage(String text){
         LayoutInflater inflater = LayoutInflater.from(this);//获取LayoutInflater的实例
-        View view = inflater.inflate(R.layout.activity_acceptance_view, null);//调用LayoutInflater实例的inflate()方法来加载页面的布局
+        View view = null;//调用LayoutInflater实例的inflate()方法来加载页面的布局
+        if(totalCount==1)
+        {
+            view =inflater.inflate(R.layout.activity_acceptance_view, null);
+            TextView textView = (TextView) view.findViewById(R.id.text_view);//获取该View对象的TextView实例
+            textView.setText(text);//展示数据
 
-        TextView textView = (TextView) view.findViewById(R.id.text_view);//获取该View对象的TextView实例
-        textView.setText(text);//展示数据
+        }
+        else
+        {
+            view =inflater.inflate(R.layout.activity_acceptance_view2, null);
+            TextView textView = (TextView) view.findViewById(R.id.text_view);//获取该View对象的TextView实例
+            textView.setText(text);//展示数据
+        }
 
         viewList.add(view);//为数据源添加一项数据
         myPagerAdapter.notifyDataSetChanged();//通知UI更新
@@ -150,8 +165,15 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
      */
     public void delPage(){
         int position = viewPager.getCurrentItem();//获取当前页面位置
-        viewList.remove(position);//删除一项数据源中的数据
-        myPagerAdapter.notifyDataSetChanged();//通知UI更新
+        if(position==0)
+        {
+            Toast.makeText(this,"不能删除头页哦！",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            totalCount--;
+            viewList.remove(position);//删除一项数据源中的数据
+            myPagerAdapter.notifyDataSetChanged();//通知UI更新
+        }
 
     }
 
