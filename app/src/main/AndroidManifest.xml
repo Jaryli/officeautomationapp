@@ -57,7 +57,6 @@
         <activity android:name="com.app.officeautomationapp.activity.ProjectActivity" />
         <activity android:name="com.app.officeautomationapp.activity.ProjectTujianMiaomuActivity" />
         <activity android:name="com.app.officeautomationapp.activity.AcceptanceActivity" />
-        <activity android:name="com.app.officeautomationapp.activity.AcceptanceDetailActivity" />
 
 
 

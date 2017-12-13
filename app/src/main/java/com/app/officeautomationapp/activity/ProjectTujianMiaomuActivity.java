@@ -55,11 +55,7 @@ public class ProjectTujianMiaomuActivity extends BaseActivity implements  View.O
     private ImageView iv_project_back;
 
     private ListView listView;
-
-
     ProjectMiaomuTujianAdapter adapter;
-
-
 
     private MyProjectBean myProjectBean;
     private TextView tv_title;
