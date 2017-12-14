@@ -1,10 +1,12 @@
 package com.app.officeautomationapp.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/11/17 0017.
  */
 
-public class ProjectMiaomuTujianBean {
+public class ProjectMiaomuTujianBean implements Serializable {
     private Integer Id;
     private Integer DeptId;
     private Integer UserId;

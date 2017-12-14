@@ -44,13 +44,15 @@
                 android:layout_centerVertical="true"
                 android:id="@+id/add"
                 android:layout_marginLeft="15dp"
-                android:background="@mipmap/add" />
+                android:background="@mipmap/le" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="验收"
+                android:textSize="20dp"
+                android:id="@+id/tv_title"
                 android:textColor="#ffffff" />
 
             <View

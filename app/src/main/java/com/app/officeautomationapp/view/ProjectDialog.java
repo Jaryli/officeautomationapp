@@ -74,6 +74,7 @@ public class ProjectDialog {
             public void onClick(View v) {
                 Intent intent=new Intent(context,AcceptanceActivity.class);
                 intent.putExtra("type",type);
+                intent.putExtra("data",projectMiaomuTujianBean);
                 context.startActivity(intent);
             }
         });
