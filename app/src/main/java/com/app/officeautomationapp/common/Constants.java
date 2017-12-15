@@ -103,9 +103,16 @@ public class Constants {
     public final static String GetTreeMainList=address+"/api/V1/Flow/GetTreeMainList";//获取苗木采购列表?orderCode={orderCode}&projectName={projectName}&pageIndex={pageIndex}&pageSize={pageSize}
     public final static String GetCivilMainList=address+"/api/V1/Flow/GetCivilMainList";//获取土建采购列表?orderCode={orderCode}&projectName={projectName}&pageIndex={pageIndex}&pageSize={pageSize}
 
-    public final static String AddTreeApply=address+"api/V1/Flow/AddTreeApply";//添加苗木验收表头
-    public final static String AddCivilApply=address+"api/V1/Flow/AddCivilApply";//添加土建验收表头
+    public final static String AddTreeApply=address+"/api/V1/Flow/AddTreeApply";//添加苗木验收表头
+    public final static String AddCivilApply=address+"/api/V1/Flow/AddCivilApply";//添加土建验收表头
 
+    public final static String AddTreeDetails=address+"/api/V1/Flow/AddTreeDetails";//添加苗木验收表头
+    public final static String AddCivilDetails=address+"/api/V1/Flow/AddCivilDetails";//添加土建验收明细
+
+    public final static String GetTreeDetailsList=address+"/api/V1/Flow/GetTreeDetailsList";//苗木采购或验收明细?orderCode={}
+    public final static String GetCivilDetailsList=address+"/api/V1/Flow/GetCivilDetailsList";//获取土建采购或验收明细
+
+    public final static String GetSupplyPageList=address+"/api/V1/WorkFlow/GetSupplyPageList";//获取供应商?pageIndex=1&pageSize=9999&supplyName=
     //点工查询url：
     public final static String DIANGONG_URL=address+"/Home/JobList?userId=";
 

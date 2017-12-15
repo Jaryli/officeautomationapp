@@ -12,7 +12,7 @@ public class MiaomuTopPostBean implements Serializable {
     private String buyCode;//采购单号
     private Integer projectId;//工程id
     private String supplyName;//供应商名称
-    private Integer fee;//运费
+    private Double fee;//运费
 
     public String getRemark() {
         return remark;
@@ -54,11 +54,11 @@ public class MiaomuTopPostBean implements Serializable {
         this.supplyName = supplyName;
     }
 
-    public Integer getFee() {
+    public Double getFee() {
         return fee;
     }
 
-    public void setFee(Integer fee) {
+    public void setFee(Double fee) {
         this.fee = fee;
     }
 }

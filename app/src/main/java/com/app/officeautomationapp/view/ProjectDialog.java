@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.activity.AcceptanceActivity;
@@ -76,6 +77,7 @@ public class ProjectDialog {
                 intent.putExtra("type",type);
                 intent.putExtra("data",projectMiaomuTujianBean);
                 context.startActivity(intent);
+//                Toast.makeText(context,"功能开发中，稍后为您呈现！",Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -154,8 +154,6 @@ public class WorkQingjiaActivity extends BaseActivity implements View.OnClickLis
         return true;
     }
 
-
-
     private void post()
     {
         addArchLeavePostBean.setLeaveDays(StringUtils.parseDouble(StringUtils.isEmpty(et_leaveDays.getText())));

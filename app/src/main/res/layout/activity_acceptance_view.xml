@@ -135,9 +135,10 @@
                                     android:ellipsize="end"
                                     android:singleLine="true"
                                     android:textSize="15dp"
+                                    android:focusable="false"
                                     android:background="@null"
                                     android:id="@+id/supplyName"
-                                    android:hint="请选择运费(可不填)"/>
+                                    android:hint="请选择供应商(可不填)"/>
                             </LinearLayout>
                             <LinearLayout
                                 android:layout_width="match_parent"

@@ -49,13 +49,14 @@
                             android:textSize="@dimen/title_text_size" />
 
                         <EditText
-                            android:id="@+id/name"
+                            android:id="@+id/wz_name"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="7"
                             android:background="@null"
                             android:ellipsize="end"
+                            android:focusable="false"
                             android:hint="请选择物资名称"
                             android:singleLine="true"
                             android:textSize="15dp" />
@@ -173,6 +174,7 @@
                             android:layout_weight="7"
                             android:background="@null"
                             android:ellipsize="end"
+                            android:focusable="false"
                             android:hint="请选择到场时间"
                             android:singleLine="true"
                             android:textSize="15dp" />
@@ -201,6 +203,7 @@
                             android:layout_weight="7"
                             android:background="@null"
                             android:ellipsize="end"
+                            android:focusable="false"
                             android:hint="请选择供应商"
                             android:singleLine="true"
                             android:textSize="15dp" />
@@ -305,17 +308,31 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/title_text_size" />
 
-                        <EditText
-                            android:id="@+id/isPay"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="7"
-                            android:background="@null"
-                            android:ellipsize="end"
-                            android:hint="请选择付款状态"
-                            android:singleLine="true"
-                            android:textSize="15dp" />
+                        <!--<EditText-->
+                            <!--android:id="@+id/isPay"-->
+                            <!--android:layout_width="0dp"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginLeft="10dp"-->
+                            <!--android:layout_weight="7"-->
+                            <!--android:background="@null"-->
+                            <!--android:ellipsize="end"-->
+                            <!--android:focusable="false"-->
+                            <!--android:hint="请选择付款状态"-->
+                            <!--android:singleLine="true"-->
+                            <!--android:textSize="15dp" />-->
+
+                        <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="7">
+                            <com.kyleduo.switchbutton.SwitchButton
+                                android:id="@+id/isPay"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"/>
+                        </LinearLayout>
+
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
