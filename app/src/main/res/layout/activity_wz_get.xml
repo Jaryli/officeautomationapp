@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <!--<ImageView-->
+                <!--android:layout_width="22dp"-->
+                <!--android:layout_height="22dp"-->
+                <!--android:id="@+id/iv_receive_things_back"-->
+                <!--android:background="@mipmap/icon_back"/>-->
+
+            <!--<View-->
+                <!--android:layout_width="1dip"-->
+                <!--android:layout_height="22dp"-->
+                <!--android:layout_marginTop="2dp"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:background="@color/line"-->
+                <!--android:layout_gravity="center_vertical|center_horizontal"-->
+                <!--/>-->
+            <TextView
+                android:id="@+id/spinerTitle"
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content"
+                android:text="物资选择"
+                android:textColor="#1296db"
+                android:textSize="17sp"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|left"
+            android:visibility="gone"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/ic_search_black_36dp" />
+
+            <EditText
+                android:id="@+id/searchBox"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:background="#ffffff"
+                android:inputType="text" />
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0.1dp"
+            android:background="#d1d1d1" />
+
+
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="#d1d1d1"
+            android:dividerHeight="0.1dp"></ListView>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

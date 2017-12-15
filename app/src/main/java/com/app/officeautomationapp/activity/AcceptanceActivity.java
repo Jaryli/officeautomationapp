@@ -3,14 +3,18 @@ package com.app.officeautomationapp.activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,16 +33,22 @@ import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.adapter.AcceptanceAdapter;
+import com.app.officeautomationapp.adapter.GridImageAdapter;
 import com.app.officeautomationapp.bean.MiaomuPostBean;
 import com.app.officeautomationapp.bean.MiaomuTopPostBean;
 import com.app.officeautomationapp.bean.MyProjectBean;
 import com.app.officeautomationapp.bean.ProjectMiaomuTujianBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
+import com.app.officeautomationapp.util.FullyGridLayoutManager;
+import com.app.officeautomationapp.util.PicBase64Util;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.app.officeautomationapp.util.StringUtils;
 import com.google.gson.Gson;
 import com.kyleduo.switchbutton.SwitchButton;
+import com.luck.picture.lib.model.FunctionConfig;
+import com.luck.picture.lib.model.PictureConfig;
+import com.yalantis.ucrop.entity.LocalMedia;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -75,15 +85,23 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
 
     EditText supplyName;
     EditText wz_name;//物资名称
-    EditText wz_id;//物资id
+    Integer wz_id;//物资id
     EditText arriveDate;
     private Integer isPay;
+
+    private RecyclerView recyclerView;
+    private GridImageAdapter adapter;
+    private Context mContext;
+    private int maxSelectNum = 9;// 图片最大可选数量
+    private List<LocalMedia> selectMedia = new ArrayList<>();
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_acceptance);
+        mContext=this;
         userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         Intent intent = getIntent();
         projectMiaomuTujianBean = (ProjectMiaomuTujianBean) intent.getSerializableExtra("data");
@@ -161,7 +179,14 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
     private void getSupply()
     {
         Intent intent = new Intent(this,SupplyGetActivity.class);
+
         startActivityForResult(intent,0);
+    }
+    private void getWz()
+    {
+        Intent intent = new Intent(this,WzGetActivity.class);
+        intent.putExtra("data",projectMiaomuTujianBean.getApplyCode());
+        startActivityForResult(intent,1);
     }
 
     @Override
@@ -173,6 +198,16 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                 String data_supply_name = bundle.getString("data_supply_name");
                 Log.d("text",data_supply_name);
                 this.supplyName.setText(data_supply_name);
+            }
+        }
+        if(requestCode==1 && resultCode==RESULT_OK){
+            Bundle bundle = data.getExtras();
+            if(bundle!=null) {
+                String data_tree_name = bundle.getString("data_tree_name");
+                String data_tree_id = bundle.getString("data_tree_id");
+                Log.d("text",data_tree_name+" "+data_tree_id);
+                this.wz_name.setText(data_tree_name);
+                this.wz_id=Integer.parseInt(data_tree_id);
             }
         }
     }
@@ -239,13 +274,23 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                             Log.i("JAVA", "onSuccess result:" + result);
                             try {
                                 JSONObject jsonObject = new JSONObject(result);
-                                Toast.makeText(AcceptanceActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                                int re=jsonObject.getInt("result");
+                                if(re!=1)
+                                {
+                                    Toast.makeText(AcceptanceActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                else
+                                {
+                                    Toast.makeText(AcceptanceActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
 
-                                addPage();
-                                Message message = new Message();
-                                message.what = 1;
-                                handler.sendMessage(message);
-                                btn_post.setVisibility(View.INVISIBLE);
+                                    addPage();
+                                    Message message = new Message();
+                                    message.what = 1;
+                                    handler.sendMessage(message);
+                                    btn_post.setVisibility(View.INVISIBLE);
+                                }
+
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -280,7 +325,7 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
             wz_name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    getWz();
                 }
             });
             final EditText numInfo=(EditText) view.findViewById(R.id.numInfo);
@@ -299,6 +344,21 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
             final SwitchButton isPay=(SwitchButton) view.findViewById(R.id.isPay);
 
 
+            recyclerView = (RecyclerView)  view.findViewById(R.id.recycler);
+            FullyGridLayoutManager manager = new FullyGridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false);
+            recyclerView.setLayoutManager(manager);
+            adapter = new GridImageAdapter(this, onAddPicClickListener,false);
+            adapter.setSelectMax(maxSelectNum);
+            recyclerView.setAdapter(adapter);
+            adapter.setOnItemClickListener(new GridImageAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(int position, View v) {
+                    // 这里可预览图片
+                    PictureConfig.getPictureConfig().externalPicturePreview(AcceptanceActivity.this, position, selectMedia);
+                }
+            });
+
+
             supplyName=(EditText) view.findViewById(R.id.supplyName);
             supplyName.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -311,12 +371,20 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                 @Override
                 public void onClick(View view) {
                     try {
+                        if(selectMedia.size()>0)
+                        {
+                            String[] str=new String[selectMedia.size()];
+                            for (int i=0;i<selectMedia.size();i++)
+                            {
+                                str[i]= PicBase64Util.encode(selectMedia.get(i).getPath(),20);
+                            }
+                            miaomuPostBean.setImagedata(str);
+                        }
                         miaomuPostBean.setSupplyName(supplyName.getText().toString());
                         miaomuPostBean.setApplyCode(projectMiaomuTujianBean.getApplyCode());
                         miaomuPostBean.setArriveDate(arriveDate.getText().toString());
-                        miaomuPostBean.setId(0);//
-                        miaomuPostBean.setImagedata(null);//
-                        miaomuPostBean.setIsPay(isPay.isChecked()?0:1);//
+                        miaomuPostBean.setId(wz_id);//
+                        miaomuPostBean.setIsPay(isPay.isChecked()?1:0);//
                         miaomuPostBean.setNumInfo(numInfo.getText().toString().equals("")?0:Integer.parseInt(numInfo.getText().toString()));
                         miaomuPostBean.setRaoGanReq(raoGanReq.getText().toString());
                         miaomuPostBean.setXiuJianReq(xiuJianReq.getText().toString());
@@ -346,13 +414,20 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                             Log.i("JAVA", "onSuccess result:" + result);
                             try {
                                 JSONObject jsonObject = new JSONObject(result);
-                                Toast.makeText(AcceptanceActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
-
-                                addPage();
-                                Message message = new Message();
-                                message.what = 1;
-                                handler.sendMessage(message);
-                                btn_post.setVisibility(View.INVISIBLE);
+                                int re=jsonObject.getInt("result");
+                                if(re!=1)
+                                {
+                                    Toast.makeText(AcceptanceActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                else {
+                                    clearData();
+                                    addPage();
+                                    Message message = new Message();
+                                    message.what = 1;
+                                    handler.sendMessage(message);
+                                    btn_post.setVisibility(View.INVISIBLE);
+                                }
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -383,6 +458,118 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
         viewList.add(view);//为数据源添加一项数据
         myPagerAdapter.notifyDataSetChanged();//通知UI更新
     }
+
+    private void clearData()
+    {
+        selectMedia=null;
+    }
+
+
+    private GridImageAdapter.onAddPicClickListener onAddPicClickListener = new GridImageAdapter.onAddPicClickListener() {
+        @Override
+        public void onAddPicClick(int type, int position) {
+            switch (type) {
+                case 0:
+                    // 进入相册
+                    /**
+                     * type --> 1图片 or 2视频
+                     * copyMode -->裁剪比例，默认、1:1、3:4、3:2、16:9
+                     * maxSelectNum --> 可选择图片的数量
+                     * selectMode         --> 单选 or 多选
+                     * isShow       --> 是否显示拍照选项 这里自动根据type 启动拍照或录视频
+                     * isPreview    --> 是否打开预览选项
+                     * isCrop       --> 是否打开剪切选项
+                     * isPreviewVideo -->是否预览视频(播放) mode or 多选有效
+                     * ThemeStyle -->主题颜色
+                     * CheckedBoxDrawable -->图片勾选样式
+                     * cropW-->裁剪宽度 值不能小于100  如果值大于图片原始宽高 将返回原图大小
+                     * cropH-->裁剪高度 值不能小于100
+                     * isCompress -->是否压缩图片
+                     * setEnablePixelCompress 是否启用像素压缩
+                     * setEnableQualityCompress 是否启用质量压缩
+                     * setRecordVideoSecond 录视频的秒数，默认不限制
+                     * setRecordVideoDefinition 视频清晰度  Constants.HIGH 清晰  Constants.ORDINARY 低质量
+                     * setImageSpanCount -->每行显示个数
+                     * setCheckNumMode 是否显示QQ选择风格(带数字效果)
+                     * setPreviewColor 预览文字颜色
+                     * setCompleteColor 完成文字颜色
+                     * setPreviewBottomBgColor 预览界面底部背景色
+                     * setBottomBgColor 选择图片页面底部背景色
+                     * setCompressQuality 设置裁剪质量，默认无损裁剪
+                     * setSelectMedia 已选择的图片
+                     * setCompressFlag 1为系统自带压缩  2为第三方luban压缩
+                     * 注意-->type为2时 设置isPreview or isCrop 无效
+                     * 注意：Options可以为空，默认标准模式
+                     */
+                    FunctionConfig config = new FunctionConfig();
+                    config.setType(1);
+                    config.setCopyMode(FunctionConfig.CROP_MODEL_1_1);
+                    config.setCompress(false);
+                    config.setEnablePixelCompress(true);
+                    config.setEnableQualityCompress(true);
+                    config.setMaxSelectNum(maxSelectNum);
+                    config.setSelectMode(FunctionConfig.MODE_MULTIPLE);
+                    config.setShowCamera(true);
+                    config.setEnablePreview(true);
+                    config.setEnableCrop(false);
+                    config.setPreviewVideo(true);
+                    config.setRecordVideoDefinition(FunctionConfig.HIGH);// 视频清晰度
+                    config.setRecordVideoSecond(60);// 视频秒数
+                    config.setCropW(0);
+                    config.setCropH(0);
+                    config.setMaxB(0);
+                    config.setCheckNumMode(false);
+                    config.setCompressQuality(100);
+                    config.setImageSpanCount(4);
+                    config.setSelectMedia(selectMedia);
+                    config.setCompressFlag(1);// 1 系统自带压缩 2 luban压缩
+                    config.setCompressW(0);
+                    config.setCompressH(0);
+                    if (false) {
+                        config.setThemeStyle(ContextCompat.getColor(AcceptanceActivity.this, R.color.blue));
+                        // 可以自定义底部 预览 完成 文字的颜色和背景色
+                        if (!false) {
+                            // QQ 风格模式下 这里自己搭配颜色，使用蓝色可能会不好看
+                            config.setPreviewColor(ContextCompat.getColor(AcceptanceActivity.this, R.color.white));
+                            config.setCompleteColor(ContextCompat.getColor(AcceptanceActivity.this, R.color.white));
+                            config.setPreviewBottomBgColor(ContextCompat.getColor(AcceptanceActivity.this, R.color.blue));
+                            config.setBottomBgColor(ContextCompat.getColor(AcceptanceActivity.this, R.color.blue));
+                        }
+                    }
+//                    if (false) {
+//                        config.setCheckedBoxDrawable(selector);
+//                    }
+
+                    // 先初始化参数配置，在启动相册
+                    PictureConfig.init(config);
+//                    PictureConfig.getPictureConfig().openPhoto(mContext, resultCallback);
+
+                    // 只拍照
+                    PictureConfig.getPictureConfig().startOpenCamera(mContext, resultCallback);
+                    break;
+                case 1:
+                    // 删除图片
+                    selectMedia.remove(position);
+                    adapter.notifyItemRemoved(position);
+                    break;
+            }
+        }
+    };
+
+    /**
+     * 图片回调方法
+     */
+    private PictureConfig.OnSelectResultCallback resultCallback = new PictureConfig.OnSelectResultCallback() {
+        @Override
+        public void onSelectSuccess(List<LocalMedia> resultList) {
+            selectMedia = resultList;
+            Log.i("callBack_result", selectMedia.size() + "");
+            if (selectMedia != null) {
+                adapter.setList(selectMedia);
+                adapter.notifyDataSetChanged();
+            }
+        }
+    };
 
     private int year;
     private int month;
@@ -431,7 +618,11 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
         int position = viewPager.getCurrentItem();//获取当前页面位置
         if (position == 0) {
             Toast.makeText(this, "不能删除验收头哦！", Toast.LENGTH_SHORT).show();
-        } else {
+        }
+        else if (position+1==totalCount)
+        {
+            Toast.makeText(this, "不能删除沒有提交的数据哦！", Toast.LENGTH_SHORT).show();
+        }else {
             totalCount--;
             viewList.remove(position);//删除一项数据源中的数据
             myPagerAdapter.notifyDataSetChanged();//通知UI更新

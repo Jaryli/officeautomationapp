@@ -58,6 +58,7 @@
         <activity android:name="com.app.officeautomationapp.activity.ProjectTujianMiaomuActivity" />
         <activity android:name="com.app.officeautomationapp.activity.AcceptanceActivity" />
         <activity android:name="com.app.officeautomationapp.activity.SupplyGetActivity" />
+        <activity android:name="com.app.officeautomationapp.activity.WzGetActivity" />
 
 
 

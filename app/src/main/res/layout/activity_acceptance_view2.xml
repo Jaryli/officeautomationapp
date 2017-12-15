@@ -334,22 +334,40 @@
                         </LinearLayout>
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:gravity="center|center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="3"
-                            android:gravity="center_vertical"
-                            android:text="添加照片"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/title_text_size" />
-
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:gravity="center_vertical">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="9"
+                                android:gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:textSize="@dimen/title_text_size"
+                                android:textColor="@color/black"
+                                android:text="添加照片"/>
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:background="@mipmap/icon_camera"
+                                android:id="@+id/iv_pic_select"
+                                android:layout_height="30dp"
+                                android:layout_marginRight="10dp"/>
+                        </LinearLayout>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:overScrollMode="never" />
                     </LinearLayout>
 
                     <LinearLayout
