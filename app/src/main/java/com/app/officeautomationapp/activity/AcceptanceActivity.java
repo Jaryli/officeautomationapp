@@ -88,6 +88,7 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
     Integer wz_id;//物资id
     EditText arriveDate;
     private Integer isPay;
+    private String orderCode;
 
     private RecyclerView recyclerView;
     private GridImageAdapter adapter;
@@ -275,6 +276,7 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                             try {
                                 JSONObject jsonObject = new JSONObject(result);
                                 int re=jsonObject.getInt("result");
+                                orderCode=jsonObject.getString("orderCode");//获取Code
                                 if(re!=1)
                                 {
                                     Toast.makeText(AcceptanceActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
@@ -381,7 +383,7 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                             miaomuPostBean.setImagedata(str);
                         }
                         miaomuPostBean.setSupplyName(supplyName.getText().toString());
-                        miaomuPostBean.setApplyCode(projectMiaomuTujianBean.getApplyCode());
+                        miaomuPostBean.setApplyCode(orderCode);
                         miaomuPostBean.setArriveDate(arriveDate.getText().toString());
                         miaomuPostBean.setId(wz_id);//
                         miaomuPostBean.setIsPay(isPay.isChecked()?1:0);//
