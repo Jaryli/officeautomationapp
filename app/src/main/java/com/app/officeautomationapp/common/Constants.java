@@ -112,6 +112,13 @@ public class Constants {
     public final static String GetTreeDetailsList=address+"/api/V1/Flow/GetTreeDetailsList";//苗木采购或验收明细?orderCode={}
     public final static String GetCivilDetailsList=address+"/api/V1/Flow/GetCivilDetailsList";//获取土建采购或验收明细
 
+
+    public final static String DeleteCivilDetails=address+"/api/V1/Flow/DeleteCivilDetails";//根据Id删除土建明细(Get)?id={id}
+    public final static String DeleteTreeDetails=address+"/api/V1/Flow/DeleteTreeDetails";//删除苗木明细(Get)?id={id}
+
+    public final static String AddArchCivilFlow=address+"/api/V1/Flow/AddArchCivilFlow";//提交土建验收申请(Post)
+    public final static String AddArchTreeFlow=address+"/api/V1/Flow/AddArchTreeFlow";//苗木验收申请(Post)
+
     public final static String GetSupplyPageList=address+"/api/V1/WorkFlow/GetSupplyPageList";//获取供应商?pageIndex=1&pageSize=9999&supplyName=
     //点工查询url：
     public final static String DIANGONG_URL=address+"/Home/JobList?userId=";
