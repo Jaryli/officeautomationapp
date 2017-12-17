@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -11,10 +12,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -132,7 +135,13 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
         del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                delPage();
+                getConfirmDialog(AcceptanceActivity.this, "是否删除当前验收单?", new DialogInterface.OnClickListener
+                        () {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        delPage();
+                    }
+                }).show();
             }
         });
         back = findViewById(R.id.back);
@@ -144,6 +153,19 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
         });
         dealStatusBar(); // 调整状态栏高度
         addPage();
+    }
+
+
+    public static AlertDialog.Builder getConfirmDialog(Context context, String message, DialogInterface.OnClickListener onClickListener) {
+        AlertDialog.Builder builder = getDialog(context);
+        builder.setMessage(Html.fromHtml(message));
+        builder.setPositiveButton("确定", onClickListener);
+        builder.setNegativeButton("取消", null);
+        return builder;
+    }
+    public static AlertDialog.Builder getDialog(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        return builder;
     }
 
 
@@ -617,7 +639,7 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
      * 删除当前页面
      */
     public void delPage() {
-        int position = viewPager.getCurrentItem();//获取当前页面位置
+        final int position = viewPager.getCurrentItem();//获取当前页面位置
         if (position == 0) {
             Toast.makeText(this, "不能删除验收头哦！", Toast.LENGTH_SHORT).show();
         }
@@ -625,9 +647,59 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
         {
             Toast.makeText(this, "不能删除沒有提交的数据哦！", Toast.LENGTH_SHORT).show();
         }else {
-            totalCount--;
-            viewList.remove(position);//删除一项数据源中的数据
-            myPagerAdapter.notifyDataSetChanged();//通知UI更新
+
+            progressDialog= new ProgressDialog(AcceptanceActivity.this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setMessage("提交中...");
+            progressDialog.setCanceledOnTouchOutside(false);//对话框不消失
+            progressDialog.show();
+            RequestParams params = new RequestParams(Constants.DeleteTreeDetails);
+            Log.i("", "post-url:" + Constants.DeleteTreeDetails);
+            params.addHeader("access_token", userDto.getAccessToken());
+            params.addQueryStringParameter("id","10");
+            Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    Log.i("JAVA", "onSuccess result:" + result);
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        int re=jsonObject.getInt("result");
+                        if(re!=1)
+                        {
+                            Toast.makeText(AcceptanceActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        else {
+                            totalCount--;
+                            viewList.remove(position);//删除一项数据源中的数据
+                            myPagerAdapter.notifyDataSetChanged();//通知UI更新
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                //请求异常后的回调方法
+                @Override
+                public void onError(Throwable ex, boolean isOnCallback) {
+                    Log.i("JAVA", "onError:" + ex);
+                    Toast.makeText(AcceptanceActivity.this,"网络或服务器异常！",Toast.LENGTH_SHORT).show();
+                }
+                //主动调用取消请求的回调方法
+                @Override
+                public void onCancelled(CancelledException cex) {
+                    Log.i("JAVA", "onCancelled:" + cex);
+                }
+                @Override
+                public void onFinished() {
+                    Log.i("JAVA", "onFinished:" + "");
+                    progressDialog.hide();
+                }
+            });
+
+
+
+
         }
 
     }
