@@ -42,9 +42,9 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_centerVertical="true"
-                android:id="@+id/back"
+                android:id="@+id/del"
                 android:layout_marginLeft="15dp"
-                android:background="@mipmap/le" />
+                android:background="@mipmap/x" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -56,13 +56,13 @@
                 android:textColor="#ffffff" />
 
             <View
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:id="@+id/del"
+                android:id="@+id/post_all"
                 android:layout_marginRight="15dp"
-                android:background="@mipmap/x" />
+                android:background="@mipmap/post" />
 
         </RelativeLayout>
 

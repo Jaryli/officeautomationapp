@@ -31,6 +31,7 @@ import org.xutils.x;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -46,6 +47,7 @@ public class WzGetActivity extends BaseActivity implements View.OnClickListener{
     WzAdapter adapter;
     ListView listView;
     String code;
+    HashMap<Integer, Object> mapPage = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class WzGetActivity extends BaseActivity implements View.OnClickListener{
         setContentView(R.layout.activity_wz_get);
         Intent intent=getIntent();
         code =  intent.getStringExtra("data");
+        mapPage= (HashMap<Integer, Object>) intent.getSerializableExtra("mapPage");
         userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         searchBox=(EditText)findViewById(R.id.searchBox);
         listView = (ListView) findViewById(R.id.list);
@@ -124,6 +127,19 @@ public class WzGetActivity extends BaseActivity implements View.OnClickListener{
                                 @Override
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
                                 {
+                                    boolean b=false;
+                                    for (Integer in : mapPage.keySet()) {
+                                        if(finalList.get(i).getId().toString().equals(mapPage.get(in).toString()))
+                                        {
+                                            b=true;
+                                        }
+                                    }
+                                    if(b)
+                                    {
+                                        Toast.makeText(WzGetActivity.this,"已经选择过了",Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+
                                     Intent intent =getIntent();
                                     //这里使用bundle绷带来传输数据
                                     Bundle bundle =new Bundle();
