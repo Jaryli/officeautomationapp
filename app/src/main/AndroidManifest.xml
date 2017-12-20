@@ -55,7 +55,8 @@
         <activity android:name="com.app.officeautomationapp.activity.ManageActivity" />
         <activity android:name="com.app.officeautomationapp.activity.MiaomuActivity" />
         <activity android:name="com.app.officeautomationapp.activity.ProjectActivity" />
-        <activity android:name="com.app.officeautomationapp.activity.ProjectTujianMiaomuActivity" />
+        <activity android:name="com.app.officeautomationapp.activity.ProjectTujianMiaomuActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity android:name="com.app.officeautomationapp.activity.AcceptanceActivity" />
         <activity android:name="com.app.officeautomationapp.activity.SupplyGetActivity" />
         <activity android:name="com.app.officeautomationapp.activity.WzGetActivity" />

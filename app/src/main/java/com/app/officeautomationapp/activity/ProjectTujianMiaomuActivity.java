@@ -106,6 +106,7 @@ public class ProjectTujianMiaomuActivity extends BaseActivity implements  View.O
                 return true;
             }
         });
+
         btn_project_cancel=(Button)findViewById(R.id.btn_project_cancel);
         btn_project_cancel.setOnClickListener(this);
     }

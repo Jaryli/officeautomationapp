@@ -1,11 +1,13 @@
 package com.app.officeautomationapp.bean;
 
+import java.io.Serializable;
+
 /**
  * 用章申请
  * Created by CS-711701-00027 on 2017/6/2.
  */
 
-public class AddArchSignPostBean {
+public class AddArchSignPostBean implements Serializable {
     private String flowGuid;//工作流标识
     private String workName;//工程名称
     private int toUser;//指定审批人

@@ -2,7 +2,6 @@ package com.app.officeautomationapp.activity;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,40 +12,38 @@ import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.adapter.AcceptanceAdapter;
 import com.app.officeautomationapp.adapter.GridImageAdapter;
+import com.app.officeautomationapp.bean.AddArchTreeFlowPostBean;
 import com.app.officeautomationapp.bean.MiaomuPostBean;
 import com.app.officeautomationapp.bean.MiaomuTopPostBean;
-import com.app.officeautomationapp.bean.MyProjectBean;
 import com.app.officeautomationapp.bean.ProjectMiaomuTujianBean;
+import com.app.officeautomationapp.bean.SortModel;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.FullyGridLayoutManager;
 import com.app.officeautomationapp.util.PicBase64Util;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.app.officeautomationapp.util.StringUtils;
+import com.app.officeautomationapp.view.SpinnerDialogAcceptance;
 import com.google.gson.Gson;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.luck.picture.lib.model.FunctionConfig;
@@ -62,11 +59,7 @@ import org.xutils.x;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 /**
  * Created by Administrator on 2017/12/13 0013.
@@ -105,6 +98,39 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
 
     HashMap<Integer, Object> mapPage = new HashMap<>();
 
+    int codeNum=2;
+    int postUserId=0;
+    SpinnerDialogAcceptance spinnerDialog;
+
+
+    @Override
+    public void onBackPressed() {
+        Log.d("", "onBackPressed()");
+        super.onBackPressed();
+        getConfirmDialog(AcceptanceActivity.this, "您还未提交验收，确定返回吗?", new DialogInterface.OnClickListener
+                () {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                AcceptanceActivity.this.finish();
+            }
+        }).show();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            // 按下BACK，同时没有重复
+            Log.d("", "onKeyDown()");
+            getConfirmDialog(AcceptanceActivity.this, "您还未提交验收，确定返回吗?", new DialogInterface.OnClickListener
+                    () {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    AcceptanceActivity.this.finish();
+                }
+            }).show();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,7 +179,86 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
         post_all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //
+                if(totalCount<3)
+                {
+                    Toast.makeText(AcceptanceActivity.this,"请先填写验收信息！",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else
+                {
+                    spinnerDialog=new SpinnerDialogAcceptance(AcceptanceActivity.this,R.style.DialogAnimations_SmileWindow,1,codeNum);
+                    spinnerDialog.bindOnSpinerListener(new SpinnerDialogAcceptance.OnDoneClick() {
+                        @Override
+                        public void onClick() {
+                            if(postUserId==0)
+                            {
+                                Toast.makeText(AcceptanceActivity.this,"请选择经办人",Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            else
+                            {
+
+                                AddArchTreeFlowPostBean addArchTreeFlowPostBean=new AddArchTreeFlowPostBean();
+                                addArchTreeFlowPostBean.setOrderCode(orderCode);
+                                addArchTreeFlowPostBean.setToUser(postUserId);
+                                Gson gson = new Gson();
+                                String result = gson.toJson(addArchTreeFlowPostBean);
+                                progressDialog = new ProgressDialog(AcceptanceActivity.this);
+                                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                progressDialog.setMessage("提交中...");
+                                progressDialog.setCanceledOnTouchOutside(false);//对话框不消失
+                                progressDialog.show();
+                                RequestParams params = new RequestParams(Constants.AddArchTreeFlow);
+                                Log.i("", "post-url:" + Constants.AddArchTreeFlow);
+                                params.addHeader("access_token", userDto.getAccessToken());
+                                params.setBodyContent("'" + result + "'");
+                                Log.i("JAVA", "body:" + params.getBodyContent());
+                                Callback.Cancelable cancelable = x.http().post(params, new Callback.CommonCallback<String>() {
+                                    @Override
+                                    public void onSuccess(String result) {
+                                        Log.i("JAVA", "onSuccess result:" + result);
+                                        try {
+                                            JSONObject jsonObject = new JSONObject(result);
+                                            int re = jsonObject.getInt("result");
+                                            if (re != 1) {
+                                                Toast.makeText(AcceptanceActivity.this, jsonObject.get("msg").toString(), Toast.LENGTH_SHORT).show();
+                                                return;
+                                            } else {
+                                                Toast.makeText(AcceptanceActivity.this, jsonObject.get("msg").toString(), Toast.LENGTH_SHORT).show();
+                                                progressDialog.dismiss();
+                                                AcceptanceActivity.this.finish();
+                                            }
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                    //请求异常后的回调方法
+                                    @Override
+                                    public void onError(Throwable ex, boolean isOnCallback) {
+                                        Log.i("JAVA", "onError:" + ex);
+                                        Toast.makeText(AcceptanceActivity.this, "网络或服务器异常！", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    //主动调用取消请求的回调方法
+                                    @Override
+                                    public void onCancelled(CancelledException cex) {
+                                        Log.i("JAVA", "onCancelled:" + cex);
+                                    }
+
+                                    @Override
+                                    public void onFinished() {
+                                        Log.i("JAVA", "onFinished:" + "");
+                                        progressDialog.hide();
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                            }
+                        }
+                    });
+                    spinnerDialog.showSpinerDialog();
+                }
             }
         });
         dealStatusBar(); // 调整状态栏高度
@@ -240,7 +345,17 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                 mapPage.put(count,wz_id);
             }
         }
+
+        if(resultCode==codeNum)
+        {
+            ArrayList<SortModel> result_value = (ArrayList<SortModel>)data.getSerializableExtra("data");
+            if(result_value.size()>0) {
+                spinnerDialog.refreshData(result_value.get(0).getName());
+                postUserId = result_value.get(0).getId();
+            }
+        }
     }
+
 
     /**
      * 该方法封装了添加页面的代码逻辑实现，参数text为要展示的数据
@@ -342,6 +457,7 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                         public void onFinished() {
                             Log.i("JAVA", "onFinished:" + "");
                             progressDialog.hide();
+                            progressDialog.dismiss();
                         }
                     });
 
@@ -477,6 +593,7 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                         public void onFinished() {
                             Log.i("JAVA", "onFinished:" + "");
                             progressDialog.hide();
+                            progressDialog.dismiss();
                         }
                     });
 
@@ -712,6 +829,7 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                 public void onFinished() {
                     Log.i("JAVA", "onFinished:" + "");
                     progressDialog.hide();
+                    progressDialog.dismiss();
                 }
             });
 
