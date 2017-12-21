@@ -15,8 +15,10 @@ import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.adapter.WzAdapter;
+import com.app.officeautomationapp.adapter.WzTujianAdapter;
 import com.app.officeautomationapp.bean.SupplyBean;
 import com.app.officeautomationapp.bean.WzBean;
+import com.app.officeautomationapp.bean.WzTujianBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
@@ -46,6 +48,7 @@ public class WzGetActivity extends BaseActivity implements View.OnClickListener{
     private String type;
 
     WzAdapter adapter;
+    WzTujianAdapter wzTujianAdapter;
     ListView listView;
     String code;
     HashMap<Integer, Object> mapPage = new HashMap<>();
@@ -120,53 +123,107 @@ public class WzGetActivity extends BaseActivity implements View.OnClickListener{
                     else
                     {
                         Gson gson = new Gson();
-                        List<WzBean> list=new ArrayList<WzBean>();
-                        Type type=new TypeToken<List<WzBean>>(){}.getType();
-                        list=gson.fromJson(jsonObject.get("data").toString(), type);
-                        if(list!=null)
+                        if(type.equals("miaomu"))
                         {
-                            if(adapter!=null)
+                            List<WzBean> list=new ArrayList<WzBean>();
+                            Type type=new TypeToken<List<WzBean>>(){}.getType();
+                            list=gson.fromJson(jsonObject.get("data").toString(), type);
+                            if(list!=null)
                             {
-                                adapter.clear();
-                            }
-                            adapter= new WzAdapter(WzGetActivity.this, R.layout.item_wz, list);
-                            listView.setAdapter(adapter);
-                            adapter.notifyDataSetChanged();
-
-                            final List<WzBean> finalList = list;
-                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+                                if(adapter!=null)
                                 {
-                                    boolean b=false;
-                                    for (Integer in : mapPage.keySet()) {
-                                        if(finalList.get(i).getId().toString().equals(mapPage.get(in).toString()))
-                                        {
-                                            b=true;
-                                        }
-                                    }
-                                    if(b)
-                                    {
-                                        Toast.makeText(WzGetActivity.this,"已经选择过了",Toast.LENGTH_SHORT).show();
-                                        return;
-                                    }
-
-                                    Intent intent =getIntent();
-                                    //这里使用bundle绷带来传输数据
-                                    Bundle bundle =new Bundle();
-                                    //传输的内容仍然是键值对的形式
-                                    bundle.putString("data_tree_name", finalList.get(i).getTreeName());//回发的消息
-                                    bundle.putString("data_tree_id", finalList.get(i).getId()+"");
-                                    intent.putExtras(bundle);
-                                    setResult(RESULT_OK,intent);
-                                    finish();
+                                    adapter.clear();
                                 }
-                            });
+                                adapter= new WzAdapter(WzGetActivity.this, R.layout.item_wz, list);
+                                listView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+
+                                final List<WzBean> finalList = list;
+                                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+                                    {
+                                        boolean b=false;
+                                        for (Integer in : mapPage.keySet()) {
+                                            if(finalList.get(i).getId().toString().equals(mapPage.get(in).toString()))
+                                            {
+                                                b=true;
+                                            }
+                                        }
+                                        if(b)
+                                        {
+                                            Toast.makeText(WzGetActivity.this,"已经选择过了",Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+
+                                        Intent intent =getIntent();
+                                        //这里使用bundle绷带来传输数据
+                                        Bundle bundle =new Bundle();
+                                        //传输的内容仍然是键值对的形式
+                                        bundle.putString("data_tree_name", finalList.get(i).getTreeName());//回发的消息
+                                        bundle.putString("data_tree_id", finalList.get(i).getId()+"");
+                                        intent.putExtras(bundle);
+                                        setResult(RESULT_OK,intent);
+                                        finish();
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                Toast.makeText(WzGetActivity.this,"没有可用数据",Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else
+                        else//tujian
                         {
-                            Toast.makeText(WzGetActivity.this,"没有可用数据",Toast.LENGTH_SHORT).show();
+                            List<WzTujianBean> list=new ArrayList<WzTujianBean>();
+                            Type type=new TypeToken<List<WzTujianBean>>(){}.getType();
+                            list=gson.fromJson(jsonObject.get("data").toString(), type);
+                            if(list!=null)
+                            {
+                                if(adapter!=null)
+                                {
+                                    adapter.clear();
+                                }
+                                wzTujianAdapter= new WzTujianAdapter(WzGetActivity.this, R.layout.item_wz_tujian, list);
+                                listView.setAdapter(wzTujianAdapter);
+                                wzTujianAdapter.notifyDataSetChanged();
+
+                                final List<WzTujianBean> finalList = list;
+                                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+                                    {
+                                        boolean b=false;
+                                        for (Integer in : mapPage.keySet()) {
+                                            if(finalList.get(i).getId().toString().equals(mapPage.get(in).toString()))
+                                            {
+                                                b=true;
+                                            }
+                                        }
+                                        if(b)
+                                        {
+                                            Toast.makeText(WzGetActivity.this,"已经选择过了",Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+
+                                        Intent intent =getIntent();
+                                        //这里使用bundle绷带来传输数据
+                                        Bundle bundle =new Bundle();
+                                        //传输的内容仍然是键值对的形式
+                                        bundle.putString("data_tree_name", finalList.get(i).getCivilName());//回发的消息
+                                        bundle.putString("data_tree_id", finalList.get(i).getId()+"");
+                                        intent.putExtras(bundle);
+                                        setResult(RESULT_OK,intent);
+                                        finish();
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                Toast.makeText(WzGetActivity.this,"没有可用数据",Toast.LENGTH_SHORT).show();
+                            }
                         }
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

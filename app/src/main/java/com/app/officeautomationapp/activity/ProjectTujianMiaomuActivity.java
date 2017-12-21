@@ -178,7 +178,7 @@ public class ProjectTujianMiaomuActivity extends BaseActivity implements  View.O
     private void initTujianData(){
         adapterTujian=new ProjectTujianAdapter(this,R.layout.item_project,listProjectTujianBean);
 
-        listView.setAdapter(adapter);
+        listView.setAdapter(adapterTujian);
 
         mSwipeRefreshHelper = new SwipeRefreshHelper(swipeRefreshLayout);
 

@@ -216,7 +216,7 @@ public class ProjectTujianBean implements Serializable {
         this.RQCode = RQCode;
     }
 
-    class Details
+    class Details implements Serializable
     {
         private String SupplyName;
         private String ApplyCode;

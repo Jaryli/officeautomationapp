@@ -26,6 +26,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -338,7 +339,13 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
 
     private void getWz() {
         Intent intent = new Intent(this, WzGetActivity.class);
-        intent.putExtra("data", projectMiaomuBean.getApplyCode());
+        if(type.equals("miaomu")) {
+            intent.putExtra("data", projectMiaomuBean.getApplyCode());
+        }
+        else
+        {
+            intent.putExtra("data", projectTujianBean.getApplyCode());
+        }
         intent.putExtra("type", type);
         intent.putExtra("mapPage", mapPage);
         startActivityForResult(intent, 1);
@@ -638,22 +645,23 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                     }
                 });
                 final EditText remark = (EditText) view.findViewById(R.id.remark);
-                remark.setVisibility(View.GONE);
+                LinearLayout ll_remark = (LinearLayout) view.findViewById(R.id.ll_remark);
+                ll_remark.setVisibility(View.GONE);
                 TextView textView = (TextView) view.findViewById(R.id.text_view);//获取该View对象的TextView实例
                 textView.setText(type.equals("tujian") ? "土建验收表" : "苗木验收表");//展示数据
                 TextView projectName = (TextView) view.findViewById(R.id.projectName);
-                projectName.setText(projectMiaomuBean.getProjectName());
+                projectName.setText(projectTujianBean.getProjectName());
                 TextView buyCode = (TextView) view.findViewById(R.id.buyCode);
-                buyCode.setText(projectMiaomuBean.getApplyCode());
+                buyCode.setText(projectTujianBean.getApplyCode());
                 final Button btn_post = (Button) view.findViewById(R.id.btn_post);
                 btn_post.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         try {
-                            miaomuTopPostBean.setBuyCode(projectMiaomuBean.getApplyCode());
+                            miaomuTopPostBean.setBuyCode(projectTujianBean.getApplyCode());
                             miaomuTopPostBean.setFee(StringUtils.parseDouble(StringUtils.isEmpty(fee.getText())));
-                            miaomuTopPostBean.setProjectId(projectMiaomuBean.getProjectId());
-                            miaomuTopPostBean.setProjectName(projectMiaomuBean.getProjectName());
+                            miaomuTopPostBean.setProjectId(projectTujianBean.getProjectId());
+                            miaomuTopPostBean.setProjectName(projectTujianBean.getProjectName());
                             miaomuTopPostBean.setRemark(remark.getText().toString());
                             miaomuTopPostBean.setSupplyName(supplyName.getText().toString());
                         } catch (Exception e) {
