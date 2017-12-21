@@ -35,8 +35,10 @@ import com.app.officeautomationapp.adapter.GridImageAdapter;
 import com.app.officeautomationapp.bean.AddArchTreeFlowPostBean;
 import com.app.officeautomationapp.bean.MiaomuPostBean;
 import com.app.officeautomationapp.bean.MiaomuTopPostBean;
-import com.app.officeautomationapp.bean.ProjectMiaomuTujianBean;
+import com.app.officeautomationapp.bean.ProjectMiaomuBean;
+import com.app.officeautomationapp.bean.ProjectTujianBean;
 import com.app.officeautomationapp.bean.SortModel;
+import com.app.officeautomationapp.bean.TujianPostBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.FullyGridLayoutManager;
@@ -71,7 +73,8 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
     private List<View> viewList = new ArrayList<>();//ViewPager数据源
     private AcceptanceAdapter myPagerAdapter;//适配器
     private ViewPager viewPager;
-    private ProjectMiaomuTujianBean projectMiaomuTujianBean;
+    private ProjectMiaomuBean projectMiaomuBean;
+    private ProjectTujianBean projectTujianBean;
     private int count;//增加次数
     private int totalCount = 0;
     private View positionView;
@@ -137,13 +140,21 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_acceptance);
         mContext = this;
+        tv_title = (TextView) findViewById(R.id.tv_title);
         userDto = (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(), "user");
         Intent intent = getIntent();
-        projectMiaomuTujianBean = (ProjectMiaomuTujianBean) intent.getSerializableExtra("data");
         type = intent.getStringExtra("type");
-        projectId = projectMiaomuTujianBean.getProjectId();
-        tv_title = (TextView) findViewById(R.id.tv_title);
-        tv_title.setText(type.equals("tujian") ? "土建验收" : "苗木验收");
+        if(type.equals("miaomu")) {
+            projectMiaomuBean = (ProjectMiaomuBean) intent.getSerializableExtra("data");
+            projectId = projectMiaomuBean.getProjectId();
+            tv_title.setText("苗木验收");
+        }
+        else
+        {
+            projectTujianBean = (ProjectTujianBean) intent.getSerializableExtra("data");
+            projectId = projectTujianBean.getProjectId();
+            tv_title.setText("土建验收");
+        }
         // 1. 沉浸式状态栏
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -208,8 +219,17 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                                 progressDialog.setMessage("提交中...");
                                 progressDialog.setCanceledOnTouchOutside(false);//对话框不消失
                                 progressDialog.show();
-                                RequestParams params = new RequestParams(Constants.AddArchTreeFlow);
-                                Log.i("", "post-url:" + Constants.AddArchTreeFlow);
+                                String url="";
+                                if(type.equals("miaomu"))
+                                {
+                                    url=Constants.AddArchTreeFlow;
+                                }
+                                else
+                                {
+                                    url=Constants.AddArchCivilFlow;
+                                }
+                                RequestParams params = new RequestParams(url);
+                                Log.i("", "post-url:" + url);
                                 params.addHeader("access_token", userDto.getAccessToken());
                                 params.setBodyContent("'" + result + "'");
                                 Log.i("JAVA", "body:" + params.getBodyContent());
@@ -318,7 +338,8 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
 
     private void getWz() {
         Intent intent = new Intent(this, WzGetActivity.class);
-        intent.putExtra("data", projectMiaomuTujianBean.getApplyCode());
+        intent.putExtra("data", projectMiaomuBean.getApplyCode());
+        intent.putExtra("type", type);
         intent.putExtra("mapPage", mapPage);
         startActivityForResult(intent, 1);
     }
@@ -367,239 +388,462 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
 
         LayoutInflater inflater = LayoutInflater.from(this);//获取LayoutInflater的实例
         View view = null;//调用LayoutInflater实例的inflate()方法来加载页面的布局
-        if (totalCount == 1) {
-            final MiaomuTopPostBean miaomuTopPostBean = new MiaomuTopPostBean();
-            view = inflater.inflate(R.layout.activity_acceptance_view, null);
-            final EditText fee = (EditText) view.findViewById(R.id.fee);
-            supplyName = (EditText) view.findViewById(R.id.supplyName);
-            supplyName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    getSupply();
-                }
-            });
-            final EditText remark = (EditText) view.findViewById(R.id.remark);
 
-            TextView textView = (TextView) view.findViewById(R.id.text_view);//获取该View对象的TextView实例
-            textView.setText(type.equals("tujian") ? "土建验收表" : "苗木验收表");//展示数据
-            TextView projectName = (TextView) view.findViewById(R.id.projectName);
-            projectName.setText(projectMiaomuTujianBean.getProjectName());
-            TextView buyCode = (TextView) view.findViewById(R.id.buyCode);
-            buyCode.setText(projectMiaomuTujianBean.getApplyCode());
-            final Button btn_post = (Button) view.findViewById(R.id.btn_post);
-            btn_post.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try {
-                        miaomuTopPostBean.setBuyCode(projectMiaomuTujianBean.getApplyCode());
-                        miaomuTopPostBean.setFee(StringUtils.parseDouble(StringUtils.isEmpty(fee.getText())));
-                        miaomuTopPostBean.setProjectId(projectMiaomuTujianBean.getProjectId());
-                        miaomuTopPostBean.setProjectName(projectMiaomuTujianBean.getProjectName());
-                        miaomuTopPostBean.setRemark(remark.getText().toString());
-                        miaomuTopPostBean.setSupplyName(supplyName.getText().toString());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Toast.makeText(AcceptanceActivity.this, "参数填写有误！", Toast.LENGTH_SHORT).show();
+        if(type.equals("miaomu")) {
+            if (totalCount == 1) {
+                final MiaomuTopPostBean miaomuTopPostBean = new MiaomuTopPostBean();
+                view = inflater.inflate(R.layout.activity_acceptance_view, null);
+                final EditText fee = (EditText) view.findViewById(R.id.fee);
+                supplyName = (EditText) view.findViewById(R.id.supplyName);
+                supplyName.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getSupply();
                     }
-                    Gson gson = new Gson();
-                    String result = gson.toJson(miaomuTopPostBean);
-                    progressDialog = new ProgressDialog(AcceptanceActivity.this);
-                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    progressDialog.setMessage("提交中...");
-                    progressDialog.setCanceledOnTouchOutside(false);//对话框不消失
-                    progressDialog.show();
-                    RequestParams params = new RequestParams(Constants.AddTreeApply);
-                    Log.i("", "post-url:" + Constants.AddTreeApply);
-                    params.addHeader("access_token", userDto.getAccessToken());
-                    params.setBodyContent("'" + result + "'");
-                    Log.i("JAVA", "body:" + params.getBodyContent());
-                    Callback.Cancelable cancelable = x.http().post(params, new Callback.CommonCallback<String>() {
-                        @Override
-                        public void onSuccess(String result) {
-                            Log.i("JAVA", "onSuccess result:" + result);
-                            try {
-                                JSONObject jsonObject = new JSONObject(result);
-                                int re = jsonObject.getInt("result");
-                                orderCode = jsonObject.getString("orderCode");//获取Code
-                                if (re != 1) {
-                                    Toast.makeText(AcceptanceActivity.this, jsonObject.get("msg").toString(), Toast.LENGTH_SHORT).show();
-                                    return;
-                                } else {
-                                    Toast.makeText(AcceptanceActivity.this, jsonObject.get("msg").toString(), Toast.LENGTH_SHORT).show();
+                });
+                final EditText remark = (EditText) view.findViewById(R.id.remark);
 
-                                    addPage();
-                                    Message message = new Message();
-                                    message.what = 1;
-                                    handler.sendMessage(message);
-                                    btn_post.setVisibility(View.INVISIBLE);
+                TextView textView = (TextView) view.findViewById(R.id.text_view);//获取该View对象的TextView实例
+                textView.setText("苗木验收表");//展示数据
+                TextView projectName = (TextView) view.findViewById(R.id.projectName);
+                projectName.setText(projectMiaomuBean.getProjectName());
+                TextView buyCode = (TextView) view.findViewById(R.id.buyCode);
+                buyCode.setText(projectMiaomuBean.getApplyCode());
+                final Button btn_post = (Button) view.findViewById(R.id.btn_post);
+                btn_post.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            miaomuTopPostBean.setBuyCode(projectMiaomuBean.getApplyCode());
+                            miaomuTopPostBean.setFee(StringUtils.parseDouble(StringUtils.isEmpty(fee.getText())));
+                            miaomuTopPostBean.setProjectId(projectMiaomuBean.getProjectId());
+                            miaomuTopPostBean.setProjectName(projectMiaomuBean.getProjectName());
+                            miaomuTopPostBean.setRemark(remark.getText().toString());
+                            miaomuTopPostBean.setSupplyName(supplyName.getText().toString());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(AcceptanceActivity.this, "参数填写有误！", Toast.LENGTH_SHORT).show();
+                        }
+                        Gson gson = new Gson();
+                        String result = gson.toJson(miaomuTopPostBean);
+                        progressDialog = new ProgressDialog(AcceptanceActivity.this);
+                        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                        progressDialog.setMessage("提交中...");
+                        progressDialog.setCanceledOnTouchOutside(false);//对话框不消失
+                        progressDialog.show();
+                        RequestParams params = new RequestParams(Constants.AddTreeApply);
+                        Log.i("", "post-url:" + Constants.AddTreeApply);
+                        params.addHeader("access_token", userDto.getAccessToken());
+                        params.setBodyContent("'" + result + "'");
+                        Log.i("JAVA", "body:" + params.getBodyContent());
+                        Callback.Cancelable cancelable = x.http().post(params, new Callback.CommonCallback<String>() {
+                            @Override
+                            public void onSuccess(String result) {
+                                Log.i("JAVA", "onSuccess result:" + result);
+                                try {
+                                    JSONObject jsonObject = new JSONObject(result);
+                                    int re = jsonObject.getInt("result");
+                                    orderCode = jsonObject.getString("orderCode");//获取Code
+                                    if (re != 1) {
+                                        Toast.makeText(AcceptanceActivity.this, jsonObject.get("msg").toString(), Toast.LENGTH_SHORT).show();
+                                        return;
+                                    } else {
+                                        Toast.makeText(AcceptanceActivity.this, jsonObject.get("msg").toString(), Toast.LENGTH_SHORT).show();
+
+                                        addPage();
+                                        Message message = new Message();
+                                        message.what = 1;
+                                        handler.sendMessage(message);
+                                        btn_post.setVisibility(View.INVISIBLE);
+                                    }
+
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
-                        }
 
-                        //请求异常后的回调方法
-                        @Override
-                        public void onError(Throwable ex, boolean isOnCallback) {
-                            Log.i("JAVA", "onError:" + ex);
-                            Toast.makeText(AcceptanceActivity.this, "网络或服务器异常！", Toast.LENGTH_SHORT).show();
-                        }
-
-                        //主动调用取消请求的回调方法
-                        @Override
-                        public void onCancelled(CancelledException cex) {
-                            Log.i("JAVA", "onCancelled:" + cex);
-                        }
-
-                        @Override
-                        public void onFinished() {
-                            Log.i("JAVA", "onFinished:" + "");
-                            progressDialog.hide();
-                            progressDialog.dismiss();
-                        }
-                    });
-
-                }
-            });
-        } else {
-            final MiaomuPostBean miaomuPostBean = new MiaomuPostBean();
-            view = inflater.inflate(R.layout.activity_acceptance_view2, null);
-            TextView textView = (TextView) view.findViewById(R.id.text_view);//获取该View对象的TextView实例
-            textView.setText(type.equals("tujian") ? "土建验收明细单" : "苗木验收明细单");//展示数据
-            wz_name = (EditText) view.findViewById(R.id.wz_name);
-            wz_name.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    getWz();
-                }
-            });
-            final EditText numInfo = (EditText) view.findViewById(R.id.numInfo);
-            final EditText xiuJianReq = (EditText) view.findViewById(R.id.xiuJianReq);
-            final EditText raoGanReq = (EditText) view.findViewById(R.id.raoGanReq);
-            arriveDate = (EditText) view.findViewById(R.id.arriveDate);
-            arriveDate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    getDate();
-                }
-            });
-            final EditText ysXiongJing = (EditText) view.findViewById(R.id.ysXiongJing);
-            final EditText ysHeight = (EditText) view.findViewById(R.id.ysHeight);
-            final EditText ysPengXing = (EditText) view.findViewById(R.id.ysPengXing);
-            final SwitchButton isPay = (SwitchButton) view.findViewById(R.id.isPay);
-
-
-            recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
-            FullyGridLayoutManager manager = new FullyGridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false);
-            recyclerView.setLayoutManager(manager);
-            adapter = new GridImageAdapter(this, onAddPicClickListener, false);
-            adapter.setSelectMax(maxSelectNum);
-            recyclerView.setAdapter(adapter);
-            adapter.setOnItemClickListener(new GridImageAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(int position, View v) {
-                    // 这里可预览图片
-                    PictureConfig.getPictureConfig().externalPicturePreview(AcceptanceActivity.this, position, selectMedia);
-                }
-            });
-
-
-            supplyName = (EditText) view.findViewById(R.id.supplyName);
-            supplyName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    getSupply();
-                }
-            });
-            final Button btn_post = (Button) view.findViewById(R.id.btn_post);
-            btn_post.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try {
-                        if (selectMedia.size() > 0) {
-                            String[] str = new String[selectMedia.size()];
-                            for (int i = 0; i < selectMedia.size(); i++) {
-                                str[i] = PicBase64Util.encode(selectMedia.get(i).getPath(), 20);
+                            //请求异常后的回调方法
+                            @Override
+                            public void onError(Throwable ex, boolean isOnCallback) {
+                                Log.i("JAVA", "onError:" + ex);
+                                Toast.makeText(AcceptanceActivity.this, "网络或服务器异常！", Toast.LENGTH_SHORT).show();
                             }
-                            miaomuPostBean.setImagedata(str);
-                        }
-                        miaomuPostBean.setSupplyName(supplyName.getText().toString());
-                        miaomuPostBean.setApplyCode(orderCode);
-                        miaomuPostBean.setArriveDate(arriveDate.getText().toString());
-                        miaomuPostBean.setId(wz_id);//
-                        miaomuPostBean.setIsPay(isPay.isChecked() ? 1 : 0);//
-                        miaomuPostBean.setNumInfo(numInfo.getText().toString().equals("") ? 0 : Integer.parseInt(numInfo.getText().toString()));
-                        miaomuPostBean.setRaoGanReq(raoGanReq.getText().toString());
-                        miaomuPostBean.setXiuJianReq(xiuJianReq.getText().toString());
-                        miaomuPostBean.setYsHeight(ysHeight.getText().toString());
-                        miaomuPostBean.setYsPengXing(ysPengXing.getText().toString());
-                        miaomuPostBean.setYsXiongJing(ysXiongJing.getText().toString());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Toast.makeText(AcceptanceActivity.this, "参数填写有误！", Toast.LENGTH_SHORT).show();
+
+                            //主动调用取消请求的回调方法
+                            @Override
+                            public void onCancelled(CancelledException cex) {
+                                Log.i("JAVA", "onCancelled:" + cex);
+                            }
+
+                            @Override
+                            public void onFinished() {
+                                Log.i("JAVA", "onFinished:" + "");
+                                progressDialog.hide();
+                                progressDialog.dismiss();
+                            }
+                        });
+
                     }
-                    Gson gson = new Gson();
-                    String result = gson.toJson(miaomuPostBean);
-                    progressDialog = new ProgressDialog(AcceptanceActivity.this);
-                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    progressDialog.setMessage("提交中...");
-                    progressDialog.setCanceledOnTouchOutside(false);//对话框不消失
-                    progressDialog.show();
-                    RequestParams params = new RequestParams(Constants.AddTreeDetails);
-                    Log.i("", "post-url:" + Constants.AddTreeDetails);
-                    params.addHeader("access_token", userDto.getAccessToken());
-                    params.setBodyContent("'" + result + "'");
-                    Log.i("JAVA", "body:" + params.getBodyContent());
-                    Callback.Cancelable cancelable = x.http().post(params, new Callback.CommonCallback<String>() {
-                        @Override
-                        public void onSuccess(String result) {
-                            Log.i("JAVA", "onSuccess result:" + result);
-                            try {
-                                JSONObject jsonObject = new JSONObject(result);
-                                int re = jsonObject.getInt("result");
-                                if (re != 1) {
-                                    Toast.makeText(AcceptanceActivity.this, jsonObject.get("msg").toString(), Toast.LENGTH_SHORT).show();
-                                    return;
-                                } else {
-                                    clearData();
-                                    addPage();
-                                    Message message = new Message();
-                                    message.what = 1;
-                                    handler.sendMessage(message);
-                                    btn_post.setVisibility(View.INVISIBLE);
+                });
+            } else {
+                final MiaomuPostBean miaomuPostBean = new MiaomuPostBean();
+                view = inflater.inflate(R.layout.activity_acceptance_view2, null);
+                TextView textView = (TextView) view.findViewById(R.id.text_view);//获取该View对象的TextView实例
+                textView.setText("苗木验收明细单");//展示数据
+                wz_name = (EditText) view.findViewById(R.id.wz_name);
+                wz_name.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getWz();
+                    }
+                });
+                final EditText numInfo = (EditText) view.findViewById(R.id.numInfo);
+                final EditText xiuJianReq = (EditText) view.findViewById(R.id.xiuJianReq);
+                final EditText raoGanReq = (EditText) view.findViewById(R.id.raoGanReq);
+                arriveDate = (EditText) view.findViewById(R.id.arriveDate);
+                arriveDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getDate();
+                    }
+                });
+                final EditText ysXiongJing = (EditText) view.findViewById(R.id.ysXiongJing);
+                final EditText ysHeight = (EditText) view.findViewById(R.id.ysHeight);
+                final EditText ysPengXing = (EditText) view.findViewById(R.id.ysPengXing);
+                final SwitchButton isPay = (SwitchButton) view.findViewById(R.id.isPay);
+
+
+                recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
+                FullyGridLayoutManager manager = new FullyGridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false);
+                recyclerView.setLayoutManager(manager);
+                adapter = new GridImageAdapter(this, onAddPicClickListener, false);
+                adapter.setSelectMax(maxSelectNum);
+                recyclerView.setAdapter(adapter);
+                adapter.setOnItemClickListener(new GridImageAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position, View v) {
+                        // 这里可预览图片
+                        PictureConfig.getPictureConfig().externalPicturePreview(AcceptanceActivity.this, position, selectMedia);
+                    }
+                });
+
+
+                supplyName = (EditText) view.findViewById(R.id.supplyName);
+                supplyName.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getSupply();
+                    }
+                });
+                final Button btn_post = (Button) view.findViewById(R.id.btn_post);
+                btn_post.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            if (selectMedia.size() > 0) {
+                                String[] str = new String[selectMedia.size()];
+                                for (int i = 0; i < selectMedia.size(); i++) {
+                                    str[i] = PicBase64Util.encode(selectMedia.get(i).getPath(), 20);
                                 }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                                miaomuPostBean.setImagedata(str);
                             }
+                            miaomuPostBean.setSupplyName(supplyName.getText().toString());
+                            miaomuPostBean.setApplyCode(orderCode);
+                            miaomuPostBean.setArriveDate(arriveDate.getText().toString());
+                            miaomuPostBean.setId(wz_id);//
+                            miaomuPostBean.setIsPay(isPay.isChecked() ? 1 : 0);//
+                            miaomuPostBean.setNumInfo(numInfo.getText().toString().equals("") ? 0 : Integer.parseInt(numInfo.getText().toString()));
+                            miaomuPostBean.setRaoGanReq(raoGanReq.getText().toString());
+                            miaomuPostBean.setXiuJianReq(xiuJianReq.getText().toString());
+                            miaomuPostBean.setYsHeight(ysHeight.getText().toString());
+                            miaomuPostBean.setYsPengXing(ysPengXing.getText().toString());
+                            miaomuPostBean.setYsXiongJing(ysXiongJing.getText().toString());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(AcceptanceActivity.this, "参数填写有误！", Toast.LENGTH_SHORT).show();
                         }
+                        Gson gson = new Gson();
+                        String result = gson.toJson(miaomuPostBean);
+                        progressDialog = new ProgressDialog(AcceptanceActivity.this);
+                        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                        progressDialog.setMessage("提交中...");
+                        progressDialog.setCanceledOnTouchOutside(false);//对话框不消失
+                        progressDialog.show();
+                        RequestParams params = new RequestParams(Constants.AddTreeDetails);
+                        Log.i("", "post-url:" + Constants.AddTreeDetails);
+                        params.addHeader("access_token", userDto.getAccessToken());
+                        params.setBodyContent("'" + result + "'");
+                        Log.i("JAVA", "body:" + params.getBodyContent());
+                        Callback.Cancelable cancelable = x.http().post(params, new Callback.CommonCallback<String>() {
+                            @Override
+                            public void onSuccess(String result) {
+                                Log.i("JAVA", "onSuccess result:" + result);
+                                try {
+                                    JSONObject jsonObject = new JSONObject(result);
+                                    int re = jsonObject.getInt("result");
+                                    if (re != 1) {
+                                        Toast.makeText(AcceptanceActivity.this, jsonObject.get("msg").toString(), Toast.LENGTH_SHORT).show();
+                                        return;
+                                    } else {
+                                        clearData();
+                                        addPage();
+                                        Message message = new Message();
+                                        message.what = 1;
+                                        handler.sendMessage(message);
+                                        btn_post.setVisibility(View.INVISIBLE);
+                                    }
 
-                        //请求异常后的回调方法
-                        @Override
-                        public void onError(Throwable ex, boolean isOnCallback) {
-                            Log.i("JAVA", "onError:" + ex);
-                            Toast.makeText(AcceptanceActivity.this, "网络或服务器异常！", Toast.LENGTH_SHORT).show();
-                        }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
 
-                        //主动调用取消请求的回调方法
-                        @Override
-                        public void onCancelled(CancelledException cex) {
-                            Log.i("JAVA", "onCancelled:" + cex);
-                        }
+                            //请求异常后的回调方法
+                            @Override
+                            public void onError(Throwable ex, boolean isOnCallback) {
+                                Log.i("JAVA", "onError:" + ex);
+                                Toast.makeText(AcceptanceActivity.this, "网络或服务器异常！", Toast.LENGTH_SHORT).show();
+                            }
 
-                        @Override
-                        public void onFinished() {
-                            Log.i("JAVA", "onFinished:" + "");
-                            progressDialog.hide();
-                            progressDialog.dismiss();
-                        }
-                    });
+                            //主动调用取消请求的回调方法
+                            @Override
+                            public void onCancelled(CancelledException cex) {
+                                Log.i("JAVA", "onCancelled:" + cex);
+                            }
 
-                }
-            });
+                            @Override
+                            public void onFinished() {
+                                Log.i("JAVA", "onFinished:" + "");
+                                progressDialog.hide();
+                                progressDialog.dismiss();
+                            }
+                        });
+
+                    }
+                });
+            }
         }
+        else//tujian
+        {
+            if (totalCount == 1) {
+                final MiaomuTopPostBean miaomuTopPostBean = new MiaomuTopPostBean();
+                view = inflater.inflate(R.layout.activity_acceptance_view, null);
+                final EditText fee = (EditText) view.findViewById(R.id.fee);
+                supplyName = (EditText) view.findViewById(R.id.supplyName);
+                supplyName.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getSupply();
+                    }
+                });
+                final EditText remark = (EditText) view.findViewById(R.id.remark);
+                remark.setVisibility(View.GONE);
+                TextView textView = (TextView) view.findViewById(R.id.text_view);//获取该View对象的TextView实例
+                textView.setText(type.equals("tujian") ? "土建验收表" : "苗木验收表");//展示数据
+                TextView projectName = (TextView) view.findViewById(R.id.projectName);
+                projectName.setText(projectMiaomuBean.getProjectName());
+                TextView buyCode = (TextView) view.findViewById(R.id.buyCode);
+                buyCode.setText(projectMiaomuBean.getApplyCode());
+                final Button btn_post = (Button) view.findViewById(R.id.btn_post);
+                btn_post.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            miaomuTopPostBean.setBuyCode(projectMiaomuBean.getApplyCode());
+                            miaomuTopPostBean.setFee(StringUtils.parseDouble(StringUtils.isEmpty(fee.getText())));
+                            miaomuTopPostBean.setProjectId(projectMiaomuBean.getProjectId());
+                            miaomuTopPostBean.setProjectName(projectMiaomuBean.getProjectName());
+                            miaomuTopPostBean.setRemark(remark.getText().toString());
+                            miaomuTopPostBean.setSupplyName(supplyName.getText().toString());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(AcceptanceActivity.this, "参数填写有误！", Toast.LENGTH_SHORT).show();
+                        }
+                        Gson gson = new Gson();
+                        String result = gson.toJson(miaomuTopPostBean);
+                        progressDialog = new ProgressDialog(AcceptanceActivity.this);
+                        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                        progressDialog.setMessage("提交中...");
+                        progressDialog.setCanceledOnTouchOutside(false);//对话框不消失
+                        progressDialog.show();
+                        RequestParams params = new RequestParams(Constants.AddCivilApply);
+                        Log.i("", "post-url:" + Constants.AddCivilApply);
+                        params.addHeader("access_token", userDto.getAccessToken());
+                        params.setBodyContent("'" + result + "'");
+                        Log.i("JAVA", "body:" + params.getBodyContent());
+                        Callback.Cancelable cancelable = x.http().post(params, new Callback.CommonCallback<String>() {
+                            @Override
+                            public void onSuccess(String result) {
+                                Log.i("JAVA", "onSuccess result:" + result);
+                                try {
+                                    JSONObject jsonObject = new JSONObject(result);
+                                    int re = jsonObject.getInt("result");
+                                    orderCode = jsonObject.getString("orderCode");//获取Code
+                                    if (re != 1) {
+                                        Toast.makeText(AcceptanceActivity.this, jsonObject.get("msg").toString(), Toast.LENGTH_SHORT).show();
+                                        return;
+                                    } else {
+                                        Toast.makeText(AcceptanceActivity.this, jsonObject.get("msg").toString(), Toast.LENGTH_SHORT).show();
+
+                                        addPage();
+                                        Message message = new Message();
+                                        message.what = 1;
+                                        handler.sendMessage(message);
+                                        btn_post.setVisibility(View.INVISIBLE);
+                                    }
+
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            //请求异常后的回调方法
+                            @Override
+                            public void onError(Throwable ex, boolean isOnCallback) {
+                                Log.i("JAVA", "onError:" + ex);
+                                Toast.makeText(AcceptanceActivity.this, "网络或服务器异常！", Toast.LENGTH_SHORT).show();
+                            }
+
+                            //主动调用取消请求的回调方法
+                            @Override
+                            public void onCancelled(CancelledException cex) {
+                                Log.i("JAVA", "onCancelled:" + cex);
+                            }
+
+                            @Override
+                            public void onFinished() {
+                                Log.i("JAVA", "onFinished:" + "");
+                                progressDialog.hide();
+                                progressDialog.dismiss();
+                            }
+                        });
+
+                    }
+                });
+            } else {
+                final TujianPostBean tujianPostBean = new TujianPostBean();
+                view = inflater.inflate(R.layout.activity_acceptance_view3, null);
+                TextView textView = (TextView) view.findViewById(R.id.text_view);//获取该View对象的TextView实例
+                textView.setText("土建验收明细单");//展示数据
+                wz_name = (EditText) view.findViewById(R.id.wz_name);
+                wz_name.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getWz();
+                    }
+                });
+                final EditText numInfo = (EditText) view.findViewById(R.id.numInfo);
+                final EditText specialRequest = (EditText) view.findViewById(R.id.specialRequest);
+                final EditText remark = (EditText) view.findViewById(R.id.remark);
+                supplyName = (EditText) view.findViewById(R.id.supplyName);
+                supplyName.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getSupply();
+                    }
+                });
+
+                recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
+                FullyGridLayoutManager manager = new FullyGridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false);
+                recyclerView.setLayoutManager(manager);
+                adapter = new GridImageAdapter(this, onAddPicClickListener, false);
+                adapter.setSelectMax(maxSelectNum);
+                recyclerView.setAdapter(adapter);
+                adapter.setOnItemClickListener(new GridImageAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position, View v) {
+                        // 这里可预览图片
+                        PictureConfig.getPictureConfig().externalPicturePreview(AcceptanceActivity.this, position, selectMedia);
+                    }
+                });
+                final Button btn_post = (Button) view.findViewById(R.id.btn_post);
+                btn_post.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            if (selectMedia.size() > 0) {
+                                String[] str = new String[selectMedia.size()];
+                                for (int i = 0; i < selectMedia.size(); i++) {
+                                    str[i] = PicBase64Util.encode(selectMedia.get(i).getPath(), 20);
+                                }
+                                tujianPostBean.setImagedata(str);
+                            }
+                            tujianPostBean.setSupplyName(supplyName.getText().toString());
+
+                            tujianPostBean.setId(wz_id);//
+                            tujianPostBean.setNumInfo(numInfo.getText().toString().equals("") ? 0 : Integer.parseInt(numInfo.getText().toString()));
+                            tujianPostBean.setApplyCode(orderCode);
+                            tujianPostBean.setRemark(remark.getText().toString());
+                            tujianPostBean.setSpecialRequest(specialRequest.getText().toString());
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(AcceptanceActivity.this, "参数填写有误！", Toast.LENGTH_SHORT).show();
+                        }
+                        Gson gson = new Gson();
+                        String result = gson.toJson(tujianPostBean);
+                        progressDialog = new ProgressDialog(AcceptanceActivity.this);
+                        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                        progressDialog.setMessage("提交中...");
+                        progressDialog.setCanceledOnTouchOutside(false);//对话框不消失
+                        progressDialog.show();
+                        RequestParams params = new RequestParams(Constants.AddCivilDetails);
+                        Log.i("", "post-url:" + Constants.AddCivilDetails);
+                        params.addHeader("access_token", userDto.getAccessToken());
+                        params.setBodyContent("'" + result + "'");
+                        Log.i("JAVA", "body:" + params.getBodyContent());
+                        Callback.Cancelable cancelable = x.http().post(params, new Callback.CommonCallback<String>() {
+                            @Override
+                            public void onSuccess(String result) {
+                                Log.i("JAVA", "onSuccess result:" + result);
+                                try {
+                                    JSONObject jsonObject = new JSONObject(result);
+                                    int re = jsonObject.getInt("result");
+                                    if (re != 1) {
+                                        Toast.makeText(AcceptanceActivity.this, jsonObject.get("msg").toString(), Toast.LENGTH_SHORT).show();
+                                        return;
+                                    } else {
+                                        clearData();
+                                        addPage();
+                                        Message message = new Message();
+                                        message.what = 1;
+                                        handler.sendMessage(message);
+                                        btn_post.setVisibility(View.INVISIBLE);
+                                    }
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            //请求异常后的回调方法
+                            @Override
+                            public void onError(Throwable ex, boolean isOnCallback) {
+                                Log.i("JAVA", "onError:" + ex);
+                                Toast.makeText(AcceptanceActivity.this, "网络或服务器异常！", Toast.LENGTH_SHORT).show();
+                            }
+
+                            //主动调用取消请求的回调方法
+                            @Override
+                            public void onCancelled(CancelledException cex) {
+                                Log.i("JAVA", "onCancelled:" + cex);
+                            }
+
+                            @Override
+                            public void onFinished() {
+                                Log.i("JAVA", "onFinished:" + "");
+                                progressDialog.hide();
+                                progressDialog.dismiss();
+                            }
+                        });
+
+                    }
+                });
+            }
+        }
+
 
         viewList.add(view);//为数据源添加一项数据
         myPagerAdapter.notifyDataSetChanged();//通知UI更新
@@ -779,8 +1023,17 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
             progressDialog.setMessage("提交中...");
             progressDialog.setCanceledOnTouchOutside(false);//对话框不消失
             progressDialog.show();
-            RequestParams params = new RequestParams(Constants.DeleteTreeDetails);
-            Log.i("", "post-url:" + Constants.DeleteTreeDetails);
+            String url="";
+            if(type.equals("miaomu"))
+            {
+                url=Constants.DeleteTreeDetails;
+            }
+            else
+            {
+                url=Constants.DeleteCivilDetails;
+            }
+            RequestParams params = new RequestParams(url);
+            Log.i("", "post-url:" + url);
             params.addHeader("access_token", userDto.getAccessToken());
             params.addQueryStringParameter("id", id);
             Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {

@@ -43,6 +43,7 @@ public class WzGetActivity extends BaseActivity implements View.OnClickListener{
     ProgressDialog progressDialog;
     private EditText searchBox;
     private UserDto userDto;
+    private String type;
 
     WzAdapter adapter;
     ListView listView;
@@ -55,6 +56,7 @@ public class WzGetActivity extends BaseActivity implements View.OnClickListener{
         setContentView(R.layout.activity_wz_get);
         Intent intent=getIntent();
         code =  intent.getStringExtra("data");
+        type=  intent.getStringExtra("type");
         mapPage= (HashMap<Integer, Object>) intent.getSerializableExtra("mapPage");
         userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         searchBox=(EditText)findViewById(R.id.searchBox);
@@ -90,8 +92,17 @@ public class WzGetActivity extends BaseActivity implements View.OnClickListener{
         progressDialog.setMessage("加载中...");
         progressDialog.setCanceledOnTouchOutside(false);//对话框不消失
         progressDialog.show();
-        RequestParams params = new RequestParams(Constants.GetTreeDetailsList);
-        Log.i("WzGetActivity", "post-url:" + Constants.GetTreeDetailsList);
+        String url="";
+        if(type.equals("miaomu"))
+        {
+            url=Constants.GetTreeDetailsList;
+        }
+        else
+        {
+            url=Constants.GetCivilDetailsList;
+        }
+        RequestParams params = new RequestParams(url);
+        Log.i("WzGetActivity", "post-url:" + url);
         params.addHeader("access_token", userDto.getAccessToken());
         params.addBodyParameter("orderCode",code);
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {

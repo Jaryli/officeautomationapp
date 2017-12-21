@@ -3,44 +3,42 @@ package com.app.officeautomationapp.view;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.activity.AcceptanceActivity;
-import com.app.officeautomationapp.activity.MiaomuActivity;
-import com.app.officeautomationapp.activity.ProjectActivity;
-import com.app.officeautomationapp.bean.ProjectMiaomuTujianBean;
-
-import java.util.ArrayList;
+import com.app.officeautomationapp.bean.ProjectMiaomuBean;
+import com.app.officeautomationapp.bean.ProjectTujianBean;
 
 /**
  * Created by yu on 2017/11/17.
  */
 
 public class ProjectDialog {
-    ProjectMiaomuTujianBean  projectMiaomuTujianBean;
+    ProjectMiaomuBean projectMiaomuBean;
+    ProjectTujianBean projectTujianBean;
     String type;
     Activity context;
     AlertDialog alertDialog;
     int style;
 
-    public ProjectDialog(Activity activity,ProjectMiaomuTujianBean  projectMiaomuTujianBean,String type) {
-        this.projectMiaomuTujianBean = projectMiaomuTujianBean;
+    public ProjectDialog(Activity activity, ProjectMiaomuBean projectMiaomuBean, String type) {
+        this.projectMiaomuBean = projectMiaomuBean;
         this.context = activity;
         this.type=type;
     }
 
-    public ProjectDialog(Activity activity,ProjectMiaomuTujianBean  projectMiaomuTujianBean,String type,int style) {
-        this.projectMiaomuTujianBean = projectMiaomuTujianBean;
+    public ProjectDialog(Activity activity, ProjectMiaomuBean projectMiaomuBean, String type, int style) {
+        this.projectMiaomuBean = projectMiaomuBean;
+        this.context = activity;
+        this.style=style;
+        this.type=type;
+    }
+
+    public ProjectDialog(Activity activity, ProjectTujianBean projectTujianBean, String type, int style) {
+        this.projectTujianBean = projectTujianBean;
         this.context = activity;
         this.style=style;
         this.type=type;
@@ -58,12 +56,21 @@ public class ProjectDialog {
         TextView tx_project_person = (TextView) v.findViewById(R.id.tx_project_person);
         TextView tx_project_date = (TextView) v.findViewById(R.id.tx_project_date);
 
-
-        tx_project_name.setText(projectMiaomuTujianBean.getProjectName());
-        tx_project_address.setText(projectMiaomuTujianBean.getProjectSite());
-        tx_project_num.setText(projectMiaomuTujianBean.getApplyCode());
-        tx_project_person.setText(projectMiaomuTujianBean.getMaker());
-        tx_project_date.setText(projectMiaomuTujianBean.getMakeDate());
+        if(type.equals("miaomu")) {
+            tx_project_name.setText(projectMiaomuBean.getProjectName());
+            tx_project_address.setText(projectMiaomuBean.getProjectSite());
+            tx_project_num.setText(projectMiaomuBean.getApplyCode());
+            tx_project_person.setText(projectMiaomuBean.getMaker());
+            tx_project_date.setText(projectMiaomuBean.getApplyDate());
+        }
+        else
+        {
+            tx_project_name.setText(projectTujianBean.getProjectName());
+            tx_project_address.setText(projectTujianBean.getProjectSite());
+            tx_project_num.setText(projectTujianBean.getApplyCode());
+            tx_project_person.setText(projectTujianBean.getApplyer());
+            tx_project_date.setText(projectTujianBean.getApplyDate());
+        }
 
         adb.setView(v);
         alertDialog = adb.create();
@@ -75,7 +82,12 @@ public class ProjectDialog {
             public void onClick(View v) {
                 Intent intent=new Intent(context,AcceptanceActivity.class);
                 intent.putExtra("type",type);
-                intent.putExtra("data",projectMiaomuTujianBean);
+                if(type.equals("miaomu")) {
+                    intent.putExtra("data",projectMiaomuBean);
+                }else
+                {
+                    intent.putExtra("data",projectTujianBean);
+                }
                 context.startActivity(intent);
 //                Toast.makeText(context,"功能开发中，稍后为您呈现！",Toast.LENGTH_SHORT).show();
             }

@@ -12,7 +12,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,10 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
-import com.app.officeautomationapp.adapter.ProjectMiaomuTujianAdapter;
+import com.app.officeautomationapp.adapter.ProjectMiaomuAdapter;
+import com.app.officeautomationapp.adapter.ProjectTujianAdapter;
 import com.app.officeautomationapp.bean.MyProjectBean;
-import com.app.officeautomationapp.bean.MyTaskBean;
-import com.app.officeautomationapp.bean.ProjectMiaomuTujianBean;
+import com.app.officeautomationapp.bean.ProjectMiaomuBean;
+import com.app.officeautomationapp.bean.ProjectTujianBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
@@ -55,7 +55,8 @@ public class ProjectTujianMiaomuActivity extends BaseActivity implements  View.O
     private ImageView iv_project_back;
 
     private ListView listView;
-    ProjectMiaomuTujianAdapter adapter;
+    ProjectMiaomuAdapter adapter;
+    ProjectTujianAdapter adapterTujian;
 
     private MyProjectBean myProjectBean;
     private TextView tv_title;
@@ -63,7 +64,8 @@ public class ProjectTujianMiaomuActivity extends BaseActivity implements  View.O
     private Button btn_project_cancel;
     private InputMethodManager imm;
 
-    private List<ProjectMiaomuTujianBean> listProjectMiaomuTujianBean=new ArrayList<ProjectMiaomuTujianBean>();
+    private List<ProjectMiaomuBean> listProjectMiaomuBean=new ArrayList<ProjectMiaomuBean>();
+    private List<ProjectTujianBean> listProjectTujianBean=new ArrayList<ProjectTujianBean>();
 
     SwipeRefreshLayout swipeRefreshLayout;
     private SwipeRefreshHelper mSwipeRefreshHelper;
@@ -80,7 +82,15 @@ public class ProjectTujianMiaomuActivity extends BaseActivity implements  View.O
         type=intent.getStringExtra("type");
         userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         initView();
-        initData();
+        if(type.equals("miaomu"))
+        {
+            initMiaomuData();
+        }
+        else
+        {
+            initTujianData();
+        }
+
     }
 
     private void initView(){
@@ -111,8 +121,8 @@ public class ProjectTujianMiaomuActivity extends BaseActivity implements  View.O
         btn_project_cancel.setOnClickListener(this);
     }
 
-    private void initData(){
-        adapter=new ProjectMiaomuTujianAdapter(this,R.layout.item_project,listProjectMiaomuTujianBean);
+    private void initMiaomuData(){
+        adapter=new ProjectMiaomuAdapter(this,R.layout.item_project,listProjectMiaomuBean);
 
         listView.setAdapter(adapter);
 
@@ -131,7 +141,7 @@ public class ProjectTujianMiaomuActivity extends BaseActivity implements  View.O
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        listProjectMiaomuTujianBean.clear();
+                        listProjectMiaomuBean.clear();
                         page = 0;
                         initProjects("refresh");
 //                        adapter.notifyDataSetChanged();
@@ -158,7 +168,61 @@ public class ProjectTujianMiaomuActivity extends BaseActivity implements  View.O
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                ProjectDialog projectDialog=new ProjectDialog(ProjectTujianMiaomuActivity.this,listProjectMiaomuTujianBean.get(i),type,R.style.DialogAnimations_SmileWindow);
+                ProjectDialog projectDialog=new ProjectDialog(ProjectTujianMiaomuActivity.this,listProjectMiaomuBean.get(i),type,R.style.DialogAnimations_SmileWindow);
+                projectDialog.showSpinerDialog();
+            }
+        });
+
+    }
+
+    private void initTujianData(){
+        adapterTujian=new ProjectTujianAdapter(this,R.layout.item_project,listProjectTujianBean);
+
+        listView.setAdapter(adapter);
+
+        mSwipeRefreshHelper = new SwipeRefreshHelper(swipeRefreshLayout);
+
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshHelper.autoRefresh();
+            }
+        });
+
+        mSwipeRefreshHelper.setOnSwipeRefreshListener(new SwipeRefreshHelper.OnSwipeRefreshListener() {
+            @Override
+            public void onfresh() {
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        listProjectTujianBean.clear();
+                        page = 0;
+                        initProjects("refresh");
+//                        adapter.notifyDataSetChanged();
+//                        mSwipeRefreshHelper.refreshComplete();
+//                        mSwipeRefreshHelper.setLoadMoreEnable(true);
+                    }
+                }, 1500);
+            }
+        });
+
+        mSwipeRefreshHelper.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void loadMore() {
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        initProjects("loadmore");
+                    }
+                }, 1000);
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                ProjectDialog projectDialog=new ProjectDialog(ProjectTujianMiaomuActivity.this,listProjectTujianBean.get(i),type,R.style.DialogAnimations_SmileWindow);
                 projectDialog.showSpinerDialog();
 //                Toast.makeText(view.getContext(), listProjectMiaomuTujianBean.get(i).getProjectName(), Toast.LENGTH_SHORT).show();
             }
@@ -204,12 +268,25 @@ public class ProjectTujianMiaomuActivity extends BaseActivity implements  View.O
                         else
                         {
                             Gson gson = new Gson();
-                            List<ProjectMiaomuTujianBean> list=new ArrayList<ProjectMiaomuTujianBean>();
-                            Type type=new TypeToken<List<ProjectMiaomuTujianBean>>(){}.getType();
-                            list=gson.fromJson(jsonObject.get("data").toString(), type);
-                            for(int i=0;i<list.size();i++)
+                            if(type.equals("miaomu"))
                             {
-                                listProjectMiaomuTujianBean.add(list.get(i));
+                                List<ProjectMiaomuBean> list=new ArrayList<ProjectMiaomuBean>();
+                                Type type=new TypeToken<List<ProjectMiaomuBean>>(){}.getType();
+                                list=gson.fromJson(jsonObject.get("data").toString(), type);
+                                for(int i=0;i<list.size();i++)
+                                {
+                                    listProjectMiaomuBean.add(list.get(i));
+                                }
+                            }
+                            else
+                            {
+                                List<ProjectTujianBean> list=new ArrayList<ProjectTujianBean>();
+                                Type type=new TypeToken<List<ProjectTujianBean>>(){}.getType();
+                                list=gson.fromJson(jsonObject.get("data").toString(), type);
+                                for(int i=0;i<list.size();i++)
+                                {
+                                    listProjectTujianBean.add(list.get(i));
+                                }
                             }
                             page++;
                         }
@@ -241,7 +318,14 @@ public class ProjectTujianMiaomuActivity extends BaseActivity implements  View.O
 
     private void getDataOver(String str)
     {
-        adapter.notifyDataSetChanged();
+        if(type.equals("miaomu"))
+        {
+            adapter.notifyDataSetChanged();
+        }
+        else
+        {
+            adapterTujian.notifyDataSetChanged();
+        }
         if(str.equals("refresh")) {
             mSwipeRefreshHelper.refreshComplete();
             mSwipeRefreshHelper.setLoadMoreEnable(true);
@@ -253,6 +337,7 @@ public class ProjectTujianMiaomuActivity extends BaseActivity implements  View.O
     }
 
 
+
     private Handler mHandler = new Handler()
     {
         public void handleMessage(Message msg)
@@ -261,7 +346,7 @@ public class ProjectTujianMiaomuActivity extends BaseActivity implements  View.O
             switch (msg.what)
             {
                 case 1:
-                    listProjectMiaomuTujianBean.clear();
+                    listProjectMiaomuBean.clear();
                     page = 0;
                     swipeRefreshLayout.setRefreshing(true);
                     initProjects("refresh");
@@ -269,7 +354,7 @@ public class ProjectTujianMiaomuActivity extends BaseActivity implements  View.O
                     break;
                 case 2:
                     et_project_search.setText("");
-                    listProjectMiaomuTujianBean.clear();
+                    listProjectMiaomuBean.clear();
                     page = 0;
                     swipeRefreshLayout.setRefreshing(true);
                     initProjects("refresh");
