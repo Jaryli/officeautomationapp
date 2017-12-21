@@ -46,12 +46,13 @@ import java.util.List;
 
 public class ApprovalFragment extends Fragment {
 
-    public static ApprovalFragment newInstance(String postUrl,String workName,String workGuid)
+    public static ApprovalFragment newInstance(String postUrl,String workName,String workGuid,boolean ismiaomutujian)
     {
         Bundle args = new Bundle();
         args.putString("postUrl", postUrl);
         args.putString("workName", workName);
         args.putString("workGuid", workGuid);
+        args.putBoolean("ismiaomutujian", ismiaomutujian);
         ApprovalFragment fragment = new ApprovalFragment();
         fragment.setArguments(args);
         clearList();
@@ -61,6 +62,7 @@ public class ApprovalFragment extends Fragment {
     private String postUrl;
     private String workName;
     private String workGuid;
+    private boolean ismiaomutujian;
 
     private static List<ApprovalBean> listApproval=new ArrayList<ApprovalBean>();
 
@@ -88,6 +90,7 @@ public class ApprovalFragment extends Fragment {
             postUrl = bundle.get("postUrl").toString();
             workName = bundle.get("workName").toString();
             workGuid = bundle.get("workGuid").toString();
+            ismiaomutujian= bundle.getBoolean("ismiaomutujian");
         }
         userDto= (UserDto) SharedPreferencesUtile.readObject(getContext().getApplicationContext(),"user");
     }
@@ -170,6 +173,7 @@ public class ApprovalFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 //                Toast.makeText(view.getContext(),listApproval.get(i).getAFF_Name().toString(),Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(getActivity(), ApprovalDetailActivity.class);
+                intent.putExtra("ismiaomutujian",ismiaomutujian);
                 intent.putExtra("hid",listApproval.get(i).getAFH_Id());
                 intent.putExtra("wid",listApproval.get(i).getAFW_Id());
                 startActivityForResult(intent,1);

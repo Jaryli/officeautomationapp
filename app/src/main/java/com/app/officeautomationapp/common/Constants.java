@@ -120,6 +120,9 @@ public class Constants {
     public final static String AddArchTreeFlow=address+"/api/V1/Flow/AddArchTreeFlow";//苗木验收申请(Post)
 
     public final static String GetSupplyPageList=address+"/api/V1/WorkFlow/GetSupplyPageList";//获取供应商?pageIndex=1&pageSize=9999&supplyName=
+
+    //	表单编辑
+    public final static String ArchFlow_Handling_Formnew =ip+":84/ArchFlow_Handling_Formnew.aspx?type=Edit&HId=";//199513
     //点工查询url：
     public final static String DIANGONG_URL=address+"/Home/JobList?userId=";
 

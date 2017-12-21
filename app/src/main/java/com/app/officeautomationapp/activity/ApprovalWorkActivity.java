@@ -218,6 +218,15 @@ public class ApprovalWorkActivity extends BaseActivity implements View.OnClickLi
         {
             intent.putExtra("url",Constants.GetMyDoingWork+"?workGuid="+projectItemBean.getGuid());
             intent.putExtra("hiddenTitle","1");
+            if(projectItemBean.getId()==6||projectItemBean.getId()==7)//是否苗木土建
+            {
+                intent.putExtra("ismiaomutujian",true);
+            }
+            else
+            {
+                intent.putExtra("ismiaomutujian",false);
+            }
+
             startActivity(intent);
         }
         else//特殊接口

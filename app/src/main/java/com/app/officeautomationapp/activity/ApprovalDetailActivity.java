@@ -50,6 +50,7 @@ import java.util.List;
 
 public class ApprovalDetailActivity extends BaseActivity implements View.OnClickListener {
 
+    private boolean ismiaomutujian;
     private TextView approval_pic;
     private TextView approval_title;
     private TextView approval_type;
@@ -60,6 +61,8 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     private LinearLayout llgridview;
     private LinearLayout llfujian;
     private LinearLayout llpicture;
+    private LinearLayout llbiaodan;
+    private LinearLayout llyanshou;
     private ApprovalDetailAdapter adapter;
     private static List<FlowHistorie> listFlowHistories=new ArrayList<FlowHistorie>();
     private static List<NextStep> listNextSteps=new ArrayList<NextStep>();
@@ -100,6 +103,11 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
 
     private void initView()
     {
+        Intent intent=getIntent();
+        Hid = intent.getSerializableExtra("hid")==null?0:(Integer) intent.getSerializableExtra("hid");
+        Wid = intent.getSerializableExtra("wid")==null?0:(Integer) intent.getSerializableExtra("wid");
+        ismiaomutujian=intent.getBooleanExtra("ismiaomutujian",false);
+
         approval_pic=(TextView)findViewById(R.id.approval_pic);
         approval_title=(TextView)findViewById(R.id.approval_title);
         approval_type=(TextView)findViewById(R.id.approval_type);
@@ -113,14 +121,26 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
         llfujian.setOnClickListener(this);
         llpicture=(LinearLayout)findViewById(R.id.llpicture);
         llpicture.setOnClickListener(this);
+
+
+        llbiaodan=(LinearLayout)findViewById(R.id.llbiaodan);
+        if(ismiaomutujian)
+        {
+            llbiaodan.setVisibility(View.VISIBLE);
+        }
+        llbiaodan.setOnClickListener(this);
+
+        llyanshou=(LinearLayout)findViewById(R.id.llyanshou);
+        if(ismiaomutujian)
+        {
+            llyanshou.setVisibility(View.VISIBLE);
+        }
+        llyanshou.setOnClickListener(this);
     }
 
 
     private void initData()
     {
-        Intent intent=getIntent();
-        Hid = intent.getSerializableExtra("hid")==null?0:(Integer) intent.getSerializableExtra("hid");
-        Wid = intent.getSerializableExtra("wid")==null?0:(Integer) intent.getSerializableExtra("wid");
         RequestParams params=new RequestParams();
         if(Hid>0)
         {
@@ -296,6 +316,15 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
                 intent=new Intent(this,ViewPagerActivity.class);
                 intent.putExtra("imageUrlLists",imageUrlLists);
                 startActivity(intent);
+                break;
+            case R.id.llbiaodan://表单
+                intent=new Intent(ApprovalDetailActivity.this,WebViewActivity.class);
+                intent.putExtra("title","表单编辑");
+                intent.putExtra("url",Constants.ArchFlow_Handling_Formnew+Hid);
+                startActivity(intent);
+                break;
+            case R.id.llyanshou://验收
+
                 break;
             default:
                 break;
