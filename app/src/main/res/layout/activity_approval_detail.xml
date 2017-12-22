@@ -171,7 +171,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:background="@mipmap/picture"/>
+                        android:background="@mipmap/biaodan"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -191,7 +191,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:background="@mipmap/picture"/>
+                        android:background="@mipmap/yanshou"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

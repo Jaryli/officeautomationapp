@@ -121,6 +121,19 @@ public class Constants {
 
     public final static String GetSupplyPageList=address+"/api/V1/WorkFlow/GetSupplyPageList";//获取供应商?pageIndex=1&pageSize=9999&supplyName=
 
+
+    public final static String GetCivilDetailListByWorkId=address+"/api/V1/Flow/GetCivilDetailListByWorkId";//根据工作Id获取土建审批明细 workId
+
+    public final static String GetTreeDetailListByWorkId=address+"/api/V1/Flow/GetTreeDetailListByWorkId";//根据工作Id获取苗木审批明细 workId
+
+    public final static String GetCivilSingle=address+"/api/V1/Flow/GetCivilSingle";//id=xxx 获取单个土建验收明细信息
+
+    public final static String GetTreeSingle=address+"/api/V1/Flow/GetTreeSingle";//id=xxx 获取单个苗木验收明细信息
+
+    public final static String UpdateCivilDetail=address+"/api/V1/Flow/UpdateCivilDetail";//更新单个土建验收明细信息
+
+    public final static String UpdateTreeDetail=address+"/api/V1/Flow/UpdateTreeDetail";//更新单个苗木验收明细信息
+
     //	表单编辑
     public final static String ArchFlow_Handling_Formnew =ip+":84/ArchFlow_Handling_Formnew.aspx?type=Edit&HId=";//199513
     //点工查询url：
