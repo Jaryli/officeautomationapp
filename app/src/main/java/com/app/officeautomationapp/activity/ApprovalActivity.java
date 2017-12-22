@@ -85,7 +85,7 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
     private RelativeLayout RL_InfoTip;
     private InputMethodManager imm;
     FragmentManager manager;
-    private boolean ismiaomutujian;
+    private Integer approvalType;
 
     private String[] text;
     private String flowType="";
@@ -102,7 +102,7 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
 
         Intent intent=getIntent();
         url = intent.getSerializableExtra("url").toString();
-        ismiaomutujian=intent.getBooleanExtra("ismiaomutujian",false);
+        approvalType=intent.getIntExtra("approvalType",0);
         String hiddenTitle = intent.getSerializableExtra("hiddenTitle")==null?"0":intent.getSerializableExtra("hiddenTitle").toString();
         if("1".equals(hiddenTitle))//隐藏上面的条件
         {
@@ -166,7 +166,7 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
 
         //加入fragment
         manager = getSupportFragmentManager();
-        manager.beginTransaction().add(R.id.ll_approval_item, ApprovalFragment.newInstance(url,"","",ismiaomutujian)).commit();
+        manager.beginTransaction().add(R.id.ll_approval_item, ApprovalFragment.newInstance(url,"","",approvalType)).commit();
         initType();
     }
 
@@ -329,7 +329,7 @@ public class ApprovalActivity extends BaseActivity implements View.OnClickListen
 
     private void loadData()
     {
-        manager.beginTransaction().replace(R.id.ll_approval_item, ApprovalFragment.newInstance(url,etApprovalSearch.getText().toString(),flowType,ismiaomutujian)).commit();
+        manager.beginTransaction().replace(R.id.ll_approval_item, ApprovalFragment.newInstance(url,etApprovalSearch.getText().toString(),flowType,approvalType)).commit();
         manager.executePendingTransactions();
 //        etApprovalSearch.setText("");
     }

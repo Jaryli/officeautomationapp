@@ -50,7 +50,7 @@ import java.util.List;
 
 public class ApprovalDetailActivity extends BaseActivity implements View.OnClickListener {
 
-    private boolean ismiaomutujian;
+    private Integer approvalType;
     private TextView approval_pic;
     private TextView approval_title;
     private TextView approval_type;
@@ -74,6 +74,7 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     private int nextStepSort=0;
     private int Hid;
     private int Wid;
+    private Integer workId;
     private UserDto userDto;
 
     @Override
@@ -106,7 +107,7 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
         Intent intent=getIntent();
         Hid = intent.getSerializableExtra("hid")==null?0:(Integer) intent.getSerializableExtra("hid");
         Wid = intent.getSerializableExtra("wid")==null?0:(Integer) intent.getSerializableExtra("wid");
-        ismiaomutujian=intent.getBooleanExtra("ismiaomutujian",false);
+        approvalType=intent.getIntExtra("approvalType",0);
 
         approval_pic=(TextView)findViewById(R.id.approval_pic);
         approval_title=(TextView)findViewById(R.id.approval_title);
@@ -124,14 +125,14 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
 
 
         llbiaodan=(LinearLayout)findViewById(R.id.llbiaodan);
-        if(ismiaomutujian)
+        if(approvalType==6||approvalType==7)//6是苗木 7是土建
         {
             llbiaodan.setVisibility(View.VISIBLE);
         }
         llbiaodan.setOnClickListener(this);
 
         llyanshou=(LinearLayout)findViewById(R.id.llyanshou);
-        if(ismiaomutujian)
+        if(approvalType==6||approvalType==7)//6是苗木 7是土建
         {
             llyanshou.setVisibility(View.VISIBLE);
         }
@@ -181,6 +182,7 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
 
                             Type type=new TypeToken<ApprovalDetailBean>(){}.getType();
                             approvalDetailBean=gson.fromJson(jsonObject.get("data").toString(), type);
+                            workId=approvalDetailBean.getWorkId();
                             attachs=approvalDetailBean.getAttachs();//附件
                             imageUrlLists=approvalDetailBean.getImageUrlList();//图片
                             if(attachs.size()>0)
@@ -324,7 +326,20 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
                 startActivity(intent);
                 break;
             case R.id.llyanshou://验收
-
+                if(approvalType==6)//6是苗木 7是土建
+                {
+                    intent=new Intent(ApprovalDetailActivity.this,ApprovalMiaomuTujianActivity.class);
+                    intent.putExtra("approvalType",approvalType);
+                    intent.putExtra("workId",workId);
+                    startActivity(intent);
+                }
+                if(approvalType==7)//6是苗木 7是土建
+                {
+                    intent=new Intent(ApprovalDetailActivity.this,ApprovalMiaomuTujianActivity.class);
+                    intent.putExtra("approvalType",approvalType);
+                    intent.putExtra("workId",workId);
+                    startActivity(intent);
+                }
                 break;
             default:
                 break;
