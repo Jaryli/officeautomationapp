@@ -48,6 +48,21 @@ public class SpinnerDialogTujianRefesh {
         this.id=id;
     }
 
+    private boolean initValidate(EditText Quantity,final EditText Price)
+    {
+        if(Quantity.getText().toString().equals(""))
+        {
+            Toast.makeText(context,"请输入数量!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(Price.getText().toString().equals(""))
+        {
+            Toast.makeText(context,"请输入价格!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
     public void showSpinerDialog() {
         AlertDialog.Builder adb = new AlertDialog.Builder(context);
         View v = context.getLayoutInflater().inflate(R.layout.dialog_tujianrefesh, null);
@@ -58,13 +73,14 @@ public class SpinnerDialogTujianRefesh {
         final EditText refuseReason = (EditText) v.findViewById(R.id.refuseReason);
         final EditText remark = (EditText) v.findViewById(R.id.remark);
 
-
-
-
         Button btn_post= (Button) v.findViewById(R.id.btn_post);
         btn_post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!initValidate(Quantity,Price))
+                {
+                    return;
+                }
                 TujianDetailPostBean tujianDetailPostBean= new TujianDetailPostBean();
                 tujianDetailPostBean.setId(id);
                 tujianDetailPostBean.setQuantity(Quantity.getText().toString().equals("")?0:Integer.parseInt(Quantity.getText().toString()));

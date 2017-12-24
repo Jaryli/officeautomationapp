@@ -54,6 +54,21 @@ public class SpinnerDialogMiaomuRefesh {
         this.id=id;
     }
 
+    private boolean initValidate(EditText ySNumInfo,final EditText aCPriceInfo)
+    {
+        if(ySNumInfo.getText().toString().equals(""))
+        {
+            Toast.makeText(context,"请输入数量!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(aCPriceInfo.getText().toString().equals(""))
+        {
+            Toast.makeText(context,"请输入价格!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
     public void showSpinerDialog() {
         AlertDialog.Builder adb = new AlertDialog.Builder(context);
         View v = context.getLayoutInflater().inflate(R.layout.dialog_miaomurefesh, null);
@@ -76,6 +91,10 @@ public class SpinnerDialogMiaomuRefesh {
         btn_post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!initValidate(ySNumInfo,aCPriceInfo))
+                {
+                    return;
+                }
                 MiaomuDetailPostBean miaomuDetailPostBean= new MiaomuDetailPostBean();
                 miaomuDetailPostBean.setId(id);
                 miaomuDetailPostBean.setQuantity(ySNumInfo.getText().toString().equals("")?0:Integer.parseInt(ySNumInfo.getText().toString()));
