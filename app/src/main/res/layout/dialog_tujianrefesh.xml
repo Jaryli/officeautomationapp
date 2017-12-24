@@ -54,7 +54,7 @@
                         android:layout_marginLeft="10dp"
                         android:textSize="@dimen/title_text_size"
                         android:textColor="@color/black"
-                        android:text="审批数量"/>
+                        android:text="验收数量"/>
                     <EditText
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                         android:singleLine="true"
                         android:textSize="15dp"
                         android:background="@null"
-                        android:id="@+id/ySNumInfo"
+                        android:id="@+id/Quantity"
                         android:hint="必填"/>
                 </LinearLayout>
                 <LinearLayout
@@ -80,7 +80,7 @@
                         android:layout_marginLeft="10dp"
                         android:textSize="@dimen/title_text_size"
                         android:textColor="@color/black"
-                        android:text="审批价格"/>
+                        android:text="验收价格"/>
                     <EditText
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -89,139 +89,8 @@
                         android:singleLine="true"
                         android:textSize="15dp"
                         android:background="@null"
-                        android:id="@+id/aCPriceInfo"
+                        android:id="@+id/Price"
                         android:hint="必填"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center|center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="@dimen/title_text_size"
-                        android:textColor="@color/black"
-                        android:text="验收胸径"/>
-                    <EditText
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="7"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:textSize="15dp"
-                        android:background="@null"
-                        android:id="@+id/aCXiongJing"
-                        android:hint="非必填"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center|center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="@dimen/title_text_size"
-                        android:textColor="@color/black"
-                        android:text="验收高度"/>
-                    <EditText
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="7"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:textSize="15dp"
-                        android:background="@null"
-                        android:id="@+id/aCHeight"
-                        android:hint="非必填"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center|center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="@dimen/title_text_size"
-                        android:textColor="@color/black"
-                        android:text="验收蓬型"/>
-                    <EditText
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="7"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:textSize="15dp"
-                        android:background="@null"
-                        android:id="@+id/aCPengXing"
-                        android:hint="非必填"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center|center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="@dimen/title_text_size"
-                        android:textColor="@color/black"
-                        android:text="修剪要求"/>
-                    <EditText
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="7"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:textSize="15dp"
-                        android:background="@null"
-                        android:id="@+id/aCXiuJianReq"
-                        android:hint="非必填"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center|center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="@dimen/title_text_size"
-                        android:textColor="@color/black"
-                        android:text="验收规格"/>
-                    <EditText
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="7"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:textSize="15dp"
-                        android:background="@null"
-                        android:id="@+id/Special"
-                        android:hint="非必填"/>
                 </LinearLayout>
 
 

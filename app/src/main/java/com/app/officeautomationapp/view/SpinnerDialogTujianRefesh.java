@@ -3,7 +3,6 @@ package com.app.officeautomationapp.view;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,13 +10,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
-import com.app.officeautomationapp.activity.MiaomuDetailActivity;
-import com.app.officeautomationapp.bean.MiaomuDetailBean;
 import com.app.officeautomationapp.bean.MiaomuDetailPostBean;
+import com.app.officeautomationapp.bean.TujianDetailPostBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,14 +22,11 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-
 /**
  * Created by Md Farhan Raja on 2/23/2017.
  */
 
-public class SpinnerDialogMiaomuRefesh {
+public class SpinnerDialogTujianRefesh {
 
     Activity context;
     AlertDialog alertDialog;
@@ -43,11 +37,11 @@ public class SpinnerDialogMiaomuRefesh {
 
 
 
-    public SpinnerDialogMiaomuRefesh(Activity activity) {
+    public SpinnerDialogTujianRefesh(Activity activity) {
         this.context = activity;
     }
 
-    public SpinnerDialogMiaomuRefesh(Activity activity, int style, UserDto userDto,Integer id) {
+    public SpinnerDialogTujianRefesh(Activity activity, int style, UserDto userDto, Integer id) {
         this.context = activity;
         this.style=style;
         this.userDto=userDto;
@@ -56,15 +50,10 @@ public class SpinnerDialogMiaomuRefesh {
 
     public void showSpinerDialog() {
         AlertDialog.Builder adb = new AlertDialog.Builder(context);
-        View v = context.getLayoutInflater().inflate(R.layout.dialog_miaomurefesh, null);
+        View v = context.getLayoutInflater().inflate(R.layout.dialog_tujianrefesh, null);
 
-        final EditText ySNumInfo = (EditText) v.findViewById(R.id.ySNumInfo);
-        final EditText aCPriceInfo = (EditText) v.findViewById(R.id.aCPriceInfo);
-        final EditText aCXiongJing = (EditText) v.findViewById(R.id.aCXiongJing);
-        final EditText aCHeight = (EditText) v.findViewById(R.id.aCHeight);
-        final EditText aCPengXing = (EditText) v.findViewById(R.id.aCPengXing);
-        final EditText aCXiuJianReq = (EditText) v.findViewById(R.id.aCXiuJianReq);
-        final EditText Special = (EditText) v.findViewById(R.id.Special);
+        final EditText Quantity= (EditText) v.findViewById(R.id.Quantity);
+        final EditText Price= (EditText) v.findViewById(R.id.Price);
         final EditText refuseNum = (EditText) v.findViewById(R.id.refuseNum);
         final EditText refuseReason = (EditText) v.findViewById(R.id.refuseReason);
         final EditText remark = (EditText) v.findViewById(R.id.remark);
@@ -76,27 +65,22 @@ public class SpinnerDialogMiaomuRefesh {
         btn_post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MiaomuDetailPostBean miaomuDetailPostBean= new MiaomuDetailPostBean();
-                miaomuDetailPostBean.setId(id);
-                miaomuDetailPostBean.setQuantity(ySNumInfo.getText().toString().equals("")?0:Integer.parseInt(ySNumInfo.getText().toString()));
-                miaomuDetailPostBean.setPrice(aCPriceInfo.getText().toString().equals("")?0:Double.parseDouble(aCPriceInfo.getText().toString()));
-                miaomuDetailPostBean.setXiongJing(aCXiongJing.getText().toString());
-                miaomuDetailPostBean.setYsHeight(aCHeight.getText().toString().equals("")?0:Double.parseDouble(aCHeight.getText().toString()));
-                miaomuDetailPostBean.setPengXing(aCPengXing.getText().toString());
-                miaomuDetailPostBean.setXiuJianReq(aCXiuJianReq.getText().toString());
-                miaomuDetailPostBean.setSpecial(Special.getText().toString());
-                miaomuDetailPostBean.setRefuseNum(refuseNum.getText().toString().equals("")?0:Double.parseDouble(refuseNum.getText().toString()));
-                miaomuDetailPostBean.setRefuseReason(refuseReason.getText().toString());
-                miaomuDetailPostBean.setRemark(remark.getText().toString());
+                TujianDetailPostBean tujianDetailPostBean= new TujianDetailPostBean();
+                tujianDetailPostBean.setId(id);
+                tujianDetailPostBean.setQuantity(Quantity.getText().toString().equals("")?0:Integer.parseInt(Quantity.getText().toString()));
+                tujianDetailPostBean.setPrice(Price.getText().toString().equals("")?0:Double.parseDouble(Price.getText().toString()));
+                tujianDetailPostBean.setRefuseNum(refuseNum.getText().toString().equals("")?0:Double.parseDouble(refuseNum.getText().toString()));
+                tujianDetailPostBean.setRefuseReason(refuseReason.getText().toString());
+                tujianDetailPostBean.setRemark(remark.getText().toString());
                 Gson gson = new Gson();
-                String result = gson.toJson(miaomuDetailPostBean);
+                String result = gson.toJson(tujianDetailPostBean);
                 progressDialog = new ProgressDialog(context);
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.setMessage("提交中...");
                 progressDialog.setCanceledOnTouchOutside(false);//对话框不消失
                 progressDialog.show();
-                RequestParams params = new RequestParams(Constants.UpdateTreeDetail);
-                Log.i("", "post-url:" + Constants.UpdateTreeDetail);
+                RequestParams params = new RequestParams(Constants.UpdateCivilDetail);
+                Log.i("", "post-url:" + Constants.UpdateCivilDetail);
                 params.addHeader("access_token", userDto.getAccessToken());
                 params.setBodyContent("'" + result + "'");
                 Log.i("JAVA", "body:" + params.getBodyContent());

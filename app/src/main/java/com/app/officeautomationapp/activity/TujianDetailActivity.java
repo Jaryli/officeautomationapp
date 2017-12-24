@@ -15,12 +15,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
-import com.app.officeautomationapp.bean.MiaomuBean;
-import com.app.officeautomationapp.bean.MiaomuDetailBean;
+import com.app.officeautomationapp.bean.TujianBean;
+import com.app.officeautomationapp.bean.TujianDetailBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
-import com.app.officeautomationapp.view.SpinnerDialogMiaomuRefesh;
+import com.app.officeautomationapp.view.SpinnerDialogTujianRefesh;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -32,23 +32,19 @@ import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 import java.lang.reflect.Type;
+
 /**
  * Created by pc on 2017/12/23.
  */
 
-public class MiaomuDetailActivity extends BaseActivity implements  View.OnClickListener {
+public class TujianDetailActivity extends BaseActivity implements  View.OnClickListener {
     ImageView back;
-    EditText treeName;
-    EditText units;
-    EditText treeSpecification;
-    EditText tQThickness;
+    EditText civilName;
+    EditText civilUnits;
+    EditText extend3;
     EditText aCNumInfo;
-    EditText aCXiongJing;
-    EditText aCHeight;
-    EditText aCPengXing;
-    EditText aCXiuJianReq;
-    EditText ySNumInfo;
-    EditText aCPriceInfo;
+    EditText civilSpecification;
+    EditText aCPrice;
     EditText refuseNum;
     EditText refuseReason;
     EditText moneyNum;
@@ -56,9 +52,9 @@ public class MiaomuDetailActivity extends BaseActivity implements  View.OnClickL
     LinearLayout pic;
     ImageView iv_img;
 
-    MiaomuBean miaomuBean;
+    TujianBean tujianBean;
     private UserDto userDto;
-    MiaomuDetailBean miaomuDetailBean;
+    TujianDetailBean tujianDetailBean;
 
     TextView tv_refresh;
 
@@ -67,10 +63,10 @@ public class MiaomuDetailActivity extends BaseActivity implements  View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_miaomu_detail);
+        setContentView(R.layout.activity_tujian_detail);
         Intent intent=getIntent();
         userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
-        miaomuBean = (MiaomuBean) intent.getSerializableExtra("data");
+        tujianBean = (TujianBean) intent.getSerializableExtra("data");
         initView();
         initData();
     }
@@ -79,17 +75,12 @@ public class MiaomuDetailActivity extends BaseActivity implements  View.OnClickL
     {
         back=(ImageView) findViewById(R.id.iv_back);
         back.setOnClickListener(this);
-        treeName=(EditText)findViewById(R.id.treeName);
-        units=(EditText)findViewById(R.id.units);
-        treeSpecification=(EditText)findViewById(R.id.treeSpecification);
-        tQThickness=(EditText)findViewById(R.id.tQThickness);
+        civilName=(EditText)findViewById(R.id.civilName);
+        civilUnits=(EditText)findViewById(R.id.civilUnits);
+        extend3=(EditText)findViewById(R.id.extend3);
+        civilSpecification=(EditText)findViewById(R.id.civilSpecification);
         aCNumInfo=(EditText)findViewById(R.id.aCNumInfo);
-        aCXiongJing=(EditText)findViewById(R.id.aCXiongJing);
-        aCHeight=(EditText)findViewById(R.id.aCHeight);
-        aCPengXing=(EditText)findViewById(R.id.aCPengXing);
-        aCXiuJianReq=(EditText)findViewById(R.id.aCXiuJianReq);
-        ySNumInfo=(EditText)findViewById(R.id.ySNumInfo);
-        aCPriceInfo=(EditText)findViewById(R.id.aCPriceInfo);
+        aCPrice=(EditText)findViewById(R.id.aCPrice);
         refuseNum=(EditText)findViewById(R.id.refuseNum);
         refuseReason=(EditText)findViewById(R.id.refuseReason);
         moneyNum=(EditText)findViewById(R.id.moneyNum);
@@ -119,8 +110,8 @@ public class MiaomuDetailActivity extends BaseActivity implements  View.OnClickL
     }
     private void initData()
     {
-        RequestParams params = new RequestParams(Constants.GetTreeSingle);
-        params.addQueryStringParameter("id",miaomuBean.getId().toString());
+        RequestParams params = new RequestParams(Constants.GetCivilSingle);
+        params.addQueryStringParameter("id",tujianBean.getId().toString());
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
@@ -131,21 +122,21 @@ public class MiaomuDetailActivity extends BaseActivity implements  View.OnClickL
                     int re=jsonObject.getInt("result");
                     if(re!=1)
                     {
-                        Toast.makeText(MiaomuDetailActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TujianDetailActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
                         return;
                     }
                     else
                     {
                         if(jsonObject.get("data")==""||jsonObject.get("data")==null)
                         {
-                            Toast.makeText(MiaomuDetailActivity.this,"没有数据",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TujianDetailActivity.this,"没有数据",Toast.LENGTH_SHORT).show();
                             return;
                         }
                         else
                         {
                             Gson gson = new Gson();
-                            Type type=new TypeToken<MiaomuDetailBean>(){}.getType();
-                            miaomuDetailBean=gson.fromJson(jsonObject.get("data").toString(), type);
+                            Type type=new TypeToken<TujianDetailBean>(){}.getType();
+                            tujianDetailBean=gson.fromJson(jsonObject.get("data").toString(), type);
                             Message message = new Message();
                             message.what = 1;
                             handler.sendMessage(message);
@@ -159,7 +150,7 @@ public class MiaomuDetailActivity extends BaseActivity implements  View.OnClickL
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 Log.e("JAVA", "onError:" + ex);
-                Toast.makeText(MiaomuDetailActivity.this,"网络或服务器异常！",Toast.LENGTH_SHORT).show();
+                Toast.makeText(TujianDetailActivity.this,"网络或服务器异常！",Toast.LENGTH_SHORT).show();
             }
             //主动调用取消请求的回调方法
             @Override
@@ -180,28 +171,25 @@ public class MiaomuDetailActivity extends BaseActivity implements  View.OnClickL
             //更新UI
             switch (msg.what) {
                 case 1:
-                    if(miaomuDetailBean!=null) {
-                        treeName.setText(miaomuDetailBean.getTreeName());
-                        units.setText(miaomuDetailBean.getUnits());
-                        treeSpecification.setText(miaomuDetailBean.getTreeSpecification());
-                        tQThickness.setText(miaomuDetailBean.getTQThickness());
-                        aCNumInfo.setText(miaomuDetailBean.getACNumInfo()+"");
-                        aCXiongJing.setText(miaomuDetailBean.getACXiongJing());
-                        aCHeight.setText(miaomuDetailBean.getACHeight());
-                        aCPengXing.setText(miaomuDetailBean.getACPengXing());
-                        aCXiuJianReq.setText(miaomuDetailBean.getACXiuJianReq());
-                        ySNumInfo.setText(miaomuDetailBean.getYSNumInfo()+"");
-                        aCPriceInfo.setText(miaomuDetailBean.getACPriceInfo());;
-                        refuseNum.setText(miaomuDetailBean.getRefuseNum());
-                        refuseReason.setText(miaomuDetailBean.getRefuseReason());
-                        moneyNum.setText(miaomuDetailBean.getMoneyNum()+"");
-                        remark.setText(miaomuDetailBean.getRemark());
-                        if(miaomuDetailBean.getPhotoStr()!=null&&miaomuDetailBean.getPhotoStr().length>0)
+                    if(tujianDetailBean!=null) {
+
+                        civilName.setText(tujianDetailBean.getCivilName());
+                        civilUnits.setText(tujianDetailBean.getCivilUnits());
+                        extend3.setText(tujianDetailBean.getExtend3());
+                        aCNumInfo.setText(tujianDetailBean.getACNumInfo()+"");
+                        civilSpecification.setText(tujianDetailBean.getCivilSpecification());
+                        aCPrice.setText(tujianDetailBean.getACPrice());
+
+                        refuseNum.setText(tujianDetailBean.getRefuseNum());
+                        refuseReason.setText(tujianDetailBean.getRefuseReason());
+                        moneyNum.setText(tujianDetailBean.getMoneyNum()+"");
+                        remark.setText(tujianDetailBean.getRemark());
+                        if(tujianDetailBean.getPhotoStr()!=null&&tujianDetailBean.getPhotoStr().length>0)
                         {
                             iv_img.setVisibility(View.GONE);
-                            for(int i=0;i<miaomuDetailBean.getPhotoStr().length;i++)
+                            for(int i=0;i<tujianDetailBean.getPhotoStr().length;i++)
                             {
-                                addImg(miaomuDetailBean.getPhotoStr()[i]);
+                                addImg(tujianDetailBean.getPhotoStr()[i]);
                             }
                         }
                     }
@@ -249,7 +237,7 @@ public class MiaomuDetailActivity extends BaseActivity implements  View.OnClickL
                 this.finish();
                 break;
             case R.id.tv_refresh:
-                SpinnerDialogMiaomuRefesh spinnerDialog=new SpinnerDialogMiaomuRefesh(MiaomuDetailActivity.this,R.style.DialogAnimations_SmileWindow,userDto,miaomuBean.getId());
+                SpinnerDialogTujianRefesh spinnerDialog=new SpinnerDialogTujianRefesh(TujianDetailActivity.this,R.style.DialogAnimations_SmileWindow,userDto,tujianBean.getId());
                 spinnerDialog.showSpinerDialog();
                 break;
             default:

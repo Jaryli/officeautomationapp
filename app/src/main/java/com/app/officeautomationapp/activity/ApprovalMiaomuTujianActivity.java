@@ -143,7 +143,6 @@ public class ApprovalMiaomuTujianActivity extends BaseActivity implements  View.
                 Intent intent=new Intent(ApprovalMiaomuTujianActivity.this, MiaomuDetailActivity.class);
                 intent.putExtra("data",listMiaomuBean.get(i));
                 startActivity(intent);
-                //// TODO: 2017/12/23  
             }
         });
     }
@@ -270,7 +269,7 @@ public class ApprovalMiaomuTujianActivity extends BaseActivity implements  View.
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent=new Intent(ApprovalMiaomuTujianActivity.this, MessageDetailActivity.class);
+                Intent intent=new Intent(ApprovalMiaomuTujianActivity.this, TujianDetailActivity.class);
                 intent.putExtra("data",listTujianBean.get(i));
                 startActivity(intent);
             }

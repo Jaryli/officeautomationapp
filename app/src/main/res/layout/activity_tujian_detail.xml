@@ -20,7 +20,7 @@
             android:layout_height="25dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:id="@+id/iv_approval_back"
+            android:id="@+id/iv_back"
             android:background="@mipmap/icon_back"/>
 
         <View
