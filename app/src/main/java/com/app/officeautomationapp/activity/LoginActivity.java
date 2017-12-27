@@ -17,6 +17,8 @@ import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.bean.UserInfoBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.common.InitCommon;
+import com.app.officeautomationapp.db.User;
+import com.app.officeautomationapp.db.UserDB;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.google.gson.Gson;
@@ -39,7 +41,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     private EditText etPassword;
 
     private Button loginButton;
-
+    UserDB userDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         etPassword = (EditText) findViewById(R.id.etPassword);
         etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
         loginButton.setOnClickListener(this);
+        userDB = UserDB.getIntance();
+        User user=userDB.loadPerson();
+        if(user!=null)
+        {
+            etUserName.setText(user.getUsername());
+            etPassword.setText(user.getPassword());
+        }
     }
 
     // 捕获返回键的方法1
@@ -87,7 +96,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
     ProgressDialog progressDialog;
 
-    public void doLogin(String userName, String password)
+    public void doLogin(final String userName, final String password)
     {
         loginButton.setClickable(false);
 //        loader.setVisibility(View.VISIBLE);
@@ -119,6 +128,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                     {
                         Gson gson = new Gson();
                         final UserDto userDto = (UserDto) gson.fromJson(jsonObject.get("user").toString(),UserDto.class);
+                        User user1 = new User(userName,password);
+                        userDB.saveUser(user1);
 //                        InitCommon.initUserInfo(getApplicationContext(),userDto);//初始化用户信息
                         //初始化用户信息
                         RequestParams params = new RequestParams(Constants.GetUserInfo);
@@ -198,6 +209,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 loginButton.setClickable(true);
 //                loader.setVisibility(View.GONE);
                 progressDialog.hide();
+                progressDialog.dismiss();
             }
         });
         //主动调用取消请求
