@@ -14,17 +14,21 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
+import com.app.officeautomationapp.bean.UserInfoBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.common.InitCommon;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
+
+import java.lang.reflect.Type;
 
 /**
  * Created by yu on 2017/1/13.
@@ -114,13 +118,57 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                     else
                     {
                         Gson gson = new Gson();
-                        UserDto userDto = (UserDto) gson.fromJson(jsonObject.get("user").toString(),UserDto.class);
-                        InitCommon.initUserInfo(getApplicationContext(),userDto);//初始化用户信息
-                        SharedPreferencesUtile.saveObject(getApplicationContext(),"user",userDto);//单例有问题
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-                        Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                        startActivity(intent);
+                        final UserDto userDto = (UserDto) gson.fromJson(jsonObject.get("user").toString(),UserDto.class);
+//                        InitCommon.initUserInfo(getApplicationContext(),userDto);//初始化用户信息
+                        //初始化用户信息
+                        RequestParams params = new RequestParams(Constants.GetUserInfo);
+                        Log.i("initUserInfo", "post-url:" + Constants.GetUserInfo);
+                        params.addHeader("access_token", userDto.getAccessToken());
+
+                        Callback.Cancelable cancelable2 = x.http().get(params, new Callback.CommonCallback<String>() {
+                            @Override
+                            public void onSuccess(String result) {
+                                Log.i("JAVA", "onSuccess result:" + result);
+                                try {
+                                    JSONObject jsonObject = new JSONObject(result);
+                                    int re=jsonObject.getInt("result");
+                                    if(re!=1)
+                                    {
+                                        Log.i("initUserInfo", "error:" + jsonObject.get("msg").toString());
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        Gson gson = new Gson();
+                                        UserInfoBean userInfoBean=new UserInfoBean();
+                                        Type type=new TypeToken<UserInfoBean>(){}.getType();
+                                        userInfoBean=gson.fromJson(jsonObject.get("data").toString(), type);
+                                        SharedPreferencesUtile.saveObject(getApplicationContext(),"userInfo",userInfoBean);
+                                        SharedPreferencesUtile.saveObject(getApplicationContext(),"user",userDto);//单例有问题
+                                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                                        Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                                        startActivity(intent);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            //请求异常后的回调方法
+                            @Override
+                            public void onError(Throwable ex, boolean isOnCallback) {
+                                Log.i("JAVA", "onError:" + ex);
+                            }
+                            //主动调用取消请求的回调方法
+                            @Override
+                            public void onCancelled(CancelledException cex) {
+                                Log.i("JAVA", "onCancelled:" + cex);
+                            }
+                            @Override
+                            public void onFinished() {
+                                Log.i("JAVA", "onFinished:" + "");
+                            }
+                        });
 
                     }
                 } catch (JSONException e) {
