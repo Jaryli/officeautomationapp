@@ -15,6 +15,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -59,6 +60,7 @@ import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.lang.reflect.Type;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,6 +89,9 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
     private EditText et_jobQuantity;
     private EditText et_machineCode;
     private EditText et_managerAdver;
+    private EditText et_total;
+    private EditText et_totalPrice;
+
     private ImageView iv_to_user;
     private TextView tv_to_user;
     private Button btn_post;
@@ -112,6 +117,8 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
     public LocationClient mLocationClient = null;
     public BDLocationListener myListener = new MyLocationListener();
     private String addres="";
+    double lon;
+    double lati;
 
     private UserDto userDto;
     private int year = 2017;
@@ -148,13 +155,52 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
         radioTujian.setOnClickListener(this);
         etCbren=(EditText)findViewById(R.id.et_cbren);
         etMorning=(EditText)findViewById(R.id.et_morning);
+        etMorning.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(!b)// 此处为失去焦点时的处理内容
+                {
+                    chageTotal();
+                }
+            }
+        });
         etAfternoon=(EditText)findViewById(R.id.et_afternoon);
+        etAfternoon.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(!b)// 此处为失去焦点时的处理内容
+                {
+                    chageTotal();
+                }
+            }
+        });
         etOverTime=(EditText)findViewById(R.id.et_overTime);
+        etOverTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(!b)// 此处为失去焦点时的处理内容
+                {
+                    chageTotal();
+                }
+            }
+        });
         et_perPrice=(EditText)findViewById(R.id.et_perPrice);
+        et_perPrice.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(!b)// 此处为失去焦点时的处理内容
+                {
+                    chageTotal();
+                }
+            }
+        });
         et_jobContent=(EditText)findViewById(R.id.et_jobContent);
         et_jobQuantity=(EditText)findViewById(R.id.et_jobQuantity);
         et_machineCode=(EditText)findViewById(R.id.et_machineCode);
         et_managerAdver=(EditText)findViewById(R.id.et_managerAdver);
+        et_total=(EditText)findViewById(R.id.et_total);
+        et_totalPrice=(EditText)findViewById(R.id.et_totalPrice);
+
         iv_to_user= (ImageView) findViewById(R.id.iv_to_user);
         iv_to_user.setOnClickListener(this);
         tv_to_user=(TextView)findViewById(R.id.tv_to_user);
@@ -194,6 +240,22 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
         mLocationClient.start();
 
         initPostData();//初始化postdata
+    }
+
+
+    private void chageTotal()
+    {
+        if(etMorning.getText().toString()!=""&&etAfternoon.getText().toString()!=""&&etOverTime.getText().toString()!="")
+        {
+            double totals=StringUtils.parseDouble(etMorning.getText().toString())+StringUtils.parseDouble(etAfternoon.getText().toString())+StringUtils.parseDouble(etOverTime.getText().toString());
+            et_total.setText(totals+"");
+        }
+        if(et_total.getText().toString()!="")
+        {
+            double totalsPrice=StringUtils.parseDouble(et_total.getText().toString())*StringUtils.parseDouble(et_perPrice.getText().toString());
+            DecimalFormat df = new DecimalFormat("#.00");
+            et_totalPrice.setText(df.format(totalsPrice)+"");
+        }
     }
 
     @Override
@@ -240,13 +302,20 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
     {
         if(selectMedia.size()>0)
         {
-            String[] str=new String[selectMedia.size()];
+            List<AddArchMachinePostBean.Pic> list=new ArrayList<>();
             for (int i=0;i<selectMedia.size();i++)
             {
-                str[i]=PicBase64Util.encode(selectMedia.get(i).getPath(),20);
+
+                AddArchMachinePostBean.Pic pic=new AddArchMachinePostBean.Pic();
+                pic.setLati(lati);
+                pic.setLon(lon);
+                pic.setPic(PicBase64Util.encode(selectMedia.get(i).getPath(),20));
+                list.add(pic);
             }
-            addArchMachinePostBean.setImagedata(str);
+            addArchMachinePostBean.setPiclist(list);
         }
+
+        addArchMachinePostBean.setImagedata(new String[0]);
         addArchMachinePostBean.setFlowGuid(Constants.FlowGuidArchMachine);
         addArchMachinePostBean.setMorning(StringUtils.parseDouble(StringUtils.isEmpty(etMorning.getText())));
         addArchMachinePostBean.setOverTime(StringUtils.parseDouble(StringUtils.isEmpty(etOverTime.getText())));
@@ -721,7 +790,8 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
 
             sb.append("\nlatitude : ");
             sb.append(location.getLatitude());    //获取纬度信息
-
+            lon=location.getLongitude();
+            lati=location.getLatitude();
             sb.append("\nlontitude : ");
             sb.append(location.getLongitude());    //获取经度信息
 

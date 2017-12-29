@@ -371,29 +371,31 @@
                             android:gravity="center|center_vertical"
                             android:orientation="horizontal">
 
-                            <!--<TextView-->
-                                <!--android:layout_width="0dp"-->
-                                <!--android:layout_height="match_parent"-->
-                                <!--android:layout_weight="3"-->
-                                <!--android:gravity="center_vertical"-->
-                                <!--android:layout_marginLeft="10dp"-->
-                                <!--android:textSize="@dimen/title_text_size"-->
-                                <!--android:textColor="@color/black"-->
-                                <!--android:text="合计"/>-->
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="3"
+                                android:gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:textSize="@dimen/title_text_size"
+                                android:textColor="@color/buttonblue"
+                                android:text="合计"/>
 
-                            <!--<EditText-->
-                                <!--android:layout_width="0dp"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:layout_weight="7"-->
-                                <!--android:id="@+id/et_total"-->
-                                <!--android:enabled="false"-->
-                                <!--android:layout_marginLeft="10dp"-->
-                                <!--android:textSize="15dp"-->
-                                <!--android:background="@null"-->
-                                <!--android:hint="合计时间"/>-->
+                            <EditText
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="7"
+                                android:id="@+id/et_total"
+                                android:editable="false"
+                                android:enabled="false"
+                                android:layout_marginLeft="10dp"
+                                android:textSize="15dp"
+                                android:background="@null"
+                                android:hint="总工时"/>
                         </LinearLayout>
 
                     </LinearLayout>
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -401,27 +403,66 @@
                         android:background="@color/white"
                         android:gravity="center|center_vertical"
                         android:orientation="horizontal">
-
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="3"
-                            android:gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:textSize="@dimen/title_text_size"
-                            android:textColor="@color/black"
-                            android:text="单位价格"/>
+                            android:layout_weight="1"
+                            android:layout_height="40dp"
+                            android:background="@color/white"
+                            android:gravity="center|center_vertical"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="3"
+                                android:gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:textSize="@dimen/title_text_size"
+                                android:textColor="@color/black"
+                                android:text="台费"/>
 
-                        <EditText
+                            <EditText
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="7"
+                                android:layout_marginLeft="10dp"
+                                android:textSize="15dp"
+                                android:id="@+id/et_perPrice"
+                                android:background="@null"
+                                android:hint="请输入金额/时"/>
+                        </LinearLayout>
+                        <LinearLayout
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="7"
-                            android:layout_marginLeft="10dp"
-                            android:textSize="15dp"
-                            android:id="@+id/et_perPrice"
-                            android:background="@null"
-                            android:hint="请输入金额（元）"/>
+                            android:layout_weight="1"
+                            android:layout_height="40dp"
+                            android:background="@color/white"
+                            android:gravity="center|center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="3"
+                                android:gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:textSize="@dimen/title_text_size"
+                                android:textColor="@color/buttonblue"
+                                android:text="金额"/>
+
+                            <EditText
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="7"
+                                android:id="@+id/et_totalPrice"
+                                android:enabled="false"
+                                android:layout_marginLeft="10dp"
+                                android:editable="false"
+                                android:textSize="15dp"
+                                android:background="@null"
+                                android:hint="总工时*台费"/>
+                        </LinearLayout>
+
                     </LinearLayout>
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -613,7 +654,7 @@
                     android:layout_marginLeft="10dp"
                     android:textSize="@dimen/title_text_size"
                     android:textColor="@color/black"
-                    android:text="审批人"/>
+                    android:text="经办人"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

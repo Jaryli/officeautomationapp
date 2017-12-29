@@ -1,6 +1,7 @@
 package com.app.officeautomationapp.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by CS-711701-00027 on 2017/6/2.
@@ -25,6 +26,45 @@ public class AddArchMachinePostBean implements Serializable {
     private String  machineCode;//机械编码（可空）
     private String remark;//工作量
     private String  managerAdver;//经办人意见
+    private List<Pic> piclist;
+
+    public static class Pic implements Serializable{
+        double lon;
+        double lati;
+        String pic;
+
+        public double getLon() {
+            return lon;
+        }
+
+        public void setLon(double lon) {
+            this.lon = lon;
+        }
+
+        public double getLati() {
+            return lati;
+        }
+
+        public void setLati(double lati) {
+            this.lati = lati;
+        }
+
+        public String getPic() {
+            return pic;
+        }
+
+        public void setPic(String pic) {
+            this.pic = pic;
+        }
+    }
+
+    public List<Pic> getPiclist() {
+        return piclist;
+    }
+
+    public void setPiclist(List<Pic> piclist) {
+        this.piclist = piclist;
+    }
 
     public int getProjectId() {
         return projectId;
