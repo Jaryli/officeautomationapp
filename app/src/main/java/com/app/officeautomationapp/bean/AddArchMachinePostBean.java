@@ -11,6 +11,7 @@ public class AddArchMachinePostBean implements Serializable {
     private int projectId;//工程Id
     private String flowGuid;//工作流标识
     private String workName;//工程名称
+    private String projectName;//
     private int toUser;//指定审批人
     private String[] imagedata;	//Json数组台班实施图片数组
     private String  gis;//图片地址定位
@@ -48,6 +49,14 @@ public class AddArchMachinePostBean implements Serializable {
 
     public void setWorkName(String workName) {
         this.workName = workName;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
     public int getToUser() {
