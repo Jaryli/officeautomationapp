@@ -474,7 +474,7 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
                             {
                                 tvProjectName.setText(items.get(position).length()>15?items.get(position).substring(0,12)+"...":items.get(position));
                                 addArchMachinePostBean.setProjectId(itemsId[position]);
-//                                addArchMachinePostBean.setWorkName(items.get(position));
+                                addArchMachinePostBean.setWorkName(items.get(position));
                                 addArchMachinePostBean.setProjectName(items.get(position));
                             }
                             @Override
