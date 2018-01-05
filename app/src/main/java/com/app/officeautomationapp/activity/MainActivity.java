@@ -40,7 +40,7 @@ import com.jude.rollviewpager.adapter.StaticPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.yalantis.ucrop.ui.PictureSingeUCropActivity.SCALE;
+//import static com.yalantis.ucrop.ui.PictureSingeUCropActivity.SCALE;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
@@ -81,6 +81,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if (context == null || inBitmap == null) {
             throw new IllegalArgumentException("have not called setParams() before call execute()");
         }
+        int SCALE=1;
         int width = Math.round(inBitmap.getWidth() * SCALE);
         int height = Math.round(inBitmap.getHeight() * SCALE);
         Bitmap in = Bitmap.createScaledBitmap(inBitmap, width, height, false);
