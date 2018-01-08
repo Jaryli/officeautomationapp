@@ -205,6 +205,7 @@ public class WorkYongzhangActivity extends BaseActivity implements View.OnClickL
         addArchSignPostBean.setFileName(et_fileName.getText().toString());
         addArchSignPostBean.setFileRemark(et_fileRemark.getText().toString());
         addArchSignPostBean.setSignNum(et_signNum.getText().toString());
+        addArchSignPostBean.setWorkName("用章申请流程");
 
         Gson gson = new Gson();
         String result = gson.toJson(addArchSignPostBean);
