@@ -47,6 +47,10 @@ import com.app.officeautomationapp.util.PicBase64Util;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.app.officeautomationapp.util.StringUtils;
 import com.app.officeautomationapp.view.SpinnerDialogAcceptance;
+import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocation;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.google.gson.Gson;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.luck.picture.lib.model.FunctionConfig;
@@ -99,6 +103,14 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
     private int maxSelectNum = 9;// 图片最大可选数量
     private List<LocalMedia> selectMedia = new ArrayList<>();
 
+    private String addres="";
+    double lon;
+    double lati;
+
+
+    public LocationClient mLocationClient = null;
+    private MyLocationListener myListener = new MyLocationListener();
+
 
     HashMap<Integer, Object> mapPage = new HashMap<>();
 
@@ -136,10 +148,51 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
         return super.onKeyDown(keyCode, event);
     }
 
+    public class MyLocationListener extends BDAbstractLocationListener {
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            //此处的BDLocation为定位结果信息类，通过它的各种get方法可获取定位相关的全部结果
+            //以下只列举部分获取经纬度相关（常用）的结果信息
+            //更多结果信息获取说明，请参照类参考中BDLocation类中的说明
+
+            double latitude = location.getLatitude();    //获取纬度信息
+            double longitude = location.getLongitude();    //获取经度信息
+            float radius = location.getRadius();    //获取定位精度，默认值为0.0f
+
+            String coorType = location.getCoorType();
+            //获取经纬度坐标类型，以LocationClientOption中设置过的坐标类型为准
+
+            int errorCode = location.getLocType();
+            //获取定位类型、定位错误返回码，具体信息可参照类参考中BDLocation类中的说明
+
+            String addr = location.getAddrStr();    //获取详细地址信息
+            String country = location.getCountry();    //获取国家
+            String province = location.getProvince();    //获取省份
+            String city = location.getCity();    //获取城市
+            String district = location.getDistrict();    //获取区县
+            String street = location.getStreet();    //获取街道信息
+
+            addres=addr;
+            lon=latitude;
+            lati=longitude;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_acceptance);
+        //baidumap
+        mLocationClient = new LocationClient(getApplicationContext());
+        //声明LocationClient类
+        mLocationClient.registerLocationListener(myListener);
+        //注册监听函数
+        LocationClientOption option = new LocationClientOption();
+        option.setIsNeedAddress(true);
+        mLocationClient.setLocOption(option);
+        mLocationClient.start();
+
+
         mContext = this;
         tv_title = (TextView) findViewById(R.id.tv_title);
         userDto = (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(), "user");
@@ -519,7 +572,8 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                 final EditText ysHeight = (EditText) view.findViewById(R.id.ysHeight);
                 final EditText ysPengXing = (EditText) view.findViewById(R.id.ysPengXing);
                 final SwitchButton isPay = (SwitchButton) view.findViewById(R.id.isPay);
-
+                TextView tv_work_address=(TextView)view.findViewById(R.id.tv_work_address);
+                tv_work_address.setText(addres);
 
                 recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
                 FullyGridLayoutManager manager = new FullyGridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false);
@@ -548,13 +602,21 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                     @Override
                     public void onClick(View view) {
                         try {
-                            if (selectMedia.size() > 0) {
-                                String[] str = new String[selectMedia.size()];
-                                for (int i = 0; i < selectMedia.size(); i++) {
-                                    str[i] = PicBase64Util.encode(selectMedia.get(i).getPath(), 20);
+                            if(selectMedia.size()>0)
+                            {
+                                List<MiaomuPostBean.Pic> list=new ArrayList<>();
+                                for (int i=0;i<selectMedia.size();i++)
+                                {
+
+                                    MiaomuPostBean.Pic pic=new MiaomuPostBean.Pic();
+                                    pic.setLati(lati);
+                                    pic.setLon(lon);
+                                    pic.setPic(PicBase64Util.encode(selectMedia.get(i).getPath(),20));
+                                    list.add(pic);
                                 }
-                                miaomuPostBean.setImagedata(str);
+                                miaomuPostBean.setPiclist(list);
                             }
+                            miaomuPostBean.setImagedata(new String[0]);
                             miaomuPostBean.setSupplyName(supplyName.getText().toString());
                             miaomuPostBean.setApplyCode(orderCode);
                             miaomuPostBean.setArriveDate(arriveDate.getText().toString());
@@ -752,6 +814,8 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                         getSupply();
                     }
                 });
+                TextView tv_work_address=(TextView)view.findViewById(R.id.tv_work_address);
+                tv_work_address.setText(addres);
 
                 recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
                 FullyGridLayoutManager manager = new FullyGridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false);
@@ -771,13 +835,24 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                     @Override
                     public void onClick(View view) {
                         try {
-                            if (selectMedia.size() > 0) {
-                                String[] str = new String[selectMedia.size()];
-                                for (int i = 0; i < selectMedia.size(); i++) {
-                                    str[i] = PicBase64Util.encode(selectMedia.get(i).getPath(), 20);
+
+                            if(selectMedia.size()>0)
+                            {
+                                List<TujianPostBean.Pic> list=new ArrayList<>();
+                                for (int i=0;i<selectMedia.size();i++)
+                                {
+
+                                    TujianPostBean.Pic pic=new TujianPostBean.Pic();
+                                    pic.setLati(lati);
+                                    pic.setLon(lon);
+                                    pic.setPic(PicBase64Util.encode(selectMedia.get(i).getPath(),20));
+                                    list.add(pic);
                                 }
-                                tujianPostBean.setImagedata(str);
+                                tujianPostBean.setPiclist(list);
                             }
+
+                            tujianPostBean.setImagedata(new String[0]);
+
                             tujianPostBean.setSupplyName(supplyName.getText().toString());
 
                             tujianPostBean.setId(wz_id);//

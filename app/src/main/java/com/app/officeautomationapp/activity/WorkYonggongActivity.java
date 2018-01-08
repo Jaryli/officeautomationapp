@@ -106,6 +106,8 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
     public LocationClient mLocationClient = null;
     public BDLocationListener myListener = new MyLocationListener();
     private String addres="";
+    double lon;
+    double lati;
     private UserDto userDto;
 
     private int year = 2016;
@@ -216,16 +218,24 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
 
     private void post()
     {
-
         if(selectMedia.size()>0)
         {
-            String[] str=new String[selectMedia.size()];
+            List<AddArchJobPostBean.Pic> list=new ArrayList<>();
             for (int i=0;i<selectMedia.size();i++)
             {
-                str[i]=PicBase64Util.encode(selectMedia.get(i).getPath(),20);
+
+                AddArchJobPostBean.Pic pic=new AddArchJobPostBean.Pic();
+                pic.setLati(lati);
+                pic.setLon(lon);
+                pic.setPic(PicBase64Util.encode(selectMedia.get(i).getPath(),20));
+                list.add(pic);
             }
-            addArchJobPostBean.setImagedata(str);
+            addArchJobPostBean.setPiclist(list);
         }
+
+        addArchJobPostBean.setImagedata(new String[0]);
+
+
         addArchJobPostBean.setFlowGuid(Constants.FlowGuidaddArchJob);
         addArchJobPostBean.setWorkName("现场用工签工单审批");
 //        addArchMachinePostBean.setMorning(Double.parseDouble(etMorning.getText().toString()));
@@ -679,7 +689,8 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
 
             sb.append("\nlatitude : ");
             sb.append(location.getLatitude());    //获取纬度信息
-
+            lon=location.getLongitude();
+            lati=location.getLatitude();
             sb.append("\nlontitude : ");
             sb.append(location.getLongitude());    //获取经度信息
 
@@ -765,10 +776,7 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
             Log.i("BaiduLocationApiDem", sb.toString());
         }
 
-        @Override
-        public void onConnectHotSpotMessage(String s, int i) {
 
-        }
     }
 
 

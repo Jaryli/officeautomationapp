@@ -29,6 +29,7 @@ public class AddArchMachinePostBean implements Serializable {
     private String  managerAdver;//经办人意见
     private List<Pic> piclist;
 
+
     public static class Pic implements Serializable{
         double lon;
         double lati;

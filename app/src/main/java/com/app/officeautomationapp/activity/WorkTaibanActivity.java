@@ -879,10 +879,7 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
             Log.i("BaiduLocationApiDem", sb.toString());
         }
 
-        @Override
-        public void onConnectHotSpotMessage(String s, int i) {
 
-        }
     }
 
 

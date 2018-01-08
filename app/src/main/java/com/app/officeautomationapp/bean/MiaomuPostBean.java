@@ -1,6 +1,7 @@
 package com.app.officeautomationapp.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/12/14 0014.
@@ -19,6 +20,45 @@ public class MiaomuPostBean implements Serializable {
     private String raoGanReq;//绕干要求
     private String supplyName;//供应商
     private String ysPengXing;//验收蓬茎
+    private List<MiaomuPostBean.Pic> piclist;
+
+    public static class Pic implements Serializable{
+        double lon;
+        double lati;
+        String pic;
+
+        public double getLon() {
+            return lon;
+        }
+
+        public void setLon(double lon) {
+            this.lon = lon;
+        }
+
+        public double getLati() {
+            return lati;
+        }
+
+        public void setLati(double lati) {
+            this.lati = lati;
+        }
+
+        public String getPic() {
+            return pic;
+        }
+
+        public void setPic(String pic) {
+            this.pic = pic;
+        }
+    }
+
+    public List<Pic> getPiclist() {
+        return piclist;
+    }
+
+    public void setPiclist(List<Pic> piclist) {
+        this.piclist = piclist;
+    }
 
     public String getYsHeight() {
         return ysHeight;

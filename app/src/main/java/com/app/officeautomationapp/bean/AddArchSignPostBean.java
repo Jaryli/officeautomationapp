@@ -1,6 +1,7 @@
 package com.app.officeautomationapp.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 用章申请
@@ -16,6 +17,46 @@ public class AddArchSignPostBean implements Serializable {
     private String fileName;//文件名称
     private String  fileRemark;//申请文件名称摘要
     private String signNum;//用章数量
+    private List<AddArchSignPostBean.Pic> piclist;
+
+
+    public static class Pic implements Serializable{
+        double lon;
+        double lati;
+        String pic;
+
+        public double getLon() {
+            return lon;
+        }
+
+        public void setLon(double lon) {
+            this.lon = lon;
+        }
+
+        public double getLati() {
+            return lati;
+        }
+
+        public void setLati(double lati) {
+            this.lati = lati;
+        }
+
+        public String getPic() {
+            return pic;
+        }
+
+        public void setPic(String pic) {
+            this.pic = pic;
+        }
+    }
+
+    public List<Pic> getPiclist() {
+        return piclist;
+    }
+
+    public void setPiclist(List<Pic> piclist) {
+        this.piclist = piclist;
+    }
 
     public String getFlowGuid() {
         return flowGuid;
