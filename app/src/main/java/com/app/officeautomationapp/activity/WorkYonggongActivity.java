@@ -33,6 +33,9 @@ import com.app.officeautomationapp.util.FullyGridLayoutManager;
 import com.app.officeautomationapp.util.PicBase64Util;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.app.officeautomationapp.util.StringUtils;
+import com.app.officeautomationapp.view.OnSpinerItemClick;
+import com.app.officeautomationapp.view.SpinnerDialog;
+import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -104,7 +107,7 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
 
     //百度地图
     public LocationClient mLocationClient = null;
-    public BDLocationListener myListener = new MyLocationListener();
+    private MyLocationListener myListener = new MyLocationListener();
     private String addres="";
     double lon;
     double lati;
@@ -173,10 +176,12 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
 
         //百度地图
         mLocationClient = new LocationClient(getApplicationContext());
-        initLocation();//初始化
         //声明LocationClient类
-        mLocationClient.registerLocationListener( myListener );
+        mLocationClient.registerLocationListener(myListener);
         //注册监听函数
+        LocationClientOption option = new LocationClientOption();
+        option.setIsNeedAddress(true);
+        mLocationClient.setLocOption(option);
         mLocationClient.start();
     }
 
@@ -342,6 +347,8 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
 
     private String[] items;
     private int[] itemsId;
+
+
     private void getProjectId()
     {
         progressDialog= new ProgressDialog(this);
@@ -371,25 +378,35 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
                         List<MyProjectBean> list=new ArrayList<MyProjectBean>();
                         Type type=new TypeToken<List<MyProjectBean>>(){}.getType();
                         list=gson.fromJson(jsonObject.get("dataList").toString(), type);
-                        items=new String[list.size()];
+                        final ArrayList<String> items=new ArrayList<>();
+                        final int[] itemsId;
                         itemsId=new int[list.size()];
                         for(int i=0;i<list.size();i++)
                         {
-                            items[i]=list.get(i).getProjectName();
+                            items.add(list.get(i).getProjectName());
                             itemsId[i]=list.get(i).getProjectId();
                         }
-                        new AlertDialog.Builder(WorkYonggongActivity.this)
-                                .setTitle("选择我的工程")
-                                .setItems(items, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        tvProjectName.setText(items[i]);
-                                        addArchJobPostBean.setProjectId(itemsId[i]);
-//                                        addArchJobPostBean.setWorkName(items[i]);
-                                        addArchJobPostBean.setProjectName(items[i]);
-                                    }
-                                })
-                                .show();
+
+
+                        final SpinnerDialog spinnerDialog=new SpinnerDialog(WorkYonggongActivity.this,items,"选择我的工程",R.style.DialogAnimations_SmileWindow);
+
+                        spinnerDialog.bindOnSpinerListener(new OnSpinerItemClick()
+                        {
+                            @Override
+                            public void onClick(String item, int position)
+                            {
+                                tvProjectName.setText(items.get(position).length()>15?items.get(position).substring(0,12)+"...":items.get(position));
+                                addArchJobPostBean.setProjectId(itemsId[position]);
+//                                addArchJobPostBean.setWorkName("用功申请流程");
+                                addArchJobPostBean.setProjectName(items.get(position));
+                            }
+                            @Override
+                            public void onTextChange(String text) {
+
+                            }
+                        });
+                        spinnerDialog.showSpinerDialog();
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -416,78 +433,87 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
     }
 
 
-    private String[] users;
+
+    private ArrayList<String> users=new ArrayList<>();
     private int[] usersId;
     private void getToUserId()
     {
-        progressDialog= new ProgressDialog(this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setMessage("加载中...");
-        progressDialog.setCanceledOnTouchOutside(false);//对话框不消失
-        progressDialog.show();
-        RequestParams params = new RequestParams(Constants.getToUser);
-        Log.i("MessageDetailActivity", "post-url:" + Constants.getToUser);
-        params.addHeader("access_token", userDto.getAccessToken());
-        params.addBodyParameter("realName","");
-        Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
+        final SpinnerDialog spinnerDialog=new SpinnerDialog(WorkYonggongActivity.this,users,"选择审批人",R.style.DialogAnimations_SmileWindow);
+
+        spinnerDialog.bindOnSpinerListener(new OnSpinerItemClick()
+        {
             @Override
-            public void onSuccess(String result) {
-                Log.i("JAVA", "onSuccess result:" + result);
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-                    int re=jsonObject.getInt("result");
-                    if(re!=1)
-                    {
-                        Toast.makeText(WorkYonggongActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    else
-                    {
-                        Gson gson = new Gson();
-                        List<ToUserBean> list=new ArrayList<ToUserBean>();
-                        Type type=new TypeToken<List<ToUserBean>>(){}.getType();
-                        list=gson.fromJson(jsonObject.get("data").toString(), type);
-                        users=new String[list.size()];
-                        usersId=new int[list.size()];
-                        for(int i=0;i<list.size();i++)
-                        {
-                            users[i]=list.get(i).getUserTrueName();
-                            usersId[i]=list.get(i).getUserId();
+            public void onClick(String item, int position)
+            {
+                tv_to_user.setText(users.get(position));
+                tv_to_user.setVisibility(View.VISIBLE);
+                addArchJobPostBean.setToUser(usersId[position]);
+            }
+
+            @Override
+            public void onTextChange(String text) {
+                progressDialog= new ProgressDialog(WorkYonggongActivity.this);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setMessage("加载中...");
+                progressDialog.setCanceledOnTouchOutside(false);//对话框不消失
+                progressDialog.show();
+                RequestParams params = new RequestParams(Constants.getToUser);
+                Log.i("MessageDetailActivity", "post-url:" + Constants.getToUser);
+                params.addHeader("access_token", userDto.getAccessToken());
+                params.addBodyParameter("realName",text);
+                Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
+                    @Override
+                    public void onSuccess(String result) {
+                        Log.i("JAVA", "onSuccess result:" + result);
+                        try {
+                            JSONObject jsonObject = new JSONObject(result);
+                            int re=jsonObject.getInt("result");
+                            if(re!=1)
+                            {
+                                Toast.makeText(WorkYonggongActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            else
+                            {
+                                Gson gson = new Gson();
+                                List<ToUserBean> list=new ArrayList<ToUserBean>();
+                                Type type=new TypeToken<List<ToUserBean>>(){}.getType();
+                                list=gson.fromJson(jsonObject.get("data").toString(), type);
+                                users=new ArrayList<>();
+                                usersId=new int[list.size()];
+                                for(int i=0;i<list.size();i++)
+                                {
+                                    users.add(list.get(i).getUserTrueName());
+                                    usersId[i]=list.get(i).getUserId();
+                                }
+                                spinnerDialog.setItems(users);
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        new AlertDialog.Builder(WorkYonggongActivity.this)
-                                .setTitle("选择审批人")
-                                .setItems(users, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        tv_to_user.setText(users[i]);
-                                        tv_to_user.setVisibility(View.VISIBLE);
-                                        addArchJobPostBean.setToUser(usersId[i]);
-                                    }
-                                })
-                                .show();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            //请求异常后的回调方法
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                Log.i("JAVA", "onError:" + ex);
-                Toast.makeText(WorkYonggongActivity.this,"网络或服务器异常！",Toast.LENGTH_SHORT).show();
-            }
-            //主动调用取消请求的回调方法
-            @Override
-            public void onCancelled(CancelledException cex) {
-                Log.i("JAVA", "onCancelled:" + cex);
-            }
-            @Override
-            public void onFinished() {
-                Log.i("JAVA", "onFinished:" + "");
-                progressDialog.hide();
-                progressDialog.dismiss();
+                    //请求异常后的回调方法
+                    @Override
+                    public void onError(Throwable ex, boolean isOnCallback) {
+                        Log.i("JAVA", "onError:" + ex);
+                        Toast.makeText(WorkYonggongActivity.this,"网络或服务器异常！",Toast.LENGTH_SHORT).show();
+                    }
+                    //主动调用取消请求的回调方法
+                    @Override
+                    public void onCancelled(CancelledException cex) {
+                        Log.i("JAVA", "onCancelled:" + cex);
+                    }
+                    @Override
+                    public void onFinished() {
+                        Log.i("JAVA", "onFinished:" + "");
+                        progressDialog.hide();
+                        progressDialog.dismiss();
+                    }
+                });
             }
         });
+        spinnerDialog.showSpinerDialog();
     }
 
     public void setDate()
@@ -635,148 +661,40 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
     };
 
 
-    private void initLocation(){
-        LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
-        //可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
-
-        option.setCoorType("bd09ll");
-        //可选，默认gcj02，设置返回的定位结果坐标系
-
-//        option.setScanSpan(0);
-        //可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
-
-        option.setIsNeedAddress(true);
-        //可选，设置是否需要地址信息，默认不需要
-
-        option.setOpenGps(true);
-        //可选，默认false,设置是否使用gps
-
-        option.setLocationNotify(true);
-        //可选，默认false，设置是否当GPS有效时按照1S/1次频率输出GPS结果
-
-        option.setIsNeedLocationDescribe(true);
-        //可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
-
-        option.setIsNeedLocationPoiList(true);
-        //可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
-
-        option.setIgnoreKillProcess(false);
-        //可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
-
-        option.SetIgnoreCacheException(false);
-        //可选，默认false，设置是否收集CRASH信息，默认收集
-
-        option.setEnableSimulateGps(false);
-        //可选，默认false，设置是否需要过滤GPS仿真结果，默认需要
-
-        mLocationClient.setLocOption(option);
-    }
-
-    public class MyLocationListener implements BDLocationListener {
-
+    public class MyLocationListener extends BDAbstractLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
+            //此处的BDLocation为定位结果信息类，通过它的各种get方法可获取定位相关的全部结果
+            //以下只列举部分获取经纬度相关（常用）的结果信息
+            //更多结果信息获取说明，请参照类参考中BDLocation类中的说明
 
-            //获取定位结果
-            StringBuffer sb = new StringBuffer(256);
+            double latitude = location.getLatitude();    //获取纬度信息
+            double longitude = location.getLongitude();    //获取经度信息
+            float radius = location.getRadius();    //获取定位精度，默认值为0.0f
 
-            sb.append("time : ");
-            sb.append(location.getTime());    //获取定位时间
+            String coorType = location.getCoorType();
+            //获取经纬度坐标类型，以LocationClientOption中设置过的坐标类型为准
 
-            sb.append("\nerror code : ");
-            sb.append(location.getLocType());    //获取类型类型
+            int errorCode = location.getLocType();
+            //获取定位类型、定位错误返回码，具体信息可参照类参考中BDLocation类中的说明
 
-            sb.append("\nlatitude : ");
-            sb.append(location.getLatitude());    //获取纬度信息
-            lon=location.getLongitude();
-            lati=location.getLatitude();
-            sb.append("\nlontitude : ");
-            sb.append(location.getLongitude());    //获取经度信息
+            String addr = location.getAddrStr();    //获取详细地址信息
+            String country = location.getCountry();    //获取国家
+            String province = location.getProvince();    //获取省份
+            String city = location.getCity();    //获取城市
+            String district = location.getDistrict();    //获取区县
+            String street = location.getStreet();    //获取街道信息
+            Log.d("***", addr);
+            Log.d("***", latitude+"");
+            Log.d("***", longitude+"");
+            addres=addr;
+            lon=latitude;
+            lati=longitude;
 
-            sb.append("\nradius : ");
-            sb.append(location.getRadius());    //获取定位精准度
-
-            if (location.getLocType() == BDLocation.TypeGpsLocation){
-
-                // GPS定位结果
-                sb.append("\nspeed : ");
-                sb.append(location.getSpeed());    // 单位：公里每小时
-
-                sb.append("\nsatellite : ");
-                sb.append(location.getSatelliteNumber());    //获取卫星数
-
-                sb.append("\nheight : ");
-                sb.append(location.getAltitude());    //获取海拔高度信息，单位米
-
-                sb.append("\ndirection : ");
-                sb.append(location.getDirection());    //获取方向信息，单位度
-
-                sb.append("\naddr : ");
-                sb.append(location.getAddrStr());    //获取地址信息
-                addres=location.getAddrStr();//获取当前位置
-//                tvWorkAddressGIS.setText("当前位置:"+addres);
-                sb.append("\ndescribe : ");
-                sb.append("gps定位成功");
-
-            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){
-
-                // 网络定位结果
-                sb.append("\naddr : ");
-                sb.append(location.getAddrStr());    //获取地址信息
-                addres=location.getAddrStr();//获取当前位置
-//                tvWorkAddressGIS.setText("当前位置:"+addres);
-
-                sb.append("\noperationers : ");
-                sb.append(location.getOperators());    //获取运营商信息
-
-                sb.append("\ndescribe : ");
-                sb.append("网络定位成功");
-
-            } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {
-
-                // 离线定位结果
-                sb.append("\ndescribe : ");
-                sb.append("离线定位成功，离线定位结果也是有效的");
-                addres=location.getAddrStr();//获取当前位置
-//                tvWorkAddressGIS.setText("当前位置:"+addres);
-
-            } else if (location.getLocType() == BDLocation.TypeServerError) {
-
-                sb.append("\ndescribe : ");
-                sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
-
-            } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
-
-                sb.append("\ndescribe : ");
-                sb.append("网络不同导致定位失败，请检查网络是否通畅");
-
-            } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
-
-                sb.append("\ndescribe : ");
-                sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
-
-            }
-
-            sb.append("\nlocationdescribe : ");
-            sb.append(location.getLocationDescribe());    //位置语义化信息
-
-            List<Poi> list = location.getPoiList();    // POI数据
-            if (list != null) {
-                sb.append("\npoilist size = : ");
-                sb.append(list.size());
-                for (Poi p : list) {
-                    sb.append("\npoi= : ");
-                    sb.append(p.getId() + " " + p.getName() + " " + p.getRank());
-                }
-            }
             Message message = new Message();
             message.what = 1;
             mHandler.sendMessage(message);
-            Log.i("BaiduLocationApiDem", sb.toString());
         }
-
-
     }
 
 

@@ -171,7 +171,9 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
             String city = location.getCity();    //获取城市
             String district = location.getDistrict();    //获取区县
             String street = location.getStreet();    //获取街道信息
-
+            Log.d("***", addr);
+            Log.d("***", latitude+"");
+            Log.d("***", longitude+"");
             addres=addr;
             lon=latitude;
             lati=longitude;
