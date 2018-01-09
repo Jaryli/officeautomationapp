@@ -32,6 +32,9 @@ import com.app.officeautomationapp.bean.AddArchMachinePostBean;
 import com.app.officeautomationapp.bean.MyProjectBean;
 import com.app.officeautomationapp.bean.ToUserBean;
 import com.app.officeautomationapp.common.Constants;
+import com.app.officeautomationapp.db.TaiBanDB;
+import com.app.officeautomationapp.db.Taiban;
+import com.app.officeautomationapp.db.UserDB;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.FullyGridLayoutManager;
 import com.app.officeautomationapp.util.PicBase64Util;
@@ -74,6 +77,7 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
     private ImageView ivWorkBack;
     private LinearLayout layoutSelectDate;
     private TextView tvSelectDate;
+    private TextView tv_draft;
     private TextView tvWorkTaibanAddress;
     private LinearLayout layoutWorkTaibanAddress;
 
@@ -125,6 +129,7 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
     private int year = 2017;
     private int month = 10;
     private int day = 8;
+    TaiBanDB taiBanDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +150,19 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
         tvWorkTaibanAddress=(TextView)layoutWorkTaibanAddress.findViewById(R.id.tv_work_taiban_address);
 //        tvWorkTaibanAddress.setText("当前位置:中国");
         tvWorkTaibanAddress.setSaveEnabled(false);
+
+        tv_draft=(TextView)findViewById(R.id.tv_draft);
+        tv_draft.setText("存草稿");
+
+        taiBanDB = TaiBanDB.getIntance();
+        Taiban taiban=taiBanDB.loadPerson();
+        if(taiban!=null)
+        {
+            tv_draft.setText("取草稿");
+        }
+        tv_draft.setOnClickListener(this);
+//        taiBanDB.delTaiban(taiban);
+
 
 
         llProjectIdSelect=(LinearLayout)findViewById(R.id.ll_project_id_select);
@@ -385,6 +403,51 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.ll_select_date:
                 getDate(v);
+                break;
+            case R.id.tv_draft:
+                try
+                {
+                    if("存草稿".equals(tv_draft.getText()))
+                    {
+                        if(initValidate()) {
+                            String[] str=new String[selectMedia.size()];
+                            for (int i=0;i<selectMedia.size();i++)
+                            {
+                                str[i]=selectMedia.get(i).getPath();
+                            }
+                            Taiban taiban=new Taiban(addArchMachinePostBean.getProjectId(),addArchMachinePostBean.getProjectName(),addArchMachinePostBean.getBussinessType(),str);
+                            taiBanDB.saveTaiban(taiban);
+                            Toast.makeText(this,"保存成功!",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else
+                    {
+                        Taiban taiban=taiBanDB.loadPerson();
+                        tvProjectName.setText(taiban.getProjectName());
+                        addArchMachinePostBean.setProjectId(taiban.getProjectId());
+                        addArchMachinePostBean.setWorkName("台班申请流程");
+                        addArchMachinePostBean.setProjectName(taiban.getProjectName());
+                        selectMedia.clear();
+                        if(taiban.getImagedata().length>0)
+                        {
+                            for(int i=0;i<taiban.getImagedata().length;i++)
+                            {
+                                LocalMedia localMedia=new LocalMedia();
+                                localMedia.setPath(taiban.getImagedata()[i]);
+                                selectMedia.add(localMedia);
+                            }
+                        }
+                        adapter.setList(selectMedia);
+                        adapter.notifyDataSetChanged();
+                        tv_draft.setText("存草稿");
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                    Toast.makeText(this,"操作失败!",Toast.LENGTH_SHORT).show();
+                }
+
                 break;
 //            case R.id.ll_work_taiban_address:
 //                mLocationClient.start();
