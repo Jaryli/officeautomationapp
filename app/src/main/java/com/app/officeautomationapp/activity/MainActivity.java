@@ -106,7 +106,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         final AllAngleExpandableButton button = (AllAngleExpandableButton) findViewById(R.id.button_expandable_30_150);
         final List<ButtonData> buttonDatas = new ArrayList<>();
 //        int[] drawable = {R.drawable.plus, R.drawable.mark, R.drawable.settings, R.drawable.heart,R.drawable.mark};
-        int[] drawable = {R.drawable.plus, R.mipmap.main_qingjia_2x, R.mipmap.main_yongzhang_2x, R.mipmap.main_diangong_2x,R.mipmap.main_taiban_2x};
+        int[] drawable = {R.drawable.plus, R.mipmap.main_tujian_2x, R.mipmap.main_miaomu_2x, R.mipmap.main_diangong_2x,R.mipmap.main_taiban_2x};
         int[] color = {R.color.blue, R.color.green, R.color.orange, R.color.pink,R.color.red};
         for (int i = 0; i < 5; i++) {
             ButtonData buttonData;
@@ -128,12 +128,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             public void onButtonClicked(int index) {
 //                Toast.makeText(MainActivity.this,"clicked index:" + index,Toast.LENGTH_SHORT).show();
                 switch (index) {
-                    case 1://请假
-                        Intent intent=new Intent(MainActivity.this,WorkQingjiaActivity.class);
+                    case 1://土建
+                        Intent  intent=new Intent(MainActivity.this,ProjectActivity.class);
+                        intent.putExtra("type","tujian");
                         startActivity(intent);
                         break;
-                    case 2://用章
-                        intent=new Intent(MainActivity.this,WorkYongzhangActivity.class);
+                    case 2://苗木
+                        intent=new Intent(MainActivity.this,ProjectActivity.class);
+                        intent.putExtra("type","miaomu");
                         startActivity(intent);
                         break;
                     case 3://点工

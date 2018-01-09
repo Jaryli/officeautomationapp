@@ -61,6 +61,7 @@ public class Constants {
 
     public final static String getMyMenu=address+"/api/V1/Menu/GetPageList";//获取我的菜单列表
 
+
     public final static String updateMenuIndex=address+"/api/V1/Menu/UpdateMenuIndex";//?indexIds={indexIds}&notIndexIds={notIndexIds}//添加菜单到应用首页
 
     public final static String GetPersonList=address+"/api/V1/User/GetAddressList";//?pageIndex={pageIndex}&pageSize={pageSize}//获取通信录

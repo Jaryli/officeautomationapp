@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,10 +81,11 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
     private Button btnReceiveThings;
     private Button btnStartWork;
     private Button btnMessage;
+    private TextView tv_has_message;
     private ImageView iv_time;
     private TextView tv_welcome;
 
-    private LinearLayout llMessage;
+    private RelativeLayout llMessage;
     private LinearLayout llManageItem;
 
     private MyGridView gv1;
@@ -115,12 +117,13 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
 //        btnReceiveThings.setOnClickListener(this);
 //        btnStartWork=(Button)view.findViewById(R.id.btn_start_work);
 //        btnStartWork.setOnClickListener(this);
-        llMessage=(LinearLayout)view.findViewById(R.id.ll_message);
+        llMessage=(RelativeLayout)view.findViewById(R.id.ll_message);
         llMessage.setOnClickListener(this);
         llManageItem=(LinearLayout)view.findViewById(R.id.ll_manageItem);
         llManageItem.setOnClickListener(this);
 //        btnMessage=(Button)view.findViewById(R.id.btn_message);
 //        btnMessage.setOnClickListener(this);
+        tv_has_message=(TextView)view.findViewById(R.id.tv_has_message);
         this.Tview=view;
 //        initGV(view);
 
@@ -326,6 +329,11 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
                     {
                         int workCount=jsonObject.getInt("workCount");
                         int taskCount=jsonObject.getInt("taskCount");
+                        boolean newTips=jsonObject.getBoolean("newTips");
+                        if(newTips)//通知
+                        {
+                            tv_has_message.setVisibility(View.VISIBLE);
+                        }
                         btnWorkApproval.setText((workCount+taskCount)+"");
                         if(list1.size()>0)
                         {
