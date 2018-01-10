@@ -494,7 +494,7 @@ public class WorkYongzhangActivity extends BaseActivity implements View.OnClickL
     private PictureConfig.OnSelectResultCallback resultCallback = new PictureConfig.OnSelectResultCallback() {
         @Override
         public void onSelectSuccess(List<LocalMedia> resultList) {
-            selectMedia = resultList;
+            selectMedia.addAll(resultList);
             Log.i("callBack_result", selectMedia.size() + "");
             if (selectMedia != null) {
                 adapter.setList(selectMedia);

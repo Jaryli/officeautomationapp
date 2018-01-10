@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.icu.util.TimeZone;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
@@ -36,6 +37,7 @@ import com.app.officeautomationapp.db.TaiBanDB;
 import com.app.officeautomationapp.db.Taiban;
 import com.app.officeautomationapp.db.UserDB;
 import com.app.officeautomationapp.dto.UserDto;
+import com.app.officeautomationapp.util.FileUtils;
 import com.app.officeautomationapp.util.FullyGridLayoutManager;
 import com.app.officeautomationapp.util.PicBase64Util;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
@@ -63,6 +65,7 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -410,11 +413,12 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
                     if("存草稿".equals(tv_draft.getText()))
                     {
                         if(initValidate()) {
-                            String[] str=new String[selectMedia.size()];
+                            String str="";
                             for (int i=0;i<selectMedia.size();i++)
                             {
-                                str[i]=selectMedia.get(i).getPath();
+                                str+=selectMedia.get(i).getPath()+";";
                             }
+                            str=str.substring(0,str.length()-1);
                             Taiban taiban=new Taiban(addArchMachinePostBean.getProjectId(),addArchMachinePostBean.getProjectName(),addArchMachinePostBean.getBussinessType(),str);
                             taiBanDB.saveTaiban(taiban);
                             Toast.makeText(this,"保存成功!",Toast.LENGTH_SHORT).show();
@@ -428,12 +432,14 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
                         addArchMachinePostBean.setWorkName("台班申请流程");
                         addArchMachinePostBean.setProjectName(taiban.getProjectName());
                         selectMedia.clear();
-                        if(taiban.getImagedata().length>0)
+                        if(!"".equals(taiban.getImagedata()))
                         {
-                            for(int i=0;i<taiban.getImagedata().length;i++)
+                            String s[]=taiban.getImagedata().split(";");
+                            for(int i=0;i<s.length;i++)
                             {
                                 LocalMedia localMedia=new LocalMedia();
-                                localMedia.setPath(taiban.getImagedata()[i]);
+                                localMedia.setPath(s[i]);
+                                localMedia.setType(1);
                                 selectMedia.add(localMedia);
                             }
                         }
@@ -793,7 +799,7 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
     private PictureConfig.OnSelectResultCallback resultCallback = new PictureConfig.OnSelectResultCallback() {
         @Override
         public void onSelectSuccess(List<LocalMedia> resultList) {
-            selectMedia = resultList;
+            selectMedia.addAll(resultList);
             Log.i("callBack_result", selectMedia.size() + "");
             if (selectMedia != null) {
                 adapter.setList(selectMedia);

@@ -37,7 +37,7 @@ public class TaiBanDB {
     //写两个测试方法，也就是常用的数据库操作
     public void saveTaiban(Taiban taiban){
         try {
-            db.delete(taiban);
+            db.delete(loadPerson());
             db.save(taiban);
             Log.d("xyz","save succeed!");
         } catch (DbException e) {
