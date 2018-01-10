@@ -41,20 +41,19 @@
             android:textColor="@color/black"
             android:textSize="@dimen/title_text_size" />
 
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:text="帮助"-->
-        <!--android:textSize="16sp"-->
-        <!--android:textColor="@color/colorPrimaryDark"-->
-        <!--android:gravity="center_vertical"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_marginRight="20dp"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:id="@+id/textView" />-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="存草稿"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/tv_draft" />
 
     </RelativeLayout>
 

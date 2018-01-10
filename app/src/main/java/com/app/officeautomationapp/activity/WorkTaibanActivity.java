@@ -431,6 +431,15 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
                         addArchMachinePostBean.setProjectId(taiban.getProjectId());
                         addArchMachinePostBean.setWorkName("台班申请流程");
                         addArchMachinePostBean.setProjectName(taiban.getProjectName());
+                        addArchMachinePostBean.setBussinessType(taiban.getBussinessType());
+                        if(taiban.getBussinessType().equals("绿化"))
+                        {
+                            radioLvhua.setChecked(true);
+                        }
+                        else
+                        {
+                            radioTujian.setChecked(true);
+                        }
                         selectMedia.clear();
                         if(!"".equals(taiban.getImagedata()))
                         {

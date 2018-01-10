@@ -28,6 +28,10 @@ import com.app.officeautomationapp.bean.AddArchJobPostBean;
 import com.app.officeautomationapp.bean.MyProjectBean;
 import com.app.officeautomationapp.bean.ToUserBean;
 import com.app.officeautomationapp.common.Constants;
+import com.app.officeautomationapp.db.TaiBanDB;
+import com.app.officeautomationapp.db.Taiban;
+import com.app.officeautomationapp.db.Yonggong;
+import com.app.officeautomationapp.db.YonggongDB;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.FullyGridLayoutManager;
 import com.app.officeautomationapp.util.PicBase64Util;
@@ -94,6 +98,7 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
     private LinearLayout ll_nextStep2;
     private LinearLayout ll_pve;
     private LinearLayout ll_post;
+    private TextView tv_draft;
 
 
     private RecyclerView recyclerView;
@@ -113,6 +118,8 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
     double lati;
     private UserDto userDto;
 
+    YonggongDB yonggongDB;
+
     private int year = 2016;
     private int month = 10;
     private int day = 8;
@@ -131,6 +138,17 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
         tvWorkAddressGIS=(TextView)findViewById(R.id.tv_work_yonggong_address);
 //        layoutWorkTaibanAddress=(LinearLayout)findViewById(R.id.ll_work_taiban_address);
 //        layoutWorkTaibanAddress.setOnClickListener(this);
+
+        tv_draft=(TextView)findViewById(R.id.tv_draft);
+        tv_draft.setText("存草稿");
+
+        yonggongDB = YonggongDB.getIntance();
+        Yonggong yonggong=yonggongDB.loadYonggong();
+        if(yonggong!=null)
+        {
+            tv_draft.setText("取草稿");
+        }
+        tv_draft.setOnClickListener(this);
 
         llProjectIdSelect=(LinearLayout)findViewById(R.id.ll_project_id_select);
         llProjectIdSelect.setOnClickListener(this);
@@ -307,6 +325,55 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
         switch (v.getId()) {
             case R.id.iv_taiban_back:
                 this.finish();
+                break;
+
+            case R.id.tv_draft:
+                try
+                {
+                    if("存草稿".equals(tv_draft.getText()))
+                    {
+                        if(initValidate()) {
+                            String str="";
+                            for (int i=0;i<selectMedia.size();i++)
+                            {
+                                str+=selectMedia.get(i).getPath()+";";
+                            }
+                            str=str.substring(0,str.length()-1);
+                            Yonggong yonggong=new Yonggong(addArchJobPostBean.getProjectId(),addArchJobPostBean.getProjectName(),str);
+                            yonggongDB.saveYonggong(yonggong);
+                            Toast.makeText(this,"保存成功!",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else
+                    {
+                        Yonggong yonggong=yonggongDB.loadYonggong();
+                        tvProjectName.setText(yonggong.getProjectName());
+                        addArchJobPostBean.setProjectId(yonggong.getProjectId());
+                        addArchJobPostBean.setWorkName("现场用工签工单审批");
+                        addArchJobPostBean.setProjectName(yonggong.getProjectName());
+                        selectMedia.clear();
+                        if(!"".equals(yonggong.getImagedata()))
+                        {
+                            String s[]=yonggong.getImagedata().split(";");
+                            for(int i=0;i<s.length;i++)
+                            {
+                                LocalMedia localMedia=new LocalMedia();
+                                localMedia.setPath(s[i]);
+                                localMedia.setType(1);
+                                selectMedia.add(localMedia);
+                            }
+                        }
+                        adapter.setList(selectMedia);
+                        adapter.notifyDataSetChanged();
+                        tv_draft.setText("存草稿");
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                    Toast.makeText(this,"操作失败!",Toast.LENGTH_SHORT).show();
+                }
+
                 break;
 //            case R.id.ll_select_date:
 //                getDate(v);
