@@ -14,7 +14,7 @@ android {
         minSdkVersion 17
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0.1"
+        versionName "1.0.2"
         renderscriptTargetApi 18 //高斯模糊
         renderscriptSupportModeEnabled true //高斯模糊
     }
