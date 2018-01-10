@@ -39,7 +39,7 @@ public class UserDB {
     //写两个测试方法，也就是常用的数据库操作
     public void saveUser(User person){
         try {
-            db.delete(person);
+            db.delete(loadPerson());
             db.save(person);
             Log.d("xyz","save succeed!");
         } catch (DbException e) {
