@@ -1,9 +1,14 @@
 package com.app.officeautomationapp.util;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.widget.Toast;
+
+import com.yalantis.ucrop.entity.LocalMedia;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,6 +17,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/1/11 0011.
@@ -23,7 +29,7 @@ public abstract class ImageUtil {
      * 添加时间水印
      * @param src
      */
-    public static Bitmap addTimeFlag(Bitmap src){
+    private static Bitmap addTimeFlag(Bitmap src){
         // 获取原始图片与水印图片的宽与高
         int w = src.getWidth();
         int h = src.getHeight();
@@ -51,7 +57,7 @@ public abstract class ImageUtil {
     }
 
 
-    public static boolean saveBitmap2file(Bitmap bmp,String src){
+    private static boolean saveBitmap2file(Bitmap bmp,String src){
         Bitmap.CompressFormat format= Bitmap.CompressFormat.JPEG;
         int quality = 100;
         OutputStream stream = null;
@@ -65,4 +71,25 @@ public abstract class ImageUtil {
         }
         return bmp.compress(format, quality, stream);
     }
+
+    public static void addTimePic(List<LocalMedia> resultList, Context context)
+    {
+        if(resultList.size()>0)
+        {
+            //加水印
+            for(LocalMedia localMedia:resultList)
+            {
+                try {
+                    Bitmap bmp = BitmapFactory.decodeFile(localMedia.getPath());
+                    Bitmap rbmp = ImageUtil.addTimeFlag(bmp);
+                    ImageUtil.saveBitmap2file(rbmp, localMedia.getPath());
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                    Toast.makeText(context,"加载水印失败。",Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
 }

@@ -32,6 +32,7 @@ import com.app.officeautomationapp.bean.UserInfoBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.FullyGridLayoutManager;
+import com.app.officeautomationapp.util.ImageUtil;
 import com.app.officeautomationapp.util.PicBase64Util;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.baidu.location.BDAbstractLocationListener;
@@ -494,6 +495,7 @@ public class WorkYongzhangActivity extends BaseActivity implements View.OnClickL
     private PictureConfig.OnSelectResultCallback resultCallback = new PictureConfig.OnSelectResultCallback() {
         @Override
         public void onSelectSuccess(List<LocalMedia> resultList) {
+            ImageUtil.addTimePic(resultList,WorkYongzhangActivity.this);
             selectMedia.addAll(resultList);
             Log.i("callBack_result", selectMedia.size() + "");
             if (selectMedia != null) {

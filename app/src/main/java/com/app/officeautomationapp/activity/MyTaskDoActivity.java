@@ -21,6 +21,7 @@ import com.app.officeautomationapp.bean.MyTaskPostBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.FullyGridLayoutManager;
+import com.app.officeautomationapp.util.ImageUtil;
 import com.app.officeautomationapp.util.PicBase64Util;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.google.gson.Gson;
@@ -275,6 +276,7 @@ public class MyTaskDoActivity extends BaseActivity implements View.OnClickListen
     private PictureConfig.OnSelectResultCallback resultCallback = new PictureConfig.OnSelectResultCallback() {
         @Override
         public void onSelectSuccess(List<LocalMedia> resultList) {
+            ImageUtil.addTimePic(resultList,MyTaskDoActivity.this);
             selectMedia.addAll(resultList);
             Log.i("callBack_result", selectMedia.size() + "");
             if (selectMedia != null) {

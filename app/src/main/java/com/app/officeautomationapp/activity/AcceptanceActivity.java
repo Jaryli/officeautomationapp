@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
@@ -43,6 +45,7 @@ import com.app.officeautomationapp.bean.TujianPostBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.FullyGridLayoutManager;
+import com.app.officeautomationapp.util.ImageUtil;
 import com.app.officeautomationapp.util.PicBase64Util;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.app.officeautomationapp.util.StringUtils;
@@ -1036,6 +1039,7 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
     private PictureConfig.OnSelectResultCallback resultCallback = new PictureConfig.OnSelectResultCallback() {
         @Override
         public void onSelectSuccess(List<LocalMedia> resultList) {
+            ImageUtil.addTimePic(resultList,AcceptanceActivity.this);
             selectMedia.addAll(resultList);
             Log.i("callBack_result", selectMedia.size() + "");
             if (selectMedia != null) {

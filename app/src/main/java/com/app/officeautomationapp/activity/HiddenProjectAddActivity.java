@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.widget.GridLayoutManager;
@@ -26,6 +28,7 @@ import com.app.officeautomationapp.bean.MyProjectBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.FullyGridLayoutManager;
+import com.app.officeautomationapp.util.ImageUtil;
 import com.app.officeautomationapp.util.MyCallBack;
 import com.app.officeautomationapp.util.PicBase64Util;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
@@ -303,6 +306,7 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
         @Override
         public void onSelectSuccess(List<LocalMedia> resultList) {
 //            selectMedia1 = resultList;//选址图片的时候
+            ImageUtil.addTimePic(resultList,HiddenProjectAddActivity.this);
             if(resultList.size()>0)//只拍照的时候
             {
                 for(LocalMedia localMedia:resultList)
@@ -371,6 +375,7 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
         @Override
         public void onSelectSuccess(List<LocalMedia> resultList) {
             //            selectMedia2 = resultList;//选址图片的时候
+            ImageUtil.addTimePic(resultList,HiddenProjectAddActivity.this);
             if(resultList.size()>0)//只拍照的时候
             {
                 for(LocalMedia localMedia:resultList)
@@ -440,6 +445,7 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
         @Override
         public void onSelectSuccess(List<LocalMedia> resultList) {
             //            selectMedia3 = resultList;//选址图片的时候
+            ImageUtil.addTimePic(resultList,HiddenProjectAddActivity.this);
             if(resultList.size()>0)//只拍照的时候
             {
                 for(LocalMedia localMedia:resultList)

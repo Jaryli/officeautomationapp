@@ -30,6 +30,7 @@ import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.CacheUtils;
 import com.app.officeautomationapp.util.CleanUtils;
+import com.app.officeautomationapp.util.ImageUtil;
 import com.app.officeautomationapp.util.PicBase64Util;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.app.officeautomationapp.view.RoundImageView;
@@ -204,6 +205,7 @@ public class MyFragment extends Fragment implements View.OnClickListener{
     private PictureConfig.OnSelectResultCallback resultCallback = new PictureConfig.OnSelectResultCallback() {
         @Override
         public void onSelectSuccess(List<LocalMedia> resultList) {
+            ImageUtil.addTimePic(resultList,getContext());
             //提交
             Log.e("**********",resultList.get(0).getPath());
             String photoStr=PicBase64Util.encode(resultList.get(0).getPath(),20);
