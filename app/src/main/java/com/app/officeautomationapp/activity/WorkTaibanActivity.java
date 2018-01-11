@@ -6,6 +6,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.icu.util.TimeZone;
 import android.os.Bundle;
 import android.os.Environment;
@@ -39,6 +41,7 @@ import com.app.officeautomationapp.db.UserDB;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.FileUtils;
 import com.app.officeautomationapp.util.FullyGridLayoutManager;
+import com.app.officeautomationapp.util.ImageUtil;
 import com.app.officeautomationapp.util.PicBase64Util;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.app.officeautomationapp.util.StringUtils;
@@ -808,6 +811,22 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
     private PictureConfig.OnSelectResultCallback resultCallback = new PictureConfig.OnSelectResultCallback() {
         @Override
         public void onSelectSuccess(List<LocalMedia> resultList) {
+            if(resultList.size()>0)
+            {
+                //加水印
+                for(LocalMedia localMedia:resultList)
+                {
+                    try {
+                        Bitmap bmp = BitmapFactory.decodeFile(localMedia.getPath());
+                        Bitmap rbmp = ImageUtil.addTimeFlag(bmp);
+                        ImageUtil.saveBitmap2file(rbmp, localMedia.getPath());
+                    }catch (Exception e)
+                    {
+                        e.printStackTrace();
+                        Toast.makeText(WorkTaibanActivity.this,"加载水印失败。",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
             selectMedia.addAll(resultList);
             Log.i("callBack_result", selectMedia.size() + "");
             if (selectMedia != null) {
