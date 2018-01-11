@@ -755,8 +755,8 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
             Log.d("***", latitude+"");
             Log.d("***", longitude+"");
             addres=addr;
-            lon=latitude;
-            lati=longitude;
+            lon=longitude;
+            lati=latitude;
 
             Message message = new Message();
             message.what = 1;

@@ -845,8 +845,8 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
             Log.d("***", latitude+"");
             Log.d("***", longitude+"");
             addres=addr;
-            lon=latitude;
-            lati=longitude;
+            lon=longitude;
+            lati=latitude;
 
             Message message = new Message();
             message.what = 1;

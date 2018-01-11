@@ -531,8 +531,8 @@ public class WorkYongzhangActivity extends BaseActivity implements View.OnClickL
             Log.d("***", latitude+"");
             Log.d("***", longitude+"");
             addres=addr;
-            lon=latitude;
-            lati=longitude;
+            lon=longitude;
+            lati=latitude;
 
             Message message = new Message();
             message.what = 1;
