@@ -1,7 +1,10 @@
 package com.app.officeautomationapp.activity;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -209,11 +212,79 @@ public class MyTaskDetailActivity extends BaseActivity implements  View.OnClickL
                 startActivity(intent);
                 break;
             case R.id.ll_popmenu_over:
-                Toast.makeText(MyTaskDetailActivity.this,"2",Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder normalDialog = new AlertDialog.Builder(MyTaskDetailActivity.this);
+                normalDialog.setIcon(R.mipmap.icon_finish_red);
+                normalDialog.setTitle("标记完成");
+                normalDialog.setMessage("你确定标记完成?");
+                normalDialog.setPositiveButton("确定",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                post();
+                            }
+                        });
+                normalDialog.setNegativeButton("关闭",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                // 显示
+                normalDialog.show();
                 break;
             default:
                 break;
         }
+    }
+    ProgressDialog progressDialog;
+
+    private void post()
+    {
+        progressDialog= new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage("提交中...");
+        progressDialog.setCanceledOnTouchOutside(false);//对话框不消失
+        progressDialog.show();
+        RequestParams params = new RequestParams(Constants.CloseTask);
+        Log.i("", "post-url:" + Constants.CloseTask);
+        params.addHeader("access_token", userDto.getAccessToken());
+        params.setBodyContent("'{\"taskId\":"+myTaskBean.getId()+"}'");
+        Log.i("JAVA", "body:" + params.getBodyContent());
+        Callback.Cancelable cancelable = x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.i("JAVA", "onSuccess result:" + result);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int re=jsonObject.getInt("result");
+                    Toast.makeText(MyTaskDetailActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                    if(re==1)
+                    {
+                        progressDialog.dismiss();
+                        popupMytaskDetail.dismiss();
+                        MyTaskDetailActivity.this.finish();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            //请求异常后的回调方法
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Log.i("JAVA", "onError:" + ex);
+                Toast.makeText(MyTaskDetailActivity.this,"网络或服务器异常！",Toast.LENGTH_SHORT).show();
+            }
+            //主动调用取消请求的回调方法
+            @Override
+            public void onCancelled(CancelledException cex) {
+                Log.i("JAVA", "onCancelled:" + cex);
+            }
+            @Override
+            public void onFinished() {
+                Log.i("JAVA", "onFinished:" + "");
+                progressDialog.hide();
+            }
+        });
     }
 
 

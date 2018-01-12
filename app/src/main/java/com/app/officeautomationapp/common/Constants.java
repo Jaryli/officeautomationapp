@@ -72,6 +72,7 @@ public class Constants {
 
 
     public final static String FeedBackTask=address+"/api/V1/Task/FeedBackTask";//?taskId={taskId}&feedback={feedback}&toUserIds={toUserIds}";反馈任务
+    public final static String CloseTask=address+"/api/V1/Task/CloseTask";//?taskId={taskId}标记任务完成
 
 
     public final static String GetTaskDetail=address+"/api/V1/Task/GetTaskDetail";//?taskId={taskId} 获取任务详情
