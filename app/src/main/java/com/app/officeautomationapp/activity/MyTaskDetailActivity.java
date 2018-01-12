@@ -10,18 +10,16 @@ import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.adapter.MytaskDetailAdapter;
-import com.app.officeautomationapp.bean.MessageBean;
 import com.app.officeautomationapp.bean.MyTaskBean;
 import com.app.officeautomationapp.bean.MyTaskDoDetailsBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.app.officeautomationapp.view.MyGridView;
+import com.app.officeautomationapp.view.PopupMytaskDetail;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.common.Callback;
@@ -53,16 +51,17 @@ public class MyTaskDetailActivity extends BaseActivity implements  View.OnClickL
     private UserDto userDto;
 
     private int isMyTask;//是否是我的任務1，還是任务督办2
+    private PopupMytaskDetail popupMytaskDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mytask_detail);
         userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
-        initView();
         Intent intent=getIntent();
         myTaskBean = (MyTaskBean) intent.getSerializableExtra("data");
         isMyTask=intent.getIntExtra("isMyTask",1);
+        initView();
         initData();
     }
 
@@ -90,6 +89,14 @@ public class MyTaskDetailActivity extends BaseActivity implements  View.OnClickL
         content=(TextView)findViewById(R.id.content);
 
         tv_item_add=(TextView)findViewById(R.id.tv_item_add);
+        if(isMyTask==2)
+        {
+            tv_item_add.setText("更多");
+        }
+        else
+        {
+            tv_item_add.setText("提交办理");
+        }
         tv_item_add.setOnClickListener(this);
         iv_mytask_back=(ImageView)findViewById(R.id.iv_mytask_back);
         iv_mytask_back.setOnClickListener(this);
@@ -183,12 +190,55 @@ public class MyTaskDetailActivity extends BaseActivity implements  View.OnClickL
                 this.finish();
                 break;
             case R.id.tv_item_add:
-                Intent intent=new Intent(this,MyTaskDoActivity.class);
+                if(isMyTask==2)
+                {
+                    showTopRightPopMenu();
+                }
+                else
+                {
+                    Intent intent=new Intent(this,MyTaskDoActivity.class);
+                    intent.putExtra("taskId",myTaskBean.getId());
+                    startActivityForResult(intent,1);//1代表刷新
+                }
+
+                break;
+            case R.id.ll_popmenu_fankui:
+                Intent intent=new Intent(this,TaskFankuiActivity.class);
                 intent.putExtra("taskId",myTaskBean.getId());
-                startActivityForResult(intent,1);//1代表刷新
+                intent.putExtra("taskName",myTaskBean.getTaskName());
+                startActivity(intent);
+                break;
+            case R.id.ll_popmenu_over:
+                Toast.makeText(MyTaskDetailActivity.this,"2",Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;
         }
+    }
+
+
+    /**
+     * 显示右上角popup菜单
+     */
+    private void showTopRightPopMenu() {
+        if (popupMytaskDetail == null) {
+            //(activity,onclicklistener,width,height)
+            popupMytaskDetail = new PopupMytaskDetail(MyTaskDetailActivity.this, this, 360, 240);
+            //监听窗口的焦点事件，点击窗口外面则取消显示
+            popupMytaskDetail.getContentView().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        popupMytaskDetail.dismiss();
+                    }
+                }
+            });
+        }
+        //设置默认获取焦点
+        popupMytaskDetail.setFocusable(true);
+        //以某个控件的x和y的偏移量位置开始显示窗口
+        popupMytaskDetail.showAsDropDown(tv_item_add, 0, 0);
+        //如果窗口存在，则更新
+        popupMytaskDetail.update();
     }
 }

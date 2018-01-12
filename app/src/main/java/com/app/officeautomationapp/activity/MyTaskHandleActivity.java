@@ -147,7 +147,7 @@ public class MyTaskHandleActivity extends BaseActivity implements  View.OnClickL
 
 
     private void initProjects(final String str){
-        RequestParams params = new RequestParams(Constants.GetMyTaskList);
+        RequestParams params = new RequestParams(Constants.GetTaskList);
         params.addQueryStringParameter("pageIndex",(page+1)+"");
         params.addQueryStringParameter("pageSize","10");
         params.addHeader("access_token", userDto.getAccessToken());

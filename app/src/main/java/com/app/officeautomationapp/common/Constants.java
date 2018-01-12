@@ -68,6 +68,10 @@ public class Constants {
 
 
     public final static String GetMyTaskList=address+"/api/V1/Task/GetMyTaskList";//?pageIndex={pageIndex}&pageSize={pageSize}"获取我参与的任务 我的任务
+    public final static String GetTaskList=address+"/api/V1/Task/GetTaskList";//?pageIndex={pageIndex}&pageSize={pageSize}"获取我发布的任务
+
+
+    public final static String FeedBackTask=address+"/api/V1/Task/FeedBackTask";//?taskId={taskId}&feedback={feedback}&toUserIds={toUserIds}";反馈任务
 
 
     public final static String GetTaskDetail=address+"/api/V1/Task/GetTaskDetail";//?taskId={taskId} 获取任务详情
@@ -134,6 +138,7 @@ public class Constants {
     public final static String UpdateCivilDetail=address+"/api/V1/Flow/UpdateCivilDetail";//更新单个土建验收明细信息
 
     public final static String UpdateTreeDetail=address+"/api/V1/Flow/UpdateTreeDetail";//更新单个苗木验收明细信息
+
 
     //	表单编辑
     public final static String ArchFlow_Handling_Formnew =ip+":84/ArchFlow_Handling_Formnew.aspx?type=Edit&HId=";//199513

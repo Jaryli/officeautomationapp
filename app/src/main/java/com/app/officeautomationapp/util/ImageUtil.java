@@ -66,8 +66,6 @@ public abstract class ImageUtil {
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return bmp.compress(format, quality, stream);
     }
