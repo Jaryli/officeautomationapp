@@ -3,14 +3,17 @@ package com.app.officeautomationapp.adapter;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
+import com.app.officeautomationapp.activity.ViewPagerActivity;
 import com.app.officeautomationapp.bean.MyTaskBean;
 import com.app.officeautomationapp.bean.MyTaskDoDetailsBean;
 
@@ -32,9 +35,11 @@ public class MytaskDetailAdapter extends ArrayAdapter<MyTaskDoDetailsBean> {
     private int resourceId;
 
     private ImageOptions options;
+    private Context context;
 
     public MytaskDetailAdapter(Context context, int resource, List<MyTaskDoDetailsBean> objects) {
         super(context, resource,objects);
+        this.context=context;
         resourceId=resource;
 
         options= new ImageOptions.Builder().setFadeIn(true) //淡入效果
@@ -56,9 +61,9 @@ public class MytaskDetailAdapter extends ArrayAdapter<MyTaskDoDetailsBean> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        MyTaskDoDetailsBean myTaskDoDetailsBean=getItem(position);//获得实例
+        final MyTaskDoDetailsBean myTaskDoDetailsBean=getItem(position);//获得实例
         View view;
-        ViewHolder viewHolder;//实例缓存
+        final ViewHolder viewHolder;//实例缓存
         if(convertView==null) {//布局缓存
             view = LayoutInflater.from(getContext()).inflate(resourceId, null);
 
@@ -78,6 +83,16 @@ public class MytaskDetailAdapter extends ArrayAdapter<MyTaskDoDetailsBean> {
 //        viewHolder.hTime.setText(IsToday(myTaskDoDetailsBean.getCreateTime())?myTaskDoDetailsBean.getCreateTime().split(" ")[1]:myTaskDoDetailsBean.getCreateTime().split(" ")[0]);
         viewHolder.hContent.setText(myTaskDoDetailsBean.getTodoContent());
         x.image().bind(viewHolder.hPic, myTaskDoDetailsBean.getImageUrlStr(), options);
+        viewHolder.hPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] str = new String[1];
+                str[0]=myTaskDoDetailsBean.getImageUrlStr();
+                Intent intent=new Intent(context,ViewPagerActivity.class);
+                intent.putExtra("imageUrlLists",str);
+                context.startActivity(intent);
+            }
+        });
         return view;
     }
 

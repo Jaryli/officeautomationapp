@@ -52,6 +52,8 @@ public class MyTaskDetailActivity extends BaseActivity implements  View.OnClickL
     private MytaskDetailAdapter mytaskDetailAdapter;
     private UserDto userDto;
 
+    private int isMyTask;//是否是我的任務1，還是任务督办2
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +62,7 @@ public class MyTaskDetailActivity extends BaseActivity implements  View.OnClickL
         initView();
         Intent intent=getIntent();
         myTaskBean = (MyTaskBean) intent.getSerializableExtra("data");
+        isMyTask=intent.getIntExtra("isMyTask",1);
         initData();
     }
 
@@ -145,7 +148,7 @@ public class MyTaskDetailActivity extends BaseActivity implements  View.OnClickL
                             taskStartTime.setText("开始时间："+myTaskBean.getStartDate());
                             taskEndTime.setText("结束时间："+myTaskBean.getEndDate());
                             title.setText(myTaskBean.getTaskName());
-                            content.setText(myTaskBean.getTaskContent());
+                            content.setText("任务内容："+myTaskBean.getTaskContent());
                         }
                     }
                 } catch (JSONException e) {

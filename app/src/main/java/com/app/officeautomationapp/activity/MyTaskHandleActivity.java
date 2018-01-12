@@ -124,7 +124,7 @@ public class MyTaskHandleActivity extends BaseActivity implements  View.OnClickL
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent=new Intent(MyTaskHandleActivity.this, MyTaskDetailActivity.class);
                 intent.putExtra("data",listMyTask.get(i));
-                intent.putExtra("data",listMyTask.get(i));
+                intent.putExtra("isMyTask",2);
                 startActivity(intent);
 //                Toast.makeText(view.getContext(), listMyTask.get(i).getTaskName(), Toast.LENGTH_SHORT).show();
             }

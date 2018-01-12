@@ -65,29 +65,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/taskUser"
-                android:text="发起人：管理员"
-                android:layout_margin="10dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/taskStartTime"
-                android:text="开始时间：2017-07-10"
-                android:layout_margin="10dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/taskEndTime"
-                android:text="开始时间：2017-07-10"
-                android:layout_margin="10dp"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line">
-            </View>
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -98,9 +75,28 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/content"
-                android:text="开始时间：2017-07-10"
+                android:id="@+id/taskUser"
+                android:text=""
                 android:layout_margin="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/taskStartTime"
+                android:text=""
+                android:layout_margin="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/taskEndTime"
+                android:text=""
+                android:layout_margin="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/content"
+                android:text=""
+                android:layout_margin="10dp"/>
+
 
             <View
                 android:layout_width="match_parent"
@@ -108,11 +104,12 @@
                 android:id="@+id/line1"
                 android:background="@color/line">
             </View>
+
             <com.app.officeautomationapp.view.MyGridView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/mygridview"
-                android:numColumns="2"
+                android:numColumns="1"
                 android:verticalSpacing="1dp"
                 android:horizontalSpacing="1dp"
                 android:stretchMode="columnWidth"
