@@ -1,6 +1,7 @@
 package com.app.officeautomationapp.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/11/17 0017.
@@ -38,6 +39,57 @@ public class ProjectMiaomuBean implements Serializable {
     private String PlanCode;
     private String Feeor;
     private Integer IsPay;
+    private List<Detail> Details;
+
+
+
+    public class Detail implements Serializable
+    {
+        private String ApplyCode;
+        private String SName;
+        private Integer Quantity;
+        private String SupplyName;
+
+        public String getApplyCode() {
+            return ApplyCode;
+        }
+
+        public void setApplyCode(String applyCode) {
+            ApplyCode = applyCode;
+        }
+
+        public String getSName() {
+            return SName;
+        }
+
+        public void setSName(String SName) {
+            this.SName = SName;
+        }
+
+        public Integer getQuantity() {
+            return Quantity;
+        }
+
+        public void setQuantity(Integer quantity) {
+            Quantity = quantity;
+        }
+
+        public String getSupplyName() {
+            return SupplyName;
+        }
+
+        public void setSupplyName(String supplyName) {
+            SupplyName = supplyName;
+        }
+    }
+
+    public List<ProjectMiaomuBean.Detail> getDetails() {
+        return Details;
+    }
+
+    public void setDetails(List<ProjectMiaomuBean.Detail> details) {
+        Details = details;
+    }
 
     public Integer getId() {
         return Id;

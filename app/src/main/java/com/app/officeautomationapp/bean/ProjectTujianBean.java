@@ -1,6 +1,7 @@
 package com.app.officeautomationapp.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/12/21 0021.
@@ -9,7 +10,6 @@ import java.io.Serializable;
 public class ProjectTujianBean implements Serializable {
     private String ProjectSite;
     private String Feeor;
-    private Details[] Details;
     private Integer DeptId;
     private String SelfCode;
     private boolean IsDeletedInDatabase;
@@ -30,6 +30,47 @@ public class ProjectTujianBean implements Serializable {
     private String ProjectName;
     private Integer ProjectId;
     private String RQCode;
+    private List<Detail> Details;
+
+    public class Detail implements Serializable
+    {
+        private String ApplyCode;
+        private String SName;
+        private Integer Quantity;
+        private String SupplyName;
+
+        public String getApplyCode() {
+            return ApplyCode;
+        }
+
+        public void setApplyCode(String applyCode) {
+            ApplyCode = applyCode;
+        }
+
+        public String getSName() {
+            return SName;
+        }
+
+        public void setSName(String SName) {
+            this.SName = SName;
+        }
+
+        public Integer getQuantity() {
+            return Quantity;
+        }
+
+        public void setQuantity(Integer quantity) {
+            Quantity = quantity;
+        }
+
+        public String getSupplyName() {
+            return SupplyName;
+        }
+
+        public void setSupplyName(String supplyName) {
+            SupplyName = supplyName;
+        }
+    }
 
 
     public String getProjectSite() {
@@ -48,11 +89,11 @@ public class ProjectTujianBean implements Serializable {
         Feeor = feeor;
     }
 
-    public ProjectTujianBean.Details[] getDetails() {
+    public List<ProjectTujianBean.Detail> getDetails() {
         return Details;
     }
 
-    public void setDetails(ProjectTujianBean.Details[] details) {
+    public void setDetails(List<ProjectTujianBean.Detail> details) {
         Details = details;
     }
 
@@ -216,44 +257,5 @@ public class ProjectTujianBean implements Serializable {
         this.RQCode = RQCode;
     }
 
-    class Details implements Serializable
-    {
-        private String SupplyName;
-        private String ApplyCode;
-        private String SName;
-        private Integer Quantity;
-
-        public String getSupplyName() {
-            return SupplyName;
-        }
-
-        public void setSupplyName(String supplyName) {
-            SupplyName = supplyName;
-        }
-
-        public String getApplyCode() {
-            return ApplyCode;
-        }
-
-        public void setApplyCode(String applyCode) {
-            ApplyCode = applyCode;
-        }
-
-        public String getSName() {
-            return SName;
-        }
-
-        public void setSName(String SName) {
-            this.SName = SName;
-        }
-
-        public Integer getQuantity() {
-            return Quantity;
-        }
-
-        public void setQuantity(Integer quantity) {
-            Quantity = quantity;
-        }
-    }
 
 }

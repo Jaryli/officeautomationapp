@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.officeautomationapp.R;
@@ -44,6 +45,7 @@ public class ProjectTujianAdapter extends ArrayAdapter<ProjectTujianBean> {
             viewHolder.hProjectName=(TextView)view.findViewById(R.id.tx_project_name);
             viewHolder.hProjectNum=(TextView) view.findViewById(R.id.tx_project_num);
             viewHolder.hProjectData=(TextView) view.findViewById(R.id.tx_project_data);
+            viewHolder.hll_pinming=(LinearLayout) view.findViewById(R.id.ll_pinming);
             view.setTag(viewHolder);
         }else
         {
@@ -51,10 +53,57 @@ public class ProjectTujianAdapter extends ArrayAdapter<ProjectTujianBean> {
 
             viewHolder=(ViewHolder)view.getTag();
         }
-
+        viewHolder.hll_pinming.removeAllViews();//这里必须清除之前增加的view
         viewHolder.hProjectName.setText(approvalBean.getProjectName());
         viewHolder.hProjectNum.setText(approvalBean.getApplyCode());
-        viewHolder.hProjectData.setText(approvalBean.getApplyDate());
+        viewHolder.hProjectData.setText(approvalBean.getApplyDate().substring(0,11));
+        List<ProjectTujianBean.Detail> list= approvalBean.getDetails();
+        if(list.size()>0)
+        {
+            for(int i=0;i<list.size();i++)
+            {
+                int left, top, right, bottom;
+                left = top = right = bottom = 5;
+                LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(left, top, right, bottom);
+
+                int left2= 15;
+                LinearLayout.LayoutParams params2=new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                params2.setMargins(left2, top, right, bottom);
+
+                final LinearLayout layout=new LinearLayout(mContext);
+                layout.setOrientation(LinearLayout.HORIZONTAL);
+
+                TextView t0 = new TextView(mContext);
+                t0.setText("品名：");
+                t0.setTextSize(12);
+                t0.setTextColor(mContext.getResources().getColor(R.color.buttonyellow));
+                t0.setLayoutParams(params);
+                layout.addView(t0);
+
+                TextView t1 = new TextView(mContext);
+                t1.setText(list.get(i).getSName());
+                t1.setTextSize(12);
+                t1.setLayoutParams(params);
+                layout.addView(t1);
+
+                TextView t2 = new TextView(mContext);
+                t2.setText("数量：");
+                t2.setTextSize(12);
+                t2.setTextColor(mContext.getResources().getColor(R.color.buttonyellow));
+                t2.setLayoutParams(params2);
+                layout.addView(t2);
+
+                TextView t3 = new TextView(mContext);
+                t3.setText(list.get(i).getQuantity()+"");
+                t3.setTextSize(12);
+                t3.setLayoutParams(params);
+                layout.addView(t3);
+                viewHolder.hll_pinming.addView(layout);
+            }
+        }
         return view;
     }
 
@@ -64,5 +113,6 @@ public class ProjectTujianAdapter extends ArrayAdapter<ProjectTujianBean> {
         TextView hProjectName;
         TextView hProjectNum;
         TextView hProjectData;
+        LinearLayout hll_pinming;
     }
 }

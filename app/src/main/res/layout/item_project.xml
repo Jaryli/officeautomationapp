@@ -16,7 +16,7 @@
             android:layout_alignParentLeft="true"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textColor="@color/grey"
             android:text="项目名称："
             android:layout_margin="5dp"/>
@@ -29,7 +29,7 @@
             android:singleLine="true"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textColor="@color/bar_grey_90"
             android:text="1234567890123456789012345678901234567123123123890123456"
             android:id="@+id/tx_project_name"
@@ -47,7 +47,7 @@
             android:layout_alignParentLeft="true"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textColor="@color/grey"
             android:id="@+id/num"
             android:text="申请编号："
@@ -60,7 +60,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:id="@+id/tx_project_num"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textColor="@color/bar_grey_90"
             android:text="123456789012"
             android:layout_margin="5dp"/>
@@ -71,13 +71,21 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:gravity="center"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textColor="@color/bar_grey_90"
             android:id="@+id/tx_project_data"
             android:layout_margin="5dp"/>
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ll_pinming"
+        android:orientation="vertical">
+
+
+    </LinearLayout>
 
 
 </LinearLayout>
