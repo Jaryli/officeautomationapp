@@ -49,7 +49,14 @@ public class Constants {
 
     public final static String getThings=address+"/api/V1/Res/GetList";//根据商品名称或规格获取物品列表?resNameOrSpecial={resNameOrSpecial}
 
+    public final static String GetResInfoList=address+"/api/V1/Res/GetResInfoList";//?resName={resName}根据名称进行模糊查询所有物品
+
     public final static String addReceiveThing=address+"/api/V1/Res/ApplyResTransaction";//物品领用申请提交?resId={resId}&num={num}&projectId={projectId}&toUser={toUser}&remark={remark}
+
+
+    public final static String GetCateList=address+"/api/V1/Res/GetCateList";//获取物品分类
+
+    public final static String GetResNameList=address+"/api/V1/Res/GetResNameList";//根据分类Id获取物品名称?cateId={cateId}
 
 
     public final static String FlowGuidArchMachine="d1693633-e78a-4f7d-97fc-a3742639eaa9"; //机械台班结算单审批 api/V1/WorkFlow/GetFlowList
@@ -93,6 +100,7 @@ public class Constants {
 
     public final static String GetUnCheckApplyResList=address+"/api/V1/Res/GetUnCheckApplyResList";//获取待我审批的物品列表
 
+    public final static String GetMyResApplies=address+"/api/V1/Res/GetMyResApplies";//?pageIndex={pageIndex}&pageSize={pageSize}获取我提交的申请记录(Get)
 
     public final static String HandleResApply =address+"/api/V1/Res/HandleResApply";//领用审批post id：记录主键编号，resultCode：审批结果，2-同意，9-不同意。msg：审批意见。
 

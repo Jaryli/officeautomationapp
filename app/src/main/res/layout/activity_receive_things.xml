@@ -97,6 +97,7 @@
                     android:layout_height="match_parent"
                     android:textSize="11dp"
                     android:gravity="center_vertical"
+                    android:id="@+id/tv_history"
                     android:textColor="@color/buttonblue"
                     android:text="查看物品领用记录"/>
             </LinearLayout>

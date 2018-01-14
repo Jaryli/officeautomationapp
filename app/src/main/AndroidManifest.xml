@@ -64,6 +64,8 @@
         <activity android:name="com.app.officeautomationapp.activity.MiaomuDetailActivity" />
         <activity android:name="com.app.officeautomationapp.activity.TujianDetailActivity" />
         <activity android:name="com.app.officeautomationapp.activity.TaskFankuiActivity" />
+        <activity android:name="com.app.officeautomationapp.activity.MyApprovalReceiveActivity" />
+        <activity android:name="com.app.officeautomationapp.activity.ThingsGetActivity2" />
 
 
 

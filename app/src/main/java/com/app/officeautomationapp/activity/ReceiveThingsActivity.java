@@ -51,6 +51,7 @@ public class ReceiveThingsActivity extends BaseActivity implements View.OnClickL
 
     private ImageView ivReceiveThingsBack;
     private LinearLayout ll_project_select;
+    private TextView tv_history;
     private TextView tv_project_name;
     private LinearLayout ll_thing_select;
     private TextView tv_thing_name;
@@ -86,6 +87,8 @@ public class ReceiveThingsActivity extends BaseActivity implements View.OnClickL
         iv_to_user= (ImageView) findViewById(R.id.iv_to_user);
         iv_to_user.setOnClickListener(this);
         tv_to_user=(TextView)findViewById(R.id.tv_to_user);
+        tv_history=(TextView)findViewById(R.id.tv_history);
+        tv_history.setOnClickListener(this);
 
     }
 
@@ -107,13 +110,17 @@ public class ReceiveThingsActivity extends BaseActivity implements View.OnClickL
             case R.id.btn_post:
                 post();
                 break;
+            case R.id.tv_history:
+                Intent intent=new Intent(ReceiveThingsActivity.this,MyApprovalReceiveActivity.class);
+                startActivity(intent);
+                break;
             default:
                 break;
         }
     }
     private void getThingId()
     {
-        Intent intent = new Intent(this,ThingsGetActivity.class);
+        Intent intent = new Intent(this,ThingsGetActivity2.class);
         startActivityForResult(intent,0);
     }
 
@@ -163,6 +170,7 @@ public class ReceiveThingsActivity extends BaseActivity implements View.OnClickL
             public void onFinished() {
                 Log.i("JAVA", "onFinished:" + "");
                 progressDialog.hide();
+                progressDialog.dismiss();
             }
         });
     }
