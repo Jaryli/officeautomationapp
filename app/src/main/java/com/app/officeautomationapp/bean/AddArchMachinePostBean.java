@@ -13,7 +13,7 @@ public class AddArchMachinePostBean implements Serializable {
     private String flowGuid;//工作流标识
     private String workName;//工程名称
     private String projectName;//
-    private int toUser;//指定审批人
+    private Integer toUser;//指定审批人
     private String[] imagedata;	//Json数组台班实施图片数组
     private String  gis;//图片地址定位
     private double afternoon;//下午工时
@@ -100,11 +100,11 @@ public class AddArchMachinePostBean implements Serializable {
         this.projectName = projectName;
     }
 
-    public int getToUser() {
+    public Integer getToUser() {
         return toUser;
     }
 
-    public void setToUser(int toUser) {
+    public void setToUser(Integer toUser) {
         this.toUser = toUser;
     }
 

@@ -552,22 +552,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp">
 
-                    <ImageView
-                        android:id="@+id/iv_to_user"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_margin="10dp"
-                        android:background="@mipmap/icon_add_sign" />
-
-                    <TextView
-                        android:id="@+id/tv_to_user"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/circle_textview_blue"
-                        android:gravity="center"
-                        android:text=""
-                        android:visibility="gone" />
+                    <com.app.officeautomationapp.view.MyGridView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/mygridview"
+                        android:numColumns="4"
+                        android:verticalSpacing="1dp"
+                        android:horizontalSpacing="1dp"
+                        android:stretchMode="columnWidth"
+                        android:gravity="center">
+                    </com.app.officeautomationapp.view.MyGridView>
                 </LinearLayout>
             </LinearLayout>
 

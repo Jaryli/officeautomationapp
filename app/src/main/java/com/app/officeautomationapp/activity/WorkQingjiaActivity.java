@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -24,9 +26,11 @@ import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.adapter.GridImageAdapter;
+import com.app.officeautomationapp.adapter.ToUserAdapter;
 import com.app.officeautomationapp.bean.AddArchLeavePostBean;
 import com.app.officeautomationapp.bean.AddArchSignPostBean;
 import com.app.officeautomationapp.bean.MyProjectBean;
+import com.app.officeautomationapp.bean.SortModel;
 import com.app.officeautomationapp.bean.ToUserBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
@@ -34,6 +38,7 @@ import com.app.officeautomationapp.util.FullyGridLayoutManager;
 import com.app.officeautomationapp.util.PicBase64Util;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.app.officeautomationapp.util.StringUtils;
+import com.app.officeautomationapp.view.MyGridView;
 import com.app.officeautomationapp.view.OnSpinerItemClick;
 import com.app.officeautomationapp.view.SpinnerDialog;
 import com.google.gson.Gson;
@@ -61,8 +66,8 @@ public class WorkQingjiaActivity extends BaseActivity implements View.OnClickLis
     private ImageView ivWorkBack;
 
 
-    private ImageView iv_to_user;
-    private TextView tv_to_user;
+//    private ImageView iv_to_user;
+//    private TextView tv_to_user;
     private TextView tv_leaveType1;
     private TextView tv_leaveType2;
     private EditText et_leaveDays;
@@ -77,6 +82,12 @@ public class WorkQingjiaActivity extends BaseActivity implements View.OnClickLis
 
     private AddArchLeavePostBean addArchLeavePostBean=new AddArchLeavePostBean();
     ProgressDialog progressDialog;
+
+    private MyGridView mygridview;
+    private ToUserAdapter toUserAdapter;
+    final ArrayList<SortModel> list=new ArrayList<>();//返回获取,需要在最后面丢上一个空的
+    int maxNum=1;
+    int resultCodeNum=125;
 
 
     @Override
@@ -101,12 +112,12 @@ public class WorkQingjiaActivity extends BaseActivity implements View.OnClickLis
         tv_endDate=(TextView)findViewById(R.id.tv_endDate);
         et_reason=(EditText)findViewById(R.id.et_reason);
 
-        iv_to_user= (ImageView) findViewById(R.id.iv_to_user);
-        iv_to_user.setOnClickListener(this);
-        tv_to_user=(TextView)findViewById(R.id.tv_to_user);
+//        iv_to_user= (ImageView) findViewById(R.id.iv_to_user);
+//        iv_to_user.setOnClickListener(this);
+//        tv_to_user=(TextView)findViewById(R.id.tv_to_user);
         btn_post=(Button)findViewById(R.id.btn_post);
         btn_post.setOnClickListener(this);
-
+        initData();
     }
 
     @Override
@@ -354,89 +365,66 @@ public class WorkQingjiaActivity extends BaseActivity implements View.OnClickLis
     }
 
 
-
-
-    private ArrayList<String> users=new ArrayList<>();
-    private int[] usersId;
-    private void getToUserId()
+    private void initData()
     {
-        final SpinnerDialog spinnerDialog=new SpinnerDialog(WorkQingjiaActivity.this,users,"选择审批人",R.style.DialogAnimations_SmileWindow);
-
-        spinnerDialog.bindOnSpinerListener(new OnSpinerItemClick()
-        {
+        mygridview=(MyGridView)findViewById(R.id.mygridview);
+        SortModel sortMode=new SortModel();
+        sortMode.setId(0);
+        list.add(sortMode);
+        //实例化一个适配器
+        toUserAdapter=new ToUserAdapter(this,R.layout.item_touser,R.layout.item_touser_add,list,maxNum,resultCodeNum);
+        //为GridView设置适配器
+        mygridview.setAdapter(toUserAdapter);
+        mygridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(String item, int position)
-            {
-                tv_to_user.setText(users.get(position));
-                tv_to_user.setVisibility(View.VISIBLE);
-                addArchLeavePostBean.setToUser(usersId[position]);
-            }
-
-            @Override
-            public void onTextChange(String text) {
-                progressDialog= new ProgressDialog(WorkQingjiaActivity.this);
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.setMessage("加载中...");
-                progressDialog.setCanceledOnTouchOutside(false);//对话框不消失
-                progressDialog.show();
-                RequestParams params = new RequestParams(Constants.getToUser);
-                Log.i("MessageDetailActivity", "post-url:" + Constants.getToUser);
-                params.addHeader("access_token", userDto.getAccessToken());
-                params.addBodyParameter("realName",text);
-                Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
-                    @Override
-                    public void onSuccess(String result) {
-                        Log.i("JAVA", "onSuccess result:" + result);
-                        try {
-                            JSONObject jsonObject = new JSONObject(result);
-                            int re=jsonObject.getInt("result");
-                            if(re!=1)
-                            {
-                                Toast.makeText(WorkQingjiaActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-                            else
-                            {
-                                Gson gson = new Gson();
-                                List<ToUserBean> list=new ArrayList<ToUserBean>();
-                                Type type=new TypeToken<List<ToUserBean>>(){}.getType();
-                                list=gson.fromJson(jsonObject.get("data").toString(), type);
-                                users=new ArrayList<>();
-                                usersId=new int[list.size()];
-                                for(int i=0;i<list.size();i++)
-                                {
-                                    users.add(list.get(i).getUserTrueName());
-                                    usersId[i]=list.get(i).getUserId();
-                                }
-                                spinnerDialog.setItems(users);
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    //请求异常后的回调方法
-                    @Override
-                    public void onError(Throwable ex, boolean isOnCallback) {
-                        Log.i("JAVA", "onError:" + ex);
-                        Toast.makeText(WorkQingjiaActivity.this,"网络或服务器异常！",Toast.LENGTH_SHORT).show();
-                    }
-                    //主动调用取消请求的回调方法
-                    @Override
-                    public void onCancelled(CancelledException cex) {
-                        Log.i("JAVA", "onCancelled:" + cex);
-                    }
-                    @Override
-                    public void onFinished() {
-                        Log.i("JAVA", "onFinished:" + "");
-                        progressDialog.hide();
-                        progressDialog.dismiss();
-                    }
-                });
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if(list.get(i).getId()!=0)
+                {
+                    list.remove(i);
+                    toUserAdapter.refresh(list);
+                }
             }
         });
-        spinnerDialog.showSpinerDialog();
     }
+
+
+    private void getToUserId()
+    {
+        Intent intent = new Intent();
+        intent.putExtra("hasCheckBox", true);
+        intent.putExtra("hasDone", true);
+        intent.putExtra("code", resultCodeNum);
+        intent.putExtra("maxNum", maxNum);
+        intent.setClass(WorkQingjiaActivity.this, ItemContactsActivity.class);
+        startActivityForResult(intent,resultCodeNum);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==resultCodeNum)
+        {
+            ArrayList<SortModel> result_value = (ArrayList<SortModel>)data.getSerializableExtra("data");
+            list.clear();
+            SortModel sortMode=new SortModel();
+            sortMode.setId(0);
+            if(result_value!=null)
+            {
+                list.addAll(result_value);
+            }
+            list.add(sortMode);
+            toUserAdapter.refresh(list);
+            if(result_value.size()>0) {
+                addArchLeavePostBean.setToUser(result_value.get(0).getId());
+            }
+            else
+            {
+                addArchLeavePostBean.setToUser(0);
+            }
+        }
+    }
+
+
 
 
 
