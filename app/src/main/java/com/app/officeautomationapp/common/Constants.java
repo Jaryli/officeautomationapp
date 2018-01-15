@@ -9,7 +9,8 @@ public class Constants {
 //    public static final String port="89";//正式环境
     public static final String port="8083";//测试环境
 
-    public final static String address=ip+":"+port;
+//    public final static String address="http://api.jszloa.com";//正式环境
+    public final static String address=ip+":"+port;//测试环境
 
     public final static String login=address+"/api/V1/Login/Login";//登录
 
@@ -150,7 +151,8 @@ public class Constants {
 
 
     //	表单编辑
-    public final static String ArchFlow_Handling_Formnew =ip+":84/ArchFlow_Handling_Formnew.aspx?type=Edit&HId=";//199513
+//    public final static String ArchFlow_Handling_Formnew =ip+":84/ArchFlow_Handling_Formnew.aspx?type=Edit&HId=";//199513
+    public final static String ArchFlow_Handling_Formnew ="www.jszloa.com/ArchFlow_Handling_Formnew.aspx?type=Edit&HId=";//199513
     //点工查询url：
     public final static String DIANGONG_URL=address+"/Home/JobList?userId=";
 
