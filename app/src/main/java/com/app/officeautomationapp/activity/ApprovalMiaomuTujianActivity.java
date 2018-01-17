@@ -152,7 +152,7 @@ public class ApprovalMiaomuTujianActivity extends BaseActivity implements  View.
         miaomuAdapter.notifyDataSetChanged();
         if(str.equals("refresh")) {
             mSwipeRefreshHelper.refreshComplete();
-            mSwipeRefreshHelper.setLoadMoreEnable(true);
+            mSwipeRefreshHelper.setLoadMoreEnable(false);//没有分页
         }
         else
         {
@@ -164,8 +164,8 @@ public class ApprovalMiaomuTujianActivity extends BaseActivity implements  View.
 
     private void initMiaomuProjects(final String str){
         RequestParams params = new RequestParams(Constants.GetTreeDetailListByWorkId);
-        params.addQueryStringParameter("pageIndex",(page+1)+"");
-        params.addQueryStringParameter("pageSize","10");
+//        params.addQueryStringParameter("pageIndex",(page+1)+"");
+//        params.addQueryStringParameter("pageSize","10");
         params.addQueryStringParameter("workId",workId+"");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
@@ -281,7 +281,7 @@ public class ApprovalMiaomuTujianActivity extends BaseActivity implements  View.
         tujianAdapter.notifyDataSetChanged();
         if(str.equals("refresh")) {
             mSwipeRefreshHelper.refreshComplete();
-            mSwipeRefreshHelper.setLoadMoreEnable(true);
+            mSwipeRefreshHelper.setLoadMoreEnable(false);//没有分页
         }
         else
         {
@@ -293,8 +293,8 @@ public class ApprovalMiaomuTujianActivity extends BaseActivity implements  View.
 
     private void initTujianProjects(final String str){
         RequestParams params = new RequestParams(Constants.GetCivilDetailListByWorkId);
-        params.addQueryStringParameter("pageIndex",(page+1)+"");
-        params.addQueryStringParameter("pageSize","10");
+//        params.addQueryStringParameter("pageIndex",(page+1)+"");
+//        params.addQueryStringParameter("pageSize","10");
         params.addQueryStringParameter("workId",workId+"");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {

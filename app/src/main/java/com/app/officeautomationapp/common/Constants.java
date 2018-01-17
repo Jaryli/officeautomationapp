@@ -152,7 +152,7 @@ public class Constants {
 
     //	表单编辑
 //    public final static String ArchFlow_Handling_Formnew =ip+":84/ArchFlow_Handling_Formnew.aspx?type=Edit&HId=";//199513
-    public final static String ArchFlow_Handling_Formnew ="www.jszloa.com/ArchFlow_Handling_Formnew.aspx?type=Edit&HId=";//199513
+    public final static String ArchFlow_Handling_Formnew ="http://www.jszloa.com/ArchFlow_Handling_Formnew.aspx?type=Edit&HId=";//199513
     //点工查询url：
     public final static String DIANGONG_URL=address+"/Home/JobList?userId=";
 

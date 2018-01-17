@@ -125,10 +125,11 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
 
 
         llbiaodan=(LinearLayout)findViewById(R.id.llbiaodan);
-        if(approvalType==6||approvalType==7)//6是苗木 7是土建
-        {
-            llbiaodan.setVisibility(View.VISIBLE);
-        }
+//        if(approvalType==6||approvalType==7)//6是苗木 7是土建
+//        {
+//            llbiaodan.setVisibility(View.VISIBLE);
+//        }
+        llbiaodan.setVisibility(View.VISIBLE);
         llbiaodan.setOnClickListener(this);
 
         llyanshou=(LinearLayout)findViewById(R.id.llyanshou);

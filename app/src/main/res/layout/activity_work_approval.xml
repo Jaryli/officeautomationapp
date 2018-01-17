@@ -106,17 +106,17 @@
 
                     <TextView
                         android:id="@+id/bar_num"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         android:layout_marginLeft="-8dp"
                         android:layout_marginTop="3dp"
                         android:visibility="gone"
                         android:layout_toRightOf="@+id/btn_no_approval"
                         android:background="@drawable/red_dot_bg"
-                        android:text="1"
+                        android:text="12"
                         android:gravity="center"
                         android:textColor="#FFFFFF"
-                        android:textSize="10dp" />
+                        android:textSize="9dp" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -144,8 +144,8 @@
                         android:text="我发起的"/>
                     <TextView
                         android:id="@+id/bar_num2"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         android:layout_marginLeft="-8dp"
                         android:layout_marginTop="3dp"
                         android:layout_toRightOf="@+id/btn_work_start_my"
@@ -154,7 +154,7 @@
                         android:visibility="gone"
                         android:gravity="center"
                         android:textColor="#FFFFFF"
-                        android:textSize="10dp" />
+                        android:textSize="9dp" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -184,8 +184,8 @@
 
                     <TextView
                         android:id="@+id/bar_num3"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         android:layout_marginLeft="-8dp"
                         android:layout_marginTop="3dp"
                         android:layout_toRightOf="@+id/btn_work_send_me"
@@ -194,7 +194,7 @@
                         android:text="1"
                         android:gravity="center"
                         android:textColor="#FFFFFF"
-                        android:textSize="10dp" />
+                        android:textSize="9dp" />
 
                 </RelativeLayout>
             </RelativeLayout>
