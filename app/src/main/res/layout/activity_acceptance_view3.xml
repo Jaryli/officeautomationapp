@@ -84,6 +84,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="7"
+                            android:numeric="integer"
+                            android:digits="1234567890"
                             android:background="@null"
                             android:ellipsize="end"
                             android:hint="请输入验收数量"

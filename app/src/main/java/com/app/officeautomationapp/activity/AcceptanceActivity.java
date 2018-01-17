@@ -621,6 +621,11 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                                 }
                                 miaomuPostBean.setPiclist(list);
                             }
+                            else
+                            {
+                                Toast.makeText(AcceptanceActivity.this, "请添加照片！", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
                             miaomuPostBean.setImagedata(new String[0]);
                             miaomuPostBean.setSupplyName(supplyName.getText().toString());
                             miaomuPostBean.setApplyCode(orderCode);
@@ -635,7 +640,24 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                             miaomuPostBean.setYsXiongJing(ysXiongJing.getText().toString());
                         } catch (Exception e) {
                             e.printStackTrace();
+                            Log.e("", "error:" + e);
                             Toast.makeText(AcceptanceActivity.this, "参数填写有误！", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if(numInfo.getText().toString().equals(""))
+                        {
+                            Toast.makeText(AcceptanceActivity.this, "请填写数量！", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if(arriveDate.getText().toString().equals(""))
+                        {
+                            Toast.makeText(AcceptanceActivity.this, "请选择时间！", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if(miaomuPostBean.getSupplyName()==null||miaomuPostBean.getSupplyName().equals(""))
+                        {
+                            Toast.makeText(AcceptanceActivity.this, "请选择供应商！", Toast.LENGTH_SHORT).show();
+                            return;
                         }
                         Gson gson = new Gson();
                         String result = gson.toJson(miaomuPostBean);
@@ -670,6 +692,7 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
+                                    Log.e("", "error:" + e);
                                 }
                             }
 
@@ -771,6 +794,7 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
+                                    Log.e("", "error:" + e);
                                 }
                             }
 
@@ -855,6 +879,12 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                                 }
                                 tujianPostBean.setPiclist(list);
                             }
+                            else
+                            {
+                                Toast.makeText(AcceptanceActivity.this, "请添加照片！", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
 
                             tujianPostBean.setImagedata(new String[0]);
 
@@ -868,8 +898,21 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
 
                         } catch (Exception e) {
                             e.printStackTrace();
+                            Log.e("", "error:" + e);
                             Toast.makeText(AcceptanceActivity.this, "参数填写有误！", Toast.LENGTH_SHORT).show();
+                            return;
                         }
+                        if(numInfo.getText().toString().equals(""))
+                        {
+                            Toast.makeText(AcceptanceActivity.this, "请填写数量！", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if(tujianPostBean.getSupplyName()==null||tujianPostBean.getSupplyName().equals(""))
+                        {
+                            Toast.makeText(AcceptanceActivity.this, "请选择供应商！", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
                         Gson gson = new Gson();
                         String result = gson.toJson(tujianPostBean);
                         progressDialog = new ProgressDialog(AcceptanceActivity.this);
@@ -903,6 +946,7 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
+                                    Log.e("", "error:" + e);
                                 }
                             }
 
@@ -938,7 +982,7 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
     }
 
     private void clearData() {
-        selectMedia = null;
+        selectMedia = new ArrayList<>();
     }
 
 
@@ -1101,7 +1145,7 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
             String id="";
             int i=0;
             for (Integer in : mapPage.keySet()) {
-                if(i==position)
+                if(i==position-1)
                 {
                     id=mapPage.get(in).toString();
                 }
