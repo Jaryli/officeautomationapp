@@ -50,8 +50,8 @@ import com.app.officeautomationapp.util.PicBase64Util;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.app.officeautomationapp.util.StringUtils;
 import com.app.officeautomationapp.view.SpinnerDialogAcceptance;
-import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.google.gson.Gson;
@@ -151,7 +151,7 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
         return super.onKeyDown(keyCode, event);
     }
 
-    public class MyLocationListener extends BDAbstractLocationListener {
+    public class MyLocationListener implements BDLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
             //此处的BDLocation为定位结果信息类，通过它的各种get方法可获取定位相关的全部结果

@@ -40,7 +40,6 @@ import com.app.officeautomationapp.util.ImageUtil;
 import com.app.officeautomationapp.util.PicBase64Util;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.app.officeautomationapp.view.MyGridView;
-import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -502,7 +501,7 @@ public class WorkYongzhangActivity extends BaseActivity implements View.OnClickL
     };
 
 
-    public class MyLocationListener extends BDAbstractLocationListener {
+    public class MyLocationListener implements BDLocationListener  {
         @Override
         public void onReceiveLocation(BDLocation location) {
             //此处的BDLocation为定位结果信息类，通过它的各种get方法可获取定位相关的全部结果

@@ -51,7 +51,6 @@ import com.app.officeautomationapp.util.StringUtils;
 import com.app.officeautomationapp.view.MyGridView;
 import com.app.officeautomationapp.view.OnSpinerItemClick;
 import com.app.officeautomationapp.view.SpinnerDialog;
-import com.baidu.location.BDAbstractLocationListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.luck.picture.lib.model.FunctionConfig;
@@ -163,7 +162,7 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
         tvSelectDate=(TextView)findViewById(R.id.tv_select_date);
         setDate();
         layoutWorkTaibanAddress=(LinearLayout)findViewById(R.id.ll_work_taiban_address);
-//        layoutWorkTaibanAddress.setOnClickListener(this);
+        layoutWorkTaibanAddress.setOnClickListener(this);
         tvWorkTaibanAddress=(TextView)layoutWorkTaibanAddress.findViewById(R.id.tv_work_taiban_address);
 //        tvWorkTaibanAddress.setText("当前位置:中国");
         tvWorkTaibanAddress.setSaveEnabled(false);
@@ -273,6 +272,7 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
         mLocationClient.registerLocationListener(myListener);
         //注册监听函数
         LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
         option.setIsNeedAddress(true);
         mLocationClient.setLocOption(option);
         mLocationClient.start();
@@ -479,9 +479,12 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
                 }
 
                 break;
-//            case R.id.ll_work_taiban_address:
-//                mLocationClient.start();
-//                break;
+            case R.id.ll_work_taiban_address:
+                Intent intent=new Intent(WorkTaibanActivity.this,MapActivity.class);
+                intent.putExtra("lon",lon);
+                intent.putExtra("lati",lati);
+                startActivity(intent);
+                break;
             case R.id.ll_project_id_select:
                 getProjectId();
                 break;
@@ -812,7 +815,7 @@ public class WorkTaibanActivity extends BaseActivity implements View.OnClickList
     };
 
 
-    public class MyLocationListener extends BDAbstractLocationListener {
+    public class MyLocationListener implements BDLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
             //此处的BDLocation为定位结果信息类，通过它的各种get方法可获取定位相关的全部结果
