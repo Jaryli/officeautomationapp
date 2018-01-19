@@ -174,9 +174,11 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
             String city = location.getCity();    //获取城市
             String district = location.getDistrict();    //获取区县
             String street = location.getStreet();    //获取街道信息
-            Log.d("***", addr);
-            Log.d("***", latitude+"");
-            Log.d("***", longitude+"");
+            Log.e("***", addr);
+            Log.e("***", latitude+"");
+            Log.e("***", longitude+"");
+            Log.e("***radius", radius+"");
+            Log.e("***errorCode", errorCode+"");
             addres=addr;
             lon=longitude;
             lati=latitude;
@@ -187,15 +189,20 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_acceptance);
-        //baidumap
+        //百度地图
         mLocationClient = new LocationClient(getApplicationContext());
         //声明LocationClient类
         mLocationClient.registerLocationListener(myListener);
         //注册监听函数
         LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
         option.setIsNeedAddress(true);
+        option.setCoorType("bd09ll");//gcj02：国测局坐标；//bd09ll：百度经纬度坐标；//bd09：百度墨卡托坐标；
+        option.setScanSpan(0);//可选，设置发起定位请求的间隔，int类型，单位ms//如果设置为0，则代表单次定位，即仅定位一次，默认为0//如果设置非0，需设置1000ms以上才有效
+        option.setOpenGps(true);//使用高精度和仅用设备两种定位模式的，参数必须设置为true//可选，设置是否使用gps，默认false
         mLocationClient.setLocOption(option);
         mLocationClient.start();
+
 
 
         mContext = this;
