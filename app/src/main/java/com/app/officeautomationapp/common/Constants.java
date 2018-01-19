@@ -107,6 +107,9 @@ public class Constants {
 
     public final static String GetWorkView =address+"/api/V1/WorkFlow/GetWorkView";//根据步骤Id获取工作详情?hid={hid}
 
+    public final static String GetWorkFileList =address+"/api/V1/WorkFlow/GetWorkFileList";//?workId={workId}获取工作流相关图片带经纬度
+
+    public final static String GetDocList =address+"/api/V1/WorkFlow/GetDocList";//
 
     public final static String GetWorkInfo =address+"/api/V1/WorkFlow/GetWorkInfo";//根据工作Id获取工作详情?workId={workId}
 
