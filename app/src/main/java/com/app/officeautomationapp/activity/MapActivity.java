@@ -56,7 +56,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener  {
 
         mBaiduMap.addOverlay(option);
 
-        MapStatusUpdate status = MapStatusUpdateFactory.newLatLng(point);
+        MapStatusUpdate status = MapStatusUpdateFactory.newLatLngZoom(point,17);
         mBaiduMap.animateMapStatus(status);
     }
 
