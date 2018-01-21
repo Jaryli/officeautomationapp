@@ -103,6 +103,7 @@ public class WorkYongzhangActivity extends BaseActivity implements View.OnClickL
 
     private AddArchSignPostBean addArchSignPostBean=new AddArchSignPostBean();
     ProgressDialog progressDialog;
+    private LinearLayout ll_work_yongzhang_address;
 
     private MyGridView mygridview;
     private ToUserAdapter toUserAdapter;
@@ -117,6 +118,8 @@ public class WorkYongzhangActivity extends BaseActivity implements View.OnClickL
         userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
         ivWorkBack=(ImageView)findViewById(R.id.iv_taiban_back);
         ivWorkBack.setOnClickListener(this);
+        ll_work_yongzhang_address=(LinearLayout)findViewById(R.id.ll_work_yongzhang_address);
+        ll_work_yongzhang_address.setOnClickListener(this);
 
         tvWorkAddressGIS=(TextView)findViewById(R.id.tv_work_yongzhang_address);
 
@@ -275,6 +278,12 @@ public class WorkYongzhangActivity extends BaseActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.iv_taiban_back:
                 this.finish();
+                break;
+            case R.id.ll_work_yongzhang_address:
+                Intent intent=new Intent(WorkYongzhangActivity.this,MapActivity.class);
+                intent.putExtra("lon",lon);
+                intent.putExtra("lati",lati);
+                startActivity(intent);
                 break;
             case R.id.iv_to_user:
                 getToUserId();

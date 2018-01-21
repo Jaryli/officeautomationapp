@@ -148,8 +148,8 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
         tvSelectDate=(TextView)findViewById(R.id.tv_select_date);
         setDate();
         tvWorkAddressGIS=(TextView)findViewById(R.id.tv_work_yonggong_address);
-//        layoutWorkTaibanAddress=(LinearLayout)findViewById(R.id.ll_work_taiban_address);
-//        layoutWorkTaibanAddress.setOnClickListener(this);
+        layoutWorkTaibanAddress=(LinearLayout)findViewById(R.id.ll_work_taiban_address);
+        layoutWorkTaibanAddress.setOnClickListener(this);
 
         tv_draft=(TextView)findViewById(R.id.tv_draft);
         tv_draft.setText("存草稿");
@@ -396,9 +396,12 @@ public class WorkYonggongActivity extends BaseActivity implements View.OnClickLi
 //            case R.id.ll_select_date:
 //                getDate(v);
 //                break;
-//            case R.id.ll_work_taiban_address:
-//                mLocationClient.start();
-//                break;
+            case R.id.ll_work_taiban_address:
+                Intent intent=new Intent(WorkYonggongActivity.this,MapActivity.class);
+                intent.putExtra("lon",lon);
+                intent.putExtra("lati",lati);
+                startActivity(intent);
+                break;
             case R.id.ll_project_id_select:
                 getProjectId();
                 break;

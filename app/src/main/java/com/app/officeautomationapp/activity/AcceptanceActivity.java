@@ -586,6 +586,16 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                 final SwitchButton isPay = (SwitchButton) view.findViewById(R.id.isPay);
                 TextView tv_work_address=(TextView)view.findViewById(R.id.tv_work_address);
                 tv_work_address.setText(addres);
+                LinearLayout ll_work_address=(LinearLayout)view.findViewById(R.id.ll_work_address);
+                ll_work_address.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(AcceptanceActivity.this,MapActivity.class);
+                        intent.putExtra("lon",lon);
+                        intent.putExtra("lati",lati);
+                        startActivity(intent);
+                    }
+                });
 
                 recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
                 FullyGridLayoutManager manager = new FullyGridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false);
@@ -852,6 +862,17 @@ public class AcceptanceActivity extends BaseActivity implements View.OnClickList
                 });
                 TextView tv_work_address=(TextView)view.findViewById(R.id.tv_work_address);
                 tv_work_address.setText(addres);
+                LinearLayout ll_work_address=(LinearLayout)view.findViewById(R.id.ll_work_address);
+                ll_work_address.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(AcceptanceActivity.this,MapActivity.class);
+                        intent.putExtra("lon",lon);
+                        intent.putExtra("lati",lati);
+                        startActivity(intent);
+                    }
+                });
+
 
                 recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
                 FullyGridLayoutManager manager = new FullyGridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false);
