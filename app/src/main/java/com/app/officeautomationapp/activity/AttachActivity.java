@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.bean.Attach;
+import com.app.officeautomationapp.bean.WorkDocBean;
+import com.app.officeautomationapp.bean.WorkFileBean;
 import com.app.officeautomationapp.util.XDownloadUtil;
 
 import org.xutils.common.Callback;
@@ -161,6 +163,19 @@ public class AttachActivity extends BaseActivity implements View.OnClickListener
     private void initData()
     {
         attachs=(List<Attach>)getIntent().getSerializableExtra("attachs");
+        int isDoc=getIntent().getIntExtra("isDoc",0);
+        if(isDoc==1) {
+            List<WorkDocBean> list=new ArrayList<WorkDocBean>();
+            list= (List<WorkDocBean>) getIntent().getSerializableExtra("listWorkDocBean");
+            for(int i=0;i<list.size();i++)//转换一下
+            {
+                Attach attach=new Attach();
+                attach.setAttachName(list.get(i).getFileName());
+                attach.setAttachType(list.get(i).getFileType());
+                attach.setAttachUrl(list.get(i).getFileUrl());
+                attachs.add(attach);
+            }
+        }
 //        Attach attach=new Attach();
 //        attach.setAttachName("fujian1.jpg");
 //        attach.setAttachType(".jpg");

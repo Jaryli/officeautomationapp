@@ -61,6 +61,8 @@ public class Constants {
 
 
     public final static String FlowGuidArchMachine="d1693633-e78a-4f7d-97fc-a3742639eaa9"; //机械台班结算单审批 api/V1/WorkFlow/GetFlowList
+    public final static String FlowGuidMiaomu="5de2a402-280a-46ff-ab6f-fbab969a79a9"; //苗木验收单
+    public final static String FlowGuidTujian="b04bfff9-9b7d-4f2f-8511-f49368e43d15"; //土建验收单
 
     public final static String FlowGuidaddArchJob="9fac41f7-fd37-4959-8bc0-7c35922fd204";//现场用工签工单审批
 

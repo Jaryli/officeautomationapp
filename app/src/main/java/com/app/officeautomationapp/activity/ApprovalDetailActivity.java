@@ -25,6 +25,7 @@ import com.app.officeautomationapp.bean.FlowHistorie;
 import com.app.officeautomationapp.bean.MessageBean;
 import com.app.officeautomationapp.bean.NextStep;
 import com.app.officeautomationapp.bean.SortModel;
+import com.app.officeautomationapp.bean.WorkDocBean;
 import com.app.officeautomationapp.bean.WorkFileBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
@@ -185,9 +186,18 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
                         else
                         {
                             Gson gson = new Gson();
-
                             Type type=new TypeToken<ApprovalDetailBean>(){}.getType();
                             approvalDetailBean=gson.fromJson(jsonObject.get("data").toString(), type);
+                            if(approvalDetailBean.getFlowGuid().equals(Constants.FlowGuidMiaomu))
+                            {
+                                approvalType=6;//6是苗木 7是土建
+                                llyanshou.setVisibility(View.VISIBLE);
+                            }
+                            if(approvalDetailBean.getFlowGuid().equals(Constants.FlowGuidTujian))
+                            {
+                                approvalType=7;//6是苗木 7是土建
+                                llyanshou.setVisibility(View.VISIBLE);
+                            }
                             workId=approvalDetailBean.getWorkId();
                             attachs=approvalDetailBean.getAttachs();//附件
                             imageUrlLists=approvalDetailBean.getImageUrlList();//图片
@@ -369,6 +379,65 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
         });
     }
 
+    List<WorkDocBean> listWorkDocBean=new ArrayList<WorkDocBean>();
+    private void getDocs()
+    {
+        RequestParams params= new RequestParams(Constants.GetDocList);
+        params.addQueryStringParameter("workId",workId+"");
+        params.addHeader("access_token", userDto.getAccessToken());
+        Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.e("JAVA", "onSuccess result:" + result);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int re=jsonObject.getInt("result");
+                    if(re!=1)
+                    {
+                        Toast.makeText(ApprovalDetailActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    else
+                    {
+                        if(jsonObject.get("data")==null||jsonObject.get("data").equals("")||jsonObject.get("data").toString().equals("[]"))
+                        {
+                            Toast.makeText(ApprovalDetailActivity.this,"没有数据",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        else
+                        {
+                            Gson gson = new Gson();
+                            Type type=new TypeToken<List<WorkDocBean>>(){}.getType();
+                            listWorkDocBean=gson.fromJson(jsonObject.get("data").toString(), type);
+                            Intent intent=new Intent(ApprovalDetailActivity.this,AttachActivity.class);
+                            intent.putExtra("isDoc",1);
+                            intent.putExtra("listWorkDocBean", (Serializable)listWorkDocBean);
+                            startActivity(intent);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            //请求异常后的回调方法
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Log.e("JAVA", "onError:" + ex);
+                Toast.makeText(ApprovalDetailActivity.this,"网络或服务器异常！",Toast.LENGTH_SHORT).show();
+            }
+            //主动调用取消请求的回调方法
+            @Override
+            public void onCancelled(CancelledException cex) {
+                Log.e("JAVA", "onCancelled:" + cex);
+
+            }
+            @Override
+            public void onFinished() {
+                Log.e("JAVA", "onFinished:" + "");
+            }
+        });
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -386,7 +455,7 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
                 getImages();
                 break;
             case R.id.lldoc:
-
+                getDocs();
                 break;
             case R.id.llbiaodan://表单
                 intent=new Intent(ApprovalDetailActivity.this,WebViewActivity.class);
