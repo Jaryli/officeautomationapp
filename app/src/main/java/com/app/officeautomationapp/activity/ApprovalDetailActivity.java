@@ -25,6 +25,7 @@ import com.app.officeautomationapp.bean.FlowHistorie;
 import com.app.officeautomationapp.bean.MessageBean;
 import com.app.officeautomationapp.bean.NextStep;
 import com.app.officeautomationapp.bean.SortModel;
+import com.app.officeautomationapp.bean.WorkFileBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
@@ -61,13 +62,15 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     private LinearLayout llgridview;
     private LinearLayout llfujian;
     private LinearLayout llpicture;
+    private LinearLayout lldoc;
     private LinearLayout llbiaodan;
     private LinearLayout llyanshou;
     private ApprovalDetailAdapter adapter;
     private static List<FlowHistorie> listFlowHistories=new ArrayList<FlowHistorie>();
     private static List<NextStep> listNextSteps=new ArrayList<NextStep>();
     List<Attach> attachs;//附件
-    String[] imageUrlLists;//图片
+    String[] imageUrlLists;//图片 单独接口
+    //word文档 单独接口
 
     SpinnerDialog3 spinnerDialog;
     ApprovalDetailBean approvalDetailBean=new ApprovalDetailBean();
@@ -122,6 +125,8 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
         llfujian.setOnClickListener(this);
         llpicture=(LinearLayout)findViewById(R.id.llpicture);
         llpicture.setOnClickListener(this);
+        lldoc=(LinearLayout)findViewById(R.id.lldoc);
+        lldoc.setOnClickListener(this);
 
 
         llbiaodan=(LinearLayout)findViewById(R.id.llbiaodan);
@@ -190,10 +195,10 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
                             {
                                 llfujian.setVisibility(View.VISIBLE);
                             }
-                            if(imageUrlLists.length>0)
-                            {
-                                llpicture.setVisibility(View.VISIBLE);
-                            }
+//                            if(imageUrlLists.length>0)
+//                            {
+//                                llpicture.setVisibility(View.VISIBLE);
+//                            }
 
                             listFlowHistories=approvalDetailBean.getFlowHistories();
                             boolean hasMe=false;
@@ -303,6 +308,68 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     }
 
 
+    List<WorkFileBean> listWorkFileBean=new ArrayList<WorkFileBean>();
+
+    private void getImages()
+    {
+        RequestParams params= new RequestParams(Constants.GetWorkFileList);
+        params.addQueryStringParameter("workId",workId+"");
+        params.addHeader("access_token", userDto.getAccessToken());
+        Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.e("JAVA", "onSuccess result:" + result);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int re=jsonObject.getInt("result");
+                    if(re!=1)
+                    {
+                        Toast.makeText(ApprovalDetailActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    else
+                    {
+                        if(jsonObject.get("data")==null||jsonObject.get("data").equals("")||jsonObject.get("data").toString().equals("[]"))
+                        {
+                            Toast.makeText(ApprovalDetailActivity.this,"没有数据",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        else
+                        {
+                            Gson gson = new Gson();
+
+                            Type type=new TypeToken<List<WorkFileBean>>(){}.getType();
+                            listWorkFileBean=gson.fromJson(jsonObject.get("data").toString(), type);
+                            Intent intent=new Intent(ApprovalDetailActivity.this,ViewPagerActivity.class);
+                            intent.putExtra("isWithpos",1);
+                            intent.putExtra("listWorkFileBean",(Serializable)listWorkFileBean);
+                            startActivity(intent);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            //请求异常后的回调方法
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Log.e("JAVA", "onError:" + ex);
+                Toast.makeText(ApprovalDetailActivity.this,"网络或服务器异常！",Toast.LENGTH_SHORT).show();
+            }
+            //主动调用取消请求的回调方法
+            @Override
+            public void onCancelled(CancelledException cex) {
+                Log.e("JAVA", "onCancelled:" + cex);
+
+            }
+            @Override
+            public void onFinished() {
+                Log.e("JAVA", "onFinished:" + "");
+            }
+        });
+    }
+
+
     @Override
     public void onClick(View view) {
         Intent intent;
@@ -316,9 +383,10 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
                 startActivity(intent);
                 break;
             case R.id.llpicture:
-                intent=new Intent(this,ViewPagerActivity.class);
-                intent.putExtra("imageUrlLists",imageUrlLists);
-                startActivity(intent);
+                getImages();
+                break;
+            case R.id.lldoc:
+
                 break;
             case R.id.llbiaodan://表单
                 intent=new Intent(ApprovalDetailActivity.this,WebViewActivity.class);

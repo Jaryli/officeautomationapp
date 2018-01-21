@@ -127,8 +127,8 @@
                     android:layout_marginRight="10dp"
                     android:orientation="vertical">
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
                         android:layout_gravity="center"
                         android:background="@mipmap/fujian"/>
                     <TextView
@@ -139,17 +139,15 @@
                         android:textColor="@color/green"
                         android:text="查看附件"/>
                 </LinearLayout>
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/llpicture"
-                    android:visibility="gone"
                     android:layout_marginRight="10dp"
                     android:orientation="vertical">
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
                         android:layout_gravity="center"
                         android:background="@mipmap/picture"/>
                     <TextView
@@ -160,16 +158,36 @@
                         android:textColor="@color/orange"
                         android:text="查看图片"/>
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lldoc"
+                    android:layout_marginRight="10dp"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center"
+                        android:background="@mipmap/doc"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="8dp"
+                        android:layout_marginTop="2dp"
+                        android:textColor="#50AB71"
+                        android:text="查看文档"/>
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/llbiaodan"
-                    android:layout_marginRight="10dp"
                     android:visibility="gone"
+                    android:layout_marginRight="10dp"
                     android:orientation="vertical">
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
                         android:layout_gravity="center"
                         android:background="@mipmap/biaodan"/>
                     <TextView
@@ -177,7 +195,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="8dp"
                         android:layout_marginTop="2dp"
-                        android:textColor="@color/orange"
+                        android:textColor="#31967F"
                         android:text="表单编辑"/>
                 </LinearLayout>
 
@@ -188,8 +206,8 @@
                     android:visibility="gone"
                     android:orientation="vertical">
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
                         android:layout_gravity="center"
                         android:background="@mipmap/yanshou"/>
                     <TextView
@@ -197,7 +215,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="8dp"
                         android:layout_marginTop="2dp"
-                        android:textColor="@color/orange"
+                        android:textColor="#9932CC"
                         android:text="验收明细"/>
                 </LinearLayout>
             </LinearLayout>

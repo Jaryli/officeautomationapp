@@ -2,19 +2,26 @@ package com.app.officeautomationapp.activity;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
+import com.app.officeautomationapp.bean.WorkFileBean;
 import com.bm.library.PhotoView;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by yu on 2017/9/6.
@@ -25,6 +32,7 @@ public class ViewPagerActivity extends BaseActivity {
     private ViewPager mPager;
 
     private ImageOptions options;
+    private Button dingwei;
 
 //    private int[] imgsId = new int[]{R.mipmap.aaa, R.mipmap.bbb, R.mipmap.ccc, R.mipmap.ddd, R.mipmap.ic_launcher, R.mipmap.image003};
 
@@ -50,14 +58,33 @@ public class ViewPagerActivity extends BaseActivity {
                 //.setRaduis(int raduis) //设置拐角弧度
                 //.setUseMemCache(true) //设置使用MemCache，默认true
                 .build();
-        final String[] imageUrlLists=getIntent().getStringArrayExtra("imageUrlLists");
+        dingwei=(Button)findViewById(R.id.dingwei);
+        int isWithpos=getIntent().getIntExtra("isWithpos",0);
+        String[] imageUrlLists ;
+        List<WorkFileBean> list=new ArrayList<>();
+        if(isWithpos==1)
+        {
+           list= (List<WorkFileBean>) getIntent().getSerializableExtra("listWorkFileBean");
+            imageUrlLists = new String[list.size()];
+            for(int i=0;i<list.size();i++)
+            {
+                imageUrlLists[i]=list.get(i).getFileImageStr();
+            }
+        }
+        else
+        {
+            dingwei.setVisibility(View.GONE);
+            imageUrlLists=getIntent().getStringArrayExtra("imageUrlLists");
+        }
+
 
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setPageMargin((int) (getResources().getDisplayMetrics().density * 15));
+        final String[] finalImageUrlLists = imageUrlLists;
         mPager.setAdapter(new PagerAdapter() {
             @Override
             public int getCount() {
-                return imageUrlLists.length;
+                return finalImageUrlLists.length;
             }
 
             @Override
@@ -69,9 +96,9 @@ public class ViewPagerActivity extends BaseActivity {
             public Object instantiateItem(ViewGroup container, int position) {
                 PhotoView view = new PhotoView(ViewPagerActivity.this);
                 view.enable();
-                view.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                view.setScaleType(ImageView.ScaleType.CENTER);
 //                view.setImageResource(imageUrlLists[position]);
-                x.image().bind(view, imageUrlLists[position], options);
+                x.image().bind(view, finalImageUrlLists[position], options);
                 container.addView(view);
                 return view;
             }
@@ -79,6 +106,17 @@ public class ViewPagerActivity extends BaseActivity {
             @Override
             public void destroyItem(ViewGroup container, int position, Object object) {
                 container.removeView((View) object);
+            }
+        });
+
+        final List<WorkFileBean> finalList = list;
+        dingwei.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(ViewPagerActivity.this,MapActivity.class);
+                intent.putExtra("lon", finalList.get(mPager.getCurrentItem()).getLon());
+                intent.putExtra("lati", finalList.get(mPager.getCurrentItem()).getLati());
+                startActivity(intent);
             }
         });
     }

@@ -4,6 +4,16 @@
     android:layout_height="match_parent"
     tools:context="com.app.officeautomationapp.activity.ViewPagerActivity">
 
+    <Button
+        android:layout_width="40dp"
+        android:layout_height="28dp"
+        android:id="@+id/dingwei"
+        android:text="定位"
+        android:textSize="8dp"
+        android:layout_margin="20dp"
+        android:layout_alignParentRight="true"
+
+        />
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
