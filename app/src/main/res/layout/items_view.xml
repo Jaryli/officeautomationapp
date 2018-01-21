@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     android:id="@+id/text1"
     android:padding="13dp"
+    android:ellipsize="end"
+    android:singleLine="true"
     android:textSize="16sp"
     android:gravity="center|left">
 

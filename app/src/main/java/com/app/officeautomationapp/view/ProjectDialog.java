@@ -49,7 +49,7 @@ public class ProjectDialog {
         AlertDialog.Builder adb = new AlertDialog.Builder(context);
         View v = context.getLayoutInflater().inflate(R.layout.dialog_project, null);
         Button btn_post=(Button) v.findViewById(R.id.btn_post);
-        TextView rippleViewClose = (TextView) v.findViewById(R.id.close);
+//        TextView rippleViewClose = (TextView) v.findViewById(R.id.close);
         TextView tx_project_name = (TextView) v.findViewById(R.id.tx_project_name);
         TextView tx_project_address = (TextView) v.findViewById(R.id.tx_project_address);
         TextView tx_project_num = (TextView) v.findViewById(R.id.tx_project_num);
@@ -75,7 +75,7 @@ public class ProjectDialog {
         adb.setView(v);
         alertDialog = adb.create();
         alertDialog.getWindow().getAttributes().windowAnimations = style;//R.style.DialogAnimations_SmileWindow;
-        alertDialog.setCancelable(false);
+        alertDialog.setCancelable(true);
 
         btn_post.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,12 +93,12 @@ public class ProjectDialog {
             }
         });
 
-        rippleViewClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-            }
-        });
+//        rippleViewClose.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                alertDialog.dismiss();
+//            }
+//        });
         alertDialog.show();
     }
 }

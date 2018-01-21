@@ -10,42 +10,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
         android:background="@color/white"
         android:orientation="vertical">
-        <TextView
-            android:clickable="true"
-            android:padding="10dp"
-            android:layout_gravity="right"
-            android:textSize="12sp"
-            android:id="@+id/close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="关闭" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textSize="12sp"
-                android:textColor="@color/grey"
-                android:text="项目名称："
-                android:layout_margin="5dp"/>
+
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:gravity="center"
                 android:textSize="12sp"
-                android:textColor="@color/bar_grey_90"
-                android:text="1111111111111111111111111111111"
+                android:textColor="@color/black"
+                android:text="1111111111111111"
                 android:id="@+id/tx_project_name"
                 android:layout_margin="5dp"/>
         </LinearLayout>
