@@ -1,12 +1,8 @@
 package com.app.officeautomationapp.db;
-
-import com.yalantis.ucrop.entity.LocalMedia;
-
 import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by CS-711701-00027 on 2017/6/2.

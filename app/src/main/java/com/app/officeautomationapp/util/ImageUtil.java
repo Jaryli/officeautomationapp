@@ -8,12 +8,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.widget.Toast;
 
-import com.yalantis.ucrop.entity.LocalMedia;
 
-import java.io.File;
+import com.luck.picture.lib.entity.LocalMedia;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -34,9 +34,6 @@ import com.app.officeautomationapp.view.OnSpinerItemClick;
 import com.app.officeautomationapp.view.SpinnerDialog;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.luck.picture.lib.model.FunctionConfig;
-import com.luck.picture.lib.model.PictureConfig;
-import com.yalantis.ucrop.entity.LocalMedia;
 
 import org.json.JSONException;
 import org.json.JSONObject;

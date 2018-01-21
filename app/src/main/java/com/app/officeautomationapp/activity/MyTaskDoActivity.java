@@ -25,9 +25,10 @@ import com.app.officeautomationapp.util.ImageUtil;
 import com.app.officeautomationapp.util.PicBase64Util;
 import com.app.officeautomationapp.util.SharedPreferencesUtile;
 import com.google.gson.Gson;
-import com.luck.picture.lib.model.FunctionConfig;
-import com.luck.picture.lib.model.PictureConfig;
-import com.yalantis.ucrop.entity.LocalMedia;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,17 +79,35 @@ public class MyTaskDoActivity extends BaseActivity implements View.OnClickListen
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         FullyGridLayoutManager manager = new FullyGridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
-        adapter = new GridImageAdapter(this, onAddPicClickListener,false);
+        adapter = new GridImageAdapter(MyTaskDoActivity.this, onAddPicClickListener);
+        adapter.setList(selectMedia);
         adapter.setSelectMax(maxSelectNum);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new GridImageAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                // 这里可预览图片
-                PictureConfig.getPictureConfig().externalPicturePreview(mContext, position, selectMedia);
+                if (selectMedia.size() > 0) {
+                    LocalMedia media = selectMedia.get(position);
+                    String pictureType = media.getPictureType();
+                    int mediaType = PictureMimeType.pictureToVideo(pictureType);
+                    switch (mediaType) {
+                        case 1:
+                            // 预览图片 可自定长按保存路径
+                            //PictureSelector.create(MainActivity.this).externalPicturePreview(position, "/custom_file", selectList);
+                            PictureSelector.create(MyTaskDoActivity.this).externalPicturePreview(position, selectMedia);
+                            break;
+                        case 2:
+                            // 预览视频
+                            PictureSelector.create(MyTaskDoActivity.this).externalPictureVideo(media.getPath());
+                            break;
+                        case 3:
+                            // 预览音频
+                            PictureSelector.create(MyTaskDoActivity.this).externalPictureAudio(media.getPath());
+                            break;
+                    }
+                }
             }
         });
-
     }
 
     @Override
@@ -174,117 +193,119 @@ public class MyTaskDoActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-
-
-
-
-
     private GridImageAdapter.onAddPicClickListener onAddPicClickListener = new GridImageAdapter.onAddPicClickListener() {
         @Override
-        public void onAddPicClick(int type, int position) {
-            switch (type) {
-                case 0:
-                    // 进入相册
-                    /**
-                     * type --> 1图片 or 2视频
-                     * copyMode -->裁剪比例，默认、1:1、3:4、3:2、16:9
-                     * maxSelectNum --> 可选择图片的数量
-                     * selectMode         --> 单选 or 多选
-                     * isShow       --> 是否显示拍照选项 这里自动根据type 启动拍照或录视频
-                     * isPreview    --> 是否打开预览选项
-                     * isCrop       --> 是否打开剪切选项
-                     * isPreviewVideo -->是否预览视频(播放) mode or 多选有效
-                     * ThemeStyle -->主题颜色
-                     * CheckedBoxDrawable -->图片勾选样式
-                     * cropW-->裁剪宽度 值不能小于100  如果值大于图片原始宽高 将返回原图大小
-                     * cropH-->裁剪高度 值不能小于100
-                     * isCompress -->是否压缩图片
-                     * setEnablePixelCompress 是否启用像素压缩
-                     * setEnableQualityCompress 是否启用质量压缩
-                     * setRecordVideoSecond 录视频的秒数，默认不限制
-                     * setRecordVideoDefinition 视频清晰度  Constants.HIGH 清晰  Constants.ORDINARY 低质量
-                     * setImageSpanCount -->每行显示个数
-                     * setCheckNumMode 是否显示QQ选择风格(带数字效果)
-                     * setPreviewColor 预览文字颜色
-                     * setCompleteColor 完成文字颜色
-                     * setPreviewBottomBgColor 预览界面底部背景色
-                     * setBottomBgColor 选择图片页面底部背景色
-                     * setCompressQuality 设置裁剪质量，默认无损裁剪
-                     * setSelectMedia 已选择的图片
-                     * setCompressFlag 1为系统自带压缩  2为第三方luban压缩
-                     * 注意-->type为2时 设置isPreview or isCrop 无效
-                     * 注意：Options可以为空，默认标准模式
-                     */
-                    FunctionConfig config = new FunctionConfig();
-                    config.setType(1);
-                    config.setCopyMode(FunctionConfig.CROP_MODEL_1_1);
-                    config.setCompress(false);
-                    config.setEnablePixelCompress(true);
-                    config.setEnableQualityCompress(true);
-                    config.setMaxSelectNum(maxSelectNum);
-                    config.setSelectMode(FunctionConfig.MODE_MULTIPLE);
-                    config.setShowCamera(true);
-                    config.setEnablePreview(true);
-                    config.setEnableCrop(false);
-                    config.setPreviewVideo(true);
-                    config.setRecordVideoDefinition(FunctionConfig.HIGH);// 视频清晰度
-                    config.setRecordVideoSecond(60);// 视频秒数
-                    config.setCropW(0);
-                    config.setCropH(0);
-                    config.setMaxB(0);
-                    config.setCheckNumMode(false);
-                    config.setCompressQuality(100);
-                    config.setImageSpanCount(4);
-                    config.setSelectMedia(selectMedia);
-                    config.setCompressFlag(1);// 1 系统自带压缩 2 luban压缩
-                    config.setCompressW(0);
-                    config.setCompressH(0);
-                    if (false) {
-                        config.setThemeStyle(ContextCompat.getColor(MyTaskDoActivity.this, R.color.blue));
-                        // 可以自定义底部 预览 完成 文字的颜色和背景色
-                        if (!false) {
-                            // QQ 风格模式下 这里自己搭配颜色，使用蓝色可能会不好看
-                            config.setPreviewColor(ContextCompat.getColor(MyTaskDoActivity.this, R.color.white));
-                            config.setCompleteColor(ContextCompat.getColor(MyTaskDoActivity.this, R.color.white));
-                            config.setPreviewBottomBgColor(ContextCompat.getColor(MyTaskDoActivity.this, R.color.blue));
-                            config.setBottomBgColor(ContextCompat.getColor(MyTaskDoActivity.this, R.color.blue));
-                        }
+        public void onAddPicClick() {
+            boolean mode = false;//只能拍照
+            if (mode) {
+                // 进入相册 以下是例子：不需要的api可以不写
+                PictureSelector.create(MyTaskDoActivity.this)
+                        .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
+                        .theme(R.style.picture_default_style)// 主题样式设置 具体参考 values/styles   用法：R.style.picture.white.style
+                        .maxSelectNum(maxSelectNum)// 最大图片选择数量
+                        .minSelectNum(1)// 最小选择数量
+                        .imageSpanCount(4)// 每行显示个数
+                        .selectionMode(PictureConfig.MULTIPLE)// 多选PictureConfig.MULTIPLE or 单选PictureConfig.SINGLE
+                        .previewImage(true)// 是否可预览图片
+                        .previewVideo(true)// 是否可预览视频
+                        .enablePreviewAudio(true) // 是否可播放音频
+                        .isCamera(true)// 是否显示拍照按钮
+                        .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
+                        //.imageFormat(PictureMimeType.PNG)// 拍照保存图片格式后缀,默认jpeg
+                        //.setOutputCameraPath("/CustomPath")// 自定义拍照保存路径
+                        .enableCrop(false)// 是否裁剪
+                        .compress(true)// 是否压缩
+                        .synOrAsy(true)//同步true或异步false 压缩 默认同步
+                        //.compressSavePath(getPath())//压缩图片保存地址
+                        //.sizeMultiplier(0.5f)// glide 加载图片大小 0~1之间 如设置 .glideOverride()无效
+                        .glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
+                        .withAspectRatio(16, 9)// 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
+                        .hideBottomControls(false)// 是否显示uCrop工具栏，默认不显示
+                        .isGif(true)// 是否显示gif图片
+                        .freeStyleCropEnabled(true)// 裁剪框是否可拖拽
+                        .circleDimmedLayer(false)// 是否圆形裁剪
+                        .showCropFrame(true)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false
+                        .showCropGrid(true)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false
+                        .openClickSound(false)// 是否开启点击声音
+                        .selectionMedia(selectMedia)// 是否传入已选图片
+//                        .videoMaxSecond(15)
+//                        .videoMinSecond(10)
+                        //.previewEggs(false)// 预览图片时 是否增强左右滑动图片体验(图片滑动一半即可看到上一张是否选中)
+                        //.cropCompressQuality(90)// 裁剪压缩质量 默认100
+                        .minimumCompressSize(100)// 小于100kb的图片不压缩
+                        //.cropWH()// 裁剪宽高比，设置如果大于图片本身宽高则无效
+                        //.rotateEnabled() // 裁剪是否可旋转图片
+                        //.scaleEnabled()// 裁剪是否可放大缩小图片
+                        //.videoQuality()// 视频录制质量 0 or 1
+                        //.videoSecond()//显示多少秒以内的视频or音频也可适用
+                        //.recordVideoSecond()//录制视频秒数 默认60s
+                        .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
+            } else {
+                // 单独拍照
+                PictureSelector.create(MyTaskDoActivity.this)
+                        .openCamera(PictureMimeType.ofImage())// 单独拍照，也可录像或也可音频 看你传入的类型是图片or视频
+                        .theme(R.style.picture_default_style)// 主题样式设置 具体参考 values/styles
+                        .maxSelectNum(maxSelectNum)// 最大图片选择数量
+                        .minSelectNum(1)// 最小选择数量
+                        .selectionMode(PictureConfig.MULTIPLE)// 多选 or 单选
+                        .previewImage(true)// 是否可预览图片
+                        .previewVideo(true)// 是否可预览视频
+                        .enablePreviewAudio(true) // 是否可播放音频
+                        .isCamera(true)// 是否显示拍照按钮
+                        .enableCrop(false)// 是否裁剪
+                        .compress(true)// 是否压缩
+                        .glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
+                        .withAspectRatio(16, 9)// 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
+                        .hideBottomControls(false)// 是否显示uCrop工具栏，默认不显示
+                        .isGif(true)// 是否显示gif图片
+                        .freeStyleCropEnabled(true)// 裁剪框是否可拖拽
+                        .circleDimmedLayer(false)// 是否圆形裁剪
+                        .showCropFrame(true)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false
+                        .showCropGrid(true)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false
+                        .openClickSound(false)// 是否开启点击声音
+                        .selectionMedia(null)// 是否传入已选图片
+                        .previewEggs(false)//预览图片时 是否增强左右滑动图片体验(图片滑动一半即可看到上一张是否选中)
+                        //.previewEggs(false)// 预览图片时 是否增强左右滑动图片体验(图片滑动一半即可看到上一张是否选中)
+                        //.cropCompressQuality(90)// 裁剪压缩质量 默认为100
+                        .minimumCompressSize(100)// 小于100kb的图片不压缩
+                        //.cropWH()// 裁剪宽高比，设置如果大于图片本身宽高则无效
+                        //.rotateEnabled() // 裁剪是否可旋转图片
+                        //.scaleEnabled()// 裁剪是否可放大缩小图片
+                        //.videoQuality()// 视频录制质量 0 or 1
+                        //.videoSecond()////显示多少秒以内的视频or音频也可适用
+                        .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
+            }
+        }
+
+    };
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PictureConfig.CHOOSE_REQUEST:
+                    // 图片选择结果回调
+                    List<LocalMedia> selectMediabBack = PictureSelector.obtainMultipleResult(data);
+                    if(selectMediabBack!=null&&selectMediabBack.size()>0)
+                    {
+                        ImageUtil.addTimePic(selectMediabBack,MyTaskDoActivity.this);
+                        selectMedia.add(selectMediabBack.get(0));
                     }
-//                    if (false) {
-//                        config.setCheckedBoxDrawable(selector);
-//                    }
-
-                    // 先初始化参数配置，在启动相册
-//                    PictureConfig.init(config);
-//                    PictureConfig.getPictureConfig().openPhoto(mContext, resultCallback);
-
-                    // 只拍照
-                    PictureConfig.getPictureConfig().startOpenCamera(mContext, resultCallback);
-                    break;
-                case 1:
-                    // 删除图片
-                    selectMedia.remove(position);
-                    adapter.notifyItemRemoved(position);
+                    // 例如 LocalMedia 里面返回三种path
+                    // 1.media.getPath(); 为原图path
+                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
+                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
+                    // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
+                    for (LocalMedia media : selectMedia) {
+                        Log.i("图片-----》", media.getPath());
+                    }
+                    adapter.setList(selectMedia);
+                    adapter.notifyDataSetChanged();
                     break;
             }
         }
-    };
+    }
 
-    /**
-     * 图片回调方法
-     */
-    private PictureConfig.OnSelectResultCallback resultCallback = new PictureConfig.OnSelectResultCallback() {
-        @Override
-        public void onSelectSuccess(List<LocalMedia> resultList) {
-            ImageUtil.addTimePic(resultList,MyTaskDoActivity.this);
-            selectMedia.addAll(resultList);
-            Log.i("callBack_result", selectMedia.size() + "");
-            if (selectMedia != null) {
-                adapter.setList(selectMedia);
-                adapter.notifyDataSetChanged();
-            }
-        }
-    };
 
 
 }
