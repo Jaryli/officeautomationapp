@@ -4,6 +4,11 @@
     android:layout_height="match_parent"
     tools:context="com.app.officeautomationapp.activity.ViewPagerActivity">
 
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
     <Button
         android:layout_width="40dp"
         android:layout_height="28dp"
@@ -14,9 +19,5 @@
         android:layout_alignParentRight="true"
 
         />
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 </RelativeLayout>
