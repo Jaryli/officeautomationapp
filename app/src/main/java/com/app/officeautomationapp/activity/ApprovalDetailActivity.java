@@ -67,15 +67,15 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     private LinearLayout llbiaodan;
     private LinearLayout llyanshou;
     private ApprovalDetailAdapter adapter;
-    private static List<FlowHistorie> listFlowHistories=new ArrayList<FlowHistorie>();
-    private static List<NextStep> listNextSteps=new ArrayList<NextStep>();
+    private static List<FlowHistorie> listFlowHistories = new ArrayList<FlowHistorie>();
+    private static List<NextStep> listNextSteps = new ArrayList<NextStep>();
     List<Attach> attachs;//附件
     String[] imageUrlLists;//图片 单独接口
     //word文档 单独接口
 
     SpinnerDialog3 spinnerDialog;
-    ApprovalDetailBean approvalDetailBean=new ApprovalDetailBean();
-    private int nextStepSort=0;
+    ApprovalDetailBean approvalDetailBean = new ApprovalDetailBean();
+    private int nextStepSort = 0;
     private int Hid;
     private int Wid;
     private Integer workId;
@@ -85,7 +85,7 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_approval_detail);
-        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
+        userDto = (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(), "user");
         initView();
         initData();
     }
@@ -99,38 +99,36 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode>0)
-        {
-            ArrayList<SortModel> result_value = (ArrayList<SortModel>)data.getSerializableExtra("data");
-            spinnerDialog.refreshData(requestCode,result_value);
+        if (resultCode > 0) {
+            ArrayList<SortModel> result_value = (ArrayList<SortModel>) data.getSerializableExtra("data");
+            spinnerDialog.refreshData(requestCode, result_value);
         }
     }
 
-    private void initView()
-    {
-        Intent intent=getIntent();
-        Hid = intent.getSerializableExtra("hid")==null?0:(Integer) intent.getSerializableExtra("hid");
-        Wid = intent.getSerializableExtra("wid")==null?0:(Integer) intent.getSerializableExtra("wid");
-        approvalType=intent.getIntExtra("approvalType",0);
+    private void initView() {
+        Intent intent = getIntent();
+        Hid = intent.getSerializableExtra("hid") == null ? 0 : (Integer) intent.getSerializableExtra("hid");
+        Wid = intent.getSerializableExtra("wid") == null ? 0 : (Integer) intent.getSerializableExtra("wid");
+        approvalType = intent.getIntExtra("approvalType", 0);
 
-        approval_pic=(TextView)findViewById(R.id.approval_pic);
-        approval_title=(TextView)findViewById(R.id.approval_title);
-        approval_type=(TextView)findViewById(R.id.approval_type);
-        webView=(WebView)findViewById(R.id.webView);
-        list_item=(ListView)findViewById(R.id.list_item);
-        mygridview=(MyGridView)findViewById(R.id.mygridview);
-        llgridview=(LinearLayout)findViewById(R.id.llgridview);
-        iv_approval_back=(ImageView)findViewById(R.id.iv_approval_back);
+        approval_pic = (TextView) findViewById(R.id.approval_pic);
+        approval_title = (TextView) findViewById(R.id.approval_title);
+        approval_type = (TextView) findViewById(R.id.approval_type);
+        webView = (WebView) findViewById(R.id.webView);
+        list_item = (ListView) findViewById(R.id.list_item);
+        mygridview = (MyGridView) findViewById(R.id.mygridview);
+        llgridview = (LinearLayout) findViewById(R.id.llgridview);
+        iv_approval_back = (ImageView) findViewById(R.id.iv_approval_back);
         iv_approval_back.setOnClickListener(this);
-        llfujian=(LinearLayout)findViewById(R.id.llfujian);
+        llfujian = (LinearLayout) findViewById(R.id.llfujian);
         llfujian.setOnClickListener(this);
-        llpicture=(LinearLayout)findViewById(R.id.llpicture);
+        llpicture = (LinearLayout) findViewById(R.id.llpicture);
         llpicture.setOnClickListener(this);
-        lldoc=(LinearLayout)findViewById(R.id.lldoc);
+        lldoc = (LinearLayout) findViewById(R.id.lldoc);
         lldoc.setOnClickListener(this);
 
 
-        llbiaodan=(LinearLayout)findViewById(R.id.llbiaodan);
+        llbiaodan = (LinearLayout) findViewById(R.id.llbiaodan);
 //        if(approvalType==6||approvalType==7)//6是苗木 7是土建
 //        {
 //            llbiaodan.setVisibility(View.VISIBLE);
@@ -138,8 +136,8 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
         llbiaodan.setVisibility(View.VISIBLE);
         llbiaodan.setOnClickListener(this);
 
-        llyanshou=(LinearLayout)findViewById(R.id.llyanshou);
-        if(approvalType==6||approvalType==7)//6是苗木 7是土建
+        llyanshou = (LinearLayout) findViewById(R.id.llyanshou);
+        if (approvalType == 6 || approvalType == 7)//6是苗木 7是土建
         {
             llyanshou.setVisibility(View.VISIBLE);
         }
@@ -147,19 +145,16 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     }
 
 
-    private void initData()
-    {
-        RequestParams params=new RequestParams();
-        if(Hid>0)
-        {
-            params= new RequestParams(Constants.GetWorkView);
-            params.addQueryStringParameter("hid",Hid+"");
+    private void initData() {
+        RequestParams params = new RequestParams();
+        if (Hid > 0) {
+            params = new RequestParams(Constants.GetWorkView);
+            params.addQueryStringParameter("hid", Hid + "");
 
         }
-        if(Wid>0)
-        {
-            params= new RequestParams(Constants.GetWorkInfo);
-            params.addQueryStringParameter("workId",Wid+"");
+        if (Wid > 0) {
+            params = new RequestParams(Constants.GetWorkInfo);
+            params.addQueryStringParameter("workId", Wid + "");
             approval_type.setVisibility(View.GONE);
 
         }
@@ -170,39 +165,31 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
                 Log.e("JAVA", "onSuccess result:" + result);
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                    int re=jsonObject.getInt("result");
-                    if(re!=1)
-                    {
-                        Toast.makeText(ApprovalDetailActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                    int re = jsonObject.getInt("result");
+                    if (re != 1) {
+                        Toast.makeText(ApprovalDetailActivity.this, jsonObject.get("msg").toString(), Toast.LENGTH_SHORT).show();
                         return;
-                    }
-                    else
-                    {
-                        if(jsonObject.get("data")==null||jsonObject.get("data").equals("")||jsonObject.get("data").toString().equals("[]"))
-                        {
-                            Toast.makeText(ApprovalDetailActivity.this,"没有数据",Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (jsonObject.get("data") == null || jsonObject.get("data").equals("") || jsonObject.get("data").toString().equals("[]")) {
+                            Toast.makeText(ApprovalDetailActivity.this, "没有数据", Toast.LENGTH_SHORT).show();
                             return;
-                        }
-                        else
-                        {
+                        } else {
                             Gson gson = new Gson();
-                            Type type=new TypeToken<ApprovalDetailBean>(){}.getType();
-                            approvalDetailBean=gson.fromJson(jsonObject.get("data").toString(), type);
-                            if(approvalDetailBean.getFlowGuid().equals(Constants.FlowGuidMiaomu))
-                            {
-                                approvalType=6;//6是苗木 7是土建
+                            Type type = new TypeToken<ApprovalDetailBean>() {
+                            }.getType();
+                            approvalDetailBean = gson.fromJson(jsonObject.get("data").toString(), type);
+                            if (approvalDetailBean.getFlowGuid().equals(Constants.FlowGuidMiaomu)) {
+                                approvalType = 6;//6是苗木 7是土建
                                 llyanshou.setVisibility(View.VISIBLE);
                             }
-                            if(approvalDetailBean.getFlowGuid().equals(Constants.FlowGuidTujian))
-                            {
-                                approvalType=7;//6是苗木 7是土建
+                            if (approvalDetailBean.getFlowGuid().equals(Constants.FlowGuidTujian)) {
+                                approvalType = 7;//6是苗木 7是土建
                                 llyanshou.setVisibility(View.VISIBLE);
                             }
-                            workId=approvalDetailBean.getWorkId();
-                            attachs=approvalDetailBean.getAttachs();//附件
-                            imageUrlLists=approvalDetailBean.getImageUrlList();//图片
-                            if(attachs.size()>0)
-                            {
+                            workId = approvalDetailBean.getWorkId();
+                            attachs = approvalDetailBean.getAttachs();//附件
+                            imageUrlLists = approvalDetailBean.getImageUrlList();//图片
+                            if (attachs.size() > 0) {
                                 llfujian.setVisibility(View.VISIBLE);
                             }
 //                            if(imageUrlLists.length>0)
@@ -210,36 +197,34 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
 //                                llpicture.setVisibility(View.VISIBLE);
 //                            }
 
-                            listFlowHistories=approvalDetailBean.getFlowHistories();
-                            boolean hasMe=false;
-                            if(Hid>0) {
-                                FlowHistorie flowHistorie=new FlowHistorie();
+                            listFlowHistories = approvalDetailBean.getFlowHistories();
+                            boolean hasMe = false;
+                            if (Hid > 0) {
+                                FlowHistorie flowHistorie = new FlowHistorie();
                                 flowHistorie.setUserTrueName("我");
                                 listFlowHistories.add(flowHistorie);
-                                hasMe=true;
+                                hasMe = true;
                             }
-                            adapter = new ApprovalDetailAdapter(ApprovalDetailActivity.this,R.layout.item_approval_detail, listFlowHistories,hasMe);
+                            adapter = new ApprovalDetailAdapter(ApprovalDetailActivity.this, R.layout.item_approval_detail, listFlowHistories, hasMe);
                             list_item.setAdapter(adapter);
                             setListViewHeightBasedOnChildren(list_item);
                             approval_title.setText(approvalDetailBean.getWorkName());
 
                             WebSettings webSettings = webView.getSettings();
                             webSettings.setJavaScriptEnabled(true);
-                            webView.loadDataWithBaseURL(null,"<style>table { width: 100%%; border-top: 1px solid #eee; border-left: 1px solid #eee; }td { border-right: 1px solid #eee; border-bottom: 1px solid #eee; padding: 8px; }</style><table>"+approvalDetailBean.getFormView()+"</table>", "text/html",  "utf-8", null);
-                            if(approvalDetailBean.getNextSteps()==null)
-                            {
+                            webView.loadDataWithBaseURL(null, "<style>table { width: 100%%; border-top: 1px solid #eee; border-left: 1px solid #eee; }td { border-right: 1px solid #eee; border-bottom: 1px solid #eee; padding: 8px; }</style><table>" + approvalDetailBean.getFormView() + "</table>", "text/html", "utf-8", null);
+                            if (approvalDetailBean.getNextSteps() == null) {
                                 llgridview.setVisibility(View.GONE);
-                            }
-                            else {
-                                listNextSteps=approvalDetailBean.getNextSteps();
-                                ApprovalNextStepAdapter myGridAdapter1=new ApprovalNextStepAdapter(ApprovalDetailActivity.this,R.layout.item_approval_nextstep,listNextSteps);
+                            } else {
+                                listNextSteps = approvalDetailBean.getNextSteps();
+                                ApprovalNextStepAdapter myGridAdapter1 = new ApprovalNextStepAdapter(ApprovalDetailActivity.this, R.layout.item_approval_nextstep, listNextSteps);
                                 mygridview.setNumColumns(listNextSteps.size());
                                 //为GridView设置适配器
                                 mygridview.setAdapter(myGridAdapter1);
                                 mygridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        clickBtn(listNextSteps,position);
+                                        clickBtn(listNextSteps, position);
                                     }
                                 });
                             }
@@ -251,18 +236,21 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
                     e.printStackTrace();
                 }
             }
+
             //请求异常后的回调方法
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 Log.e("JAVA", "onError:" + ex);
-                Toast.makeText(ApprovalDetailActivity.this,"网络或服务器异常！",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ApprovalDetailActivity.this, "网络或服务器异常！", Toast.LENGTH_SHORT).show();
             }
+
             //主动调用取消请求的回调方法
             @Override
             public void onCancelled(CancelledException cex) {
                 Log.e("JAVA", "onCancelled:" + cex);
 
             }
+
             @Override
             public void onFinished() {
                 Log.e("JAVA", "onFinished:" + "");
@@ -271,33 +259,32 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
 
     }
 
-    private void clickBtn(List<NextStep> list,int position) {
+    private void clickBtn(List<NextStep> list, int position) {
 //        Toast.makeText(this,list.get(position).getAFS_Name().toString(),Toast.LENGTH_SHORT).show();
-        nextStepSort=list.get(position).getAFS_Sort();
-        ArrayList<SortModel> defaultList1=null;
-        if(list.get(position).getDefaultUserId1()!=null&&!list.get(position).getDefaultUserId1().equals("0")&&!list.get(position).getDefaultUserId1().equals(""))
-        {
-            defaultList1=new ArrayList<SortModel>();
-            SortModel sortModel=new SortModel();
+        nextStepSort = list.get(position).getAFS_Sort();
+        ArrayList<SortModel> defaultList1 = null;
+        if (list.get(position).getDefaultUserId1() != null && !list.get(position).getDefaultUserId1().equals("0") && !list.get(position).getDefaultUserId1().equals("")) {
+            defaultList1 = new ArrayList<SortModel>();
+            SortModel sortModel = new SortModel();
             sortModel.setId(Integer.parseInt(list.get(position).getDefaultUserId1()));
             sortModel.setName(list.get(position).getDefaultRealName1());
             defaultList1.add(sortModel);
         }
-        ArrayList<SortModel> defaultList2=null;
-        if(list.get(position).getDefaultUserId2()!=null&&!list.get(position).getDefaultUserId2().equals("0")&&!list.get(position).getDefaultUserId2().equals(""))
-        {
-            defaultList2=new ArrayList<SortModel>();
-            SortModel sortModel=new SortModel();
+        ArrayList<SortModel> defaultList2 = null;
+        if (list.get(position).getDefaultUserId2() != null && !list.get(position).getDefaultUserId2().equals("0") && !list.get(position).getDefaultUserId2().equals("")) {
+            defaultList2 = new ArrayList<SortModel>();
+            SortModel sortModel = new SortModel();
             sortModel.setId(Integer.parseInt(list.get(position).getDefaultUserId2()));
             sortModel.setName(list.get(position).getDefaultRealName2());
             defaultList2.add(sortModel);
         }
-        spinnerDialog=new SpinnerDialog3(this,R.style.DialogAnimations_SmileWindow,defaultList1,defaultList2);
+        spinnerDialog = new SpinnerDialog3(this, R.style.DialogAnimations_SmileWindow, defaultList1, defaultList2);
+        spinnerDialog.setRequestParams(approvalDetailBean.getWorkId(), nextStepSort);
         spinnerDialog.bindOnSpinerListener(new SpinnerDialog3.OnDoneClick() {
             @Override
-            public void onClick(int status, String reason,ArrayList<SortModel> list1,ArrayList<SortModel> list2) {
+            public void onClick(int status, String reason, ArrayList<SortModel> list1, ArrayList<SortModel> list2) {
                 //提交
-                postData(status,reason,list1,list2);
+                postData(status, reason, list1, list2);
             }
         });
         spinnerDialog.showSpinerDialog();
@@ -308,7 +295,7 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
             return;
         }
         int totalHeight = 0;//mListItemHeight
-        int a=listView.getHeight();
+        int a = listView.getHeight();
         for (int i = 0; i < listFlowHistories.size(); i++) {
             totalHeight += 189;//暂时这样
         }
@@ -318,12 +305,11 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     }
 
 
-    List<WorkFileBean> listWorkFileBean=new ArrayList<WorkFileBean>();
+    List<WorkFileBean> listWorkFileBean = new ArrayList<WorkFileBean>();
 
-    private void getImages()
-    {
-        RequestParams params= new RequestParams(Constants.GetWorkFileList);
-        params.addQueryStringParameter("workId",workId+"");
+    private void getImages() {
+        RequestParams params = new RequestParams(Constants.GetWorkFileList);
+        params.addQueryStringParameter("workId", workId + "");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
@@ -331,28 +317,23 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
                 Log.e("JAVA", "onSuccess result:" + result);
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                    int re=jsonObject.getInt("result");
-                    if(re!=1)
-                    {
-                        Toast.makeText(ApprovalDetailActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                    int re = jsonObject.getInt("result");
+                    if (re != 1) {
+                        Toast.makeText(ApprovalDetailActivity.this, jsonObject.get("msg").toString(), Toast.LENGTH_SHORT).show();
                         return;
-                    }
-                    else
-                    {
-                        if(jsonObject.get("data")==null||jsonObject.get("data").equals("")||jsonObject.get("data").toString().equals("[]"))
-                        {
-                            Toast.makeText(ApprovalDetailActivity.this,"没有数据",Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (jsonObject.get("data") == null || jsonObject.get("data").equals("") || jsonObject.get("data").toString().equals("[]")) {
+                            Toast.makeText(ApprovalDetailActivity.this, "没有数据", Toast.LENGTH_SHORT).show();
                             return;
-                        }
-                        else
-                        {
+                        } else {
                             Gson gson = new Gson();
 
-                            Type type=new TypeToken<List<WorkFileBean>>(){}.getType();
-                            listWorkFileBean=gson.fromJson(jsonObject.get("data").toString(), type);
-                            Intent intent=new Intent(ApprovalDetailActivity.this,ViewPagerActivity.class);
-                            intent.putExtra("isWithpos",1);
-                            intent.putExtra("listWorkFileBean",(Serializable)listWorkFileBean);
+                            Type type = new TypeToken<List<WorkFileBean>>() {
+                            }.getType();
+                            listWorkFileBean = gson.fromJson(jsonObject.get("data").toString(), type);
+                            Intent intent = new Intent(ApprovalDetailActivity.this, ViewPagerActivity.class);
+                            intent.putExtra("isWithpos", 1);
+                            intent.putExtra("listWorkFileBean", (Serializable) listWorkFileBean);
                             startActivity(intent);
                         }
                     }
@@ -360,18 +341,21 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
                     e.printStackTrace();
                 }
             }
+
             //请求异常后的回调方法
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 Log.e("JAVA", "onError:" + ex);
-                Toast.makeText(ApprovalDetailActivity.this,"网络或服务器异常！",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ApprovalDetailActivity.this, "网络或服务器异常！", Toast.LENGTH_SHORT).show();
             }
+
             //主动调用取消请求的回调方法
             @Override
             public void onCancelled(CancelledException cex) {
                 Log.e("JAVA", "onCancelled:" + cex);
 
             }
+
             @Override
             public void onFinished() {
                 Log.e("JAVA", "onFinished:" + "");
@@ -379,11 +363,11 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
         });
     }
 
-    List<WorkDocBean> listWorkDocBean=new ArrayList<WorkDocBean>();
-    private void getDocs()
-    {
-        RequestParams params= new RequestParams(Constants.GetDocList);
-        params.addQueryStringParameter("workId",workId+"");
+    List<WorkDocBean> listWorkDocBean = new ArrayList<WorkDocBean>();
+
+    private void getDocs() {
+        RequestParams params = new RequestParams(Constants.GetDocList);
+        params.addQueryStringParameter("workId", workId + "");
         params.addHeader("access_token", userDto.getAccessToken());
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
@@ -391,27 +375,22 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
                 Log.e("JAVA", "onSuccess result:" + result);
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                    int re=jsonObject.getInt("result");
-                    if(re!=1)
-                    {
-                        Toast.makeText(ApprovalDetailActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                    int re = jsonObject.getInt("result");
+                    if (re != 1) {
+                        Toast.makeText(ApprovalDetailActivity.this, jsonObject.get("msg").toString(), Toast.LENGTH_SHORT).show();
                         return;
-                    }
-                    else
-                    {
-                        if(jsonObject.get("data")==null||jsonObject.get("data").equals("")||jsonObject.get("data").toString().equals("[]"))
-                        {
-                            Toast.makeText(ApprovalDetailActivity.this,"没有数据",Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (jsonObject.get("data") == null || jsonObject.get("data").equals("") || jsonObject.get("data").toString().equals("[]")) {
+                            Toast.makeText(ApprovalDetailActivity.this, "没有数据", Toast.LENGTH_SHORT).show();
                             return;
-                        }
-                        else
-                        {
+                        } else {
                             Gson gson = new Gson();
-                            Type type=new TypeToken<List<WorkDocBean>>(){}.getType();
-                            listWorkDocBean=gson.fromJson(jsonObject.get("data").toString(), type);
-                            Intent intent=new Intent(ApprovalDetailActivity.this,AttachActivity.class);
-                            intent.putExtra("isDoc",1);
-                            intent.putExtra("listWorkDocBean", (Serializable)listWorkDocBean);
+                            Type type = new TypeToken<List<WorkDocBean>>() {
+                            }.getType();
+                            listWorkDocBean = gson.fromJson(jsonObject.get("data").toString(), type);
+                            Intent intent = new Intent(ApprovalDetailActivity.this, AttachActivity.class);
+                            intent.putExtra("isDoc", 1);
+                            intent.putExtra("listWorkDocBean", (Serializable) listWorkDocBean);
                             startActivity(intent);
                         }
                     }
@@ -419,18 +398,21 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
                     e.printStackTrace();
                 }
             }
+
             //请求异常后的回调方法
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 Log.e("JAVA", "onError:" + ex);
-                Toast.makeText(ApprovalDetailActivity.this,"网络或服务器异常！",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ApprovalDetailActivity.this, "网络或服务器异常！", Toast.LENGTH_SHORT).show();
             }
+
             //主动调用取消请求的回调方法
             @Override
             public void onCancelled(CancelledException cex) {
                 Log.e("JAVA", "onCancelled:" + cex);
 
             }
+
             @Override
             public void onFinished() {
                 Log.e("JAVA", "onFinished:" + "");
@@ -447,8 +429,8 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
                 this.finish();
                 break;
             case R.id.llfujian:
-                intent=new Intent(this,AttachActivity.class);
-                intent.putExtra("attachs", (Serializable)attachs);
+                intent = new Intent(this, AttachActivity.class);
+                intent.putExtra("attachs", (Serializable) attachs);
                 startActivity(intent);
                 break;
             case R.id.llpicture:
@@ -458,24 +440,24 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
                 getDocs();
                 break;
             case R.id.llbiaodan://表单
-                intent=new Intent(ApprovalDetailActivity.this,WebViewActivity.class);
-                intent.putExtra("title","表单编辑");
-                intent.putExtra("url",Constants.ArchFlow_Handling_Formnew+Hid);
+                intent = new Intent(ApprovalDetailActivity.this, WebViewActivity.class);
+                intent.putExtra("title", "表单编辑");
+                intent.putExtra("url", Constants.ArchFlow_Handling_Formnew + Hid);
                 startActivity(intent);
                 break;
             case R.id.llyanshou://验收
-                if(approvalType==6)//6是苗木 7是土建
+                if (approvalType == 6)//6是苗木 7是土建
                 {
-                    intent=new Intent(ApprovalDetailActivity.this,ApprovalMiaomuTujianActivity.class);
-                    intent.putExtra("approvalType",approvalType);
-                    intent.putExtra("workId",workId);
+                    intent = new Intent(ApprovalDetailActivity.this, ApprovalMiaomuTujianActivity.class);
+                    intent.putExtra("approvalType", approvalType);
+                    intent.putExtra("workId", workId);
                     startActivity(intent);
                 }
-                if(approvalType==7)//6是苗木 7是土建
+                if (approvalType == 7)//6是苗木 7是土建
                 {
-                    intent=new Intent(ApprovalDetailActivity.this,ApprovalMiaomuTujianActivity.class);
-                    intent.putExtra("approvalType",approvalType);
-                    intent.putExtra("workId",workId);
+                    intent = new Intent(ApprovalDetailActivity.this, ApprovalMiaomuTujianActivity.class);
+                    intent.putExtra("approvalType", approvalType);
+                    intent.putExtra("workId", workId);
                     startActivity(intent);
                 }
                 break;
@@ -485,30 +467,25 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
     }
 
 
-    private void postData(int status, String reason,ArrayList<SortModel> list1,ArrayList<SortModel> list2)
-    {
-        String userId1="";
-        if(list1.size()>1)
-        {
-            list1.remove(list1.size()-1);
-            for(SortModel sortModel:list1)
-            {
-                userId1+=sortModel.getId()+",";
+    private void postData(int status, String reason, ArrayList<SortModel> list1, ArrayList<SortModel> list2) {
+        String userId1 = "";
+        if (list1.size() > 1) {
+            list1.remove(list1.size() - 1);
+            for (SortModel sortModel : list1) {
+                userId1 += sortModel.getId() + ",";
             }
-            userId1=userId1.substring(0,userId1.length()-1);
+            userId1 = userId1.substring(0, userId1.length() - 1);
         }
-        String userId2="";
-        if(list2.size()>1)
-        {
-            list2.remove(list2.size()-1);
-            for(SortModel sortModel:list2)
-            {
-                userId2+=sortModel.getId()+",";
+        String userId2 = "";
+        if (list2.size() > 1) {
+            list2.remove(list2.size() - 1);
+            for (SortModel sortModel : list2) {
+                userId2 += sortModel.getId() + ",";
             }
-            userId2=userId2.substring(0,userId2.length()-1);
+            userId2 = userId2.substring(0, userId2.length() - 1);
         }
 
-        ApprovalPostBean approvalPostBean=new ApprovalPostBean();
+        ApprovalPostBean approvalPostBean = new ApprovalPostBean();
         approvalPostBean.setWorkId(approvalDetailBean.getWorkId());
         approvalPostBean.setMsg(reason);
         approvalPostBean.setResultCode(status);
@@ -521,22 +498,19 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
 
         RequestParams params = new RequestParams(Constants.HandleWork);
         params.addHeader("access_token", userDto.getAccessToken());
-        params.setBodyContent("'"+result+"'");
+        params.setBodyContent("'" + result + "'");
         Callback.Cancelable cancelable = x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 Log.e("JAVA", "onSuccess result:" + result);
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                    int re=jsonObject.getInt("result");
-                    if(re!=1)
-                    {
-                        Toast.makeText(ApprovalDetailActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                    int re = jsonObject.getInt("result");
+                    if (re != 1) {
+                        Toast.makeText(ApprovalDetailActivity.this, jsonObject.get("msg").toString(), Toast.LENGTH_SHORT).show();
                         return;
-                    }
-                    else
-                    {
-                        Toast.makeText(ApprovalDetailActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ApprovalDetailActivity.this, jsonObject.get("msg").toString(), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent();
                         /*
                          * 调用setResult方法表示我将Intent对象返回给之前的那个Activity，这样就可以在onActivityResult方法中得到Intent对象，
@@ -548,18 +522,21 @@ public class ApprovalDetailActivity extends BaseActivity implements View.OnClick
                     e.printStackTrace();
                 }
             }
+
             //请求异常后的回调方法
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 Log.e("JAVA", "onError:" + ex);
-                Toast.makeText(ApprovalDetailActivity.this,"网络或服务器异常！",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ApprovalDetailActivity.this, "网络或服务器异常！", Toast.LENGTH_SHORT).show();
             }
+
             //主动调用取消请求的回调方法
             @Override
             public void onCancelled(CancelledException cex) {
                 Log.e("JAVA", "onCancelled:" + cex);
 
             }
+
             @Override
             public void onFinished() {
                 Log.e("JAVA", "onFinished:" + "");

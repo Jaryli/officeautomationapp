@@ -12,8 +12,10 @@ import android.widget.Toast;
 
 import com.app.officeautomationapp.R;
 import com.app.officeautomationapp.adapter.ContactsAdapter;
+import com.app.officeautomationapp.bean.ApprovalPostBean;
 import com.app.officeautomationapp.bean.PersonBean;
 import com.app.officeautomationapp.bean.SortModel;
+import com.app.officeautomationapp.bean.WorkFileBean;
 import com.app.officeautomationapp.common.Constants;
 import com.app.officeautomationapp.dto.UserDto;
 import com.app.officeautomationapp.util.CharacterParser;
@@ -30,6 +32,7 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,70 +66,70 @@ public class ItemContactsActivity extends BaseActivity implements View.OnClickLi
     private int maxNum;
     private UserDto userDto;
 
+    private int workId;
+    private int sortId;
+    private int type;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userDto= (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(),"user");
-        initData();
+        userDto = (UserDto) SharedPreferencesUtile.readObject(getApplicationContext(), "user");
+        workId = getIntent().getIntExtra("workId", 0);
+        sortId = getIntent().getIntExtra("sortId", 0);
+        type = getIntent().getIntExtra("type", 0);
+
+        initData(workId, sortId);
     }
 
     private void initView() {
-        hasCheckBox=getIntent().getBooleanExtra("hasCheckBox",false);
-        hasDone=getIntent().getBooleanExtra("hasDone",false);
-        maxNum=getIntent().getIntExtra("maxNum",999);
-        code= getIntent().getIntExtra("code",0);
+        hasCheckBox = getIntent().getBooleanExtra("hasCheckBox", false);
+        hasDone = getIntent().getBooleanExtra("hasDone", false);
+        maxNum = getIntent().getIntExtra("maxNum", 999);
+        code = getIntent().getIntExtra("code", 0);
         setContentView(R.layout.activity_contacts);
-        imageView=(ImageView)findViewById(R.id.iv_contacts_back);
+        imageView = (ImageView) findViewById(R.id.iv_contacts_back);
         imageView.setOnClickListener(this);
-        done=(TextView)findViewById(R.id.done);
+        done = (TextView) findViewById(R.id.done);
         done.setOnClickListener(this);
-        if(!hasDone)
-        {
+        if (!hasDone) {
             done.setVisibility(View.GONE);
         }
         rvContacts = (RecyclerView) findViewById(R.id.rv_contacts);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
-        ContactsAdapter adapter=new ContactsAdapter(contacts, R.layout.item_contacts,hasCheckBox,maxNum);
+        ContactsAdapter adapter = new ContactsAdapter(contacts, R.layout.item_contacts, hasCheckBox, maxNum);
         rvContacts.setAdapter(adapter);
         adapter.setOnItemClickListener(new ContactsAdapter.onRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
 //                Toast.makeText(ItemContactsActivity.this,contacts.get(position).getName(),Toast.LENGTH_SHORT).show();
 
-                if(!hasDone)//弹出
+                if (!hasDone)//弹出
                 {
-                    SpinnerDialogContacts spinnerDialog=new SpinnerDialogContacts(ItemContactsActivity.this,R.style.DialogAnimations_SmileWindow,contacts.get(position).getName(),contacts.get(position).getPhone(),contacts.get(position).getS_phone(),contacts.get(position).getQq());
+                    SpinnerDialogContacts spinnerDialog = new SpinnerDialogContacts(ItemContactsActivity.this, R.style.DialogAnimations_SmileWindow, contacts.get(position).getName(), contacts.get(position).getPhone(), contacts.get(position).getS_phone(), contacts.get(position).getQq());
                     spinnerDialog.showSpinerDialog();
-                }
-                else
-                {
+                } else {
                     boolean isHas = false;
-                    SortModel sortModel=null;
+                    SortModel sortModel = null;
                     for (int i = 0; i < selectContacts.size(); i++) {
                         if (selectContacts.get(i).getId() == contacts.get(position).getId())//有过
                         {
-                            sortModel=selectContacts.get(i);
+                            sortModel = selectContacts.get(i);
                             isHas = true;
                             break;
                         }
                     }
-                    if(!isHas)
-                    {
-                        if(maxNum<=selectContacts.size())
-                        {
-                            Toast.makeText(ItemContactsActivity.this,"最多选择"+maxNum+"个",Toast.LENGTH_SHORT).show();
+                    if (!isHas) {
+                        if (maxNum <= selectContacts.size()) {
+                            Toast.makeText(ItemContactsActivity.this, "最多选择" + maxNum + "个", Toast.LENGTH_SHORT).show();
                             return;
                         }
                     }
 
-                    if(isHas)
-                    {
-                        if(sortModel!=null)
-                        {
+                    if (isHas) {
+                        if (sortModel != null) {
                             selectContacts.remove(sortModel);
                         }
-                    }
-                    else{
+                    } else {
                         selectContacts.add(contacts.get(position));
                     }
                 }
@@ -136,7 +139,7 @@ public class ItemContactsActivity extends BaseActivity implements View.OnClickLi
         sideBar.setOnSelectIndexItemListener(new WaveSideBar.OnSelectIndexItemListener() {
             @Override
             public void onSelectIndexItem(String index) {
-                for (int i=0; i<contacts.size(); i++) {
+                for (int i = 0; i < contacts.size(); i++) {
                     if (contacts.get(i).getSortLetters().equals(index)) {
                         ((LinearLayoutManager) rvContacts.getLayoutManager()).scrollToPositionWithOffset(i, 0);
                         return;
@@ -146,41 +149,45 @@ public class ItemContactsActivity extends BaseActivity implements View.OnClickLi
         });
     }
 
-    private void initData() {
+    private void initData(int workId, int sortId) {
         //实例化汉字转拼音类
         characterParser = CharacterParser.getInstance();
         pinyinComparator = new PinyinComparator();
-        RequestParams params = new RequestParams(Constants.GetPersonList+"?pageIndex=1&pageSize=9999");
+        RequestParams params = new RequestParams(Constants.getToUser + "?pageIndex=1&pageSize=9999");
         params.addHeader("access_token", userDto.getAccessToken());
+        params.addQueryStringParameter("workId", workId + "");
+        params.addQueryStringParameter("nextSort", sortId + "");
+
         Callback.Cancelable cancelable = x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 Log.e("JAVA", "onSuccess result:" + result);
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                    int re=jsonObject.getInt("result");
-                    if(re!=1)
-                    {
-                        Toast.makeText(ItemContactsActivity.this,jsonObject.get("msg").toString(),Toast.LENGTH_SHORT).show();
-                        return;
+                    int re = jsonObject.getInt("result");
+                    Object data = null;
+                    if (type == 1) {
+                        data = jsonObject.get("userlist1");
+                    } else if (type == 2) {
+                        data =  jsonObject.get("userlist2");
+
                     }
-                    else
-                    {
-                        if(jsonObject.get("dataList")==""||jsonObject.get("dataList")==null)
-                        {
-                            Toast.makeText(ItemContactsActivity.this,"没有数据",Toast.LENGTH_SHORT).show();
+                    if (re != 1) {
+                        Toast.makeText(ItemContactsActivity.this, jsonObject.get("msg").toString(), Toast.LENGTH_SHORT).show();
+                        return;
+                    } else {
+                        if (data == "" || data == null) {
+                            Toast.makeText(ItemContactsActivity.this, "没有数据", Toast.LENGTH_SHORT).show();
                             return;
-                        }
-                        else
-                        {
+                        } else {
                             Gson gson = new Gson();
-                            List<PersonBean> list=new ArrayList<PersonBean>();
-                            Type type=new TypeToken<List<PersonBean>>(){}.getType();
-                            list=gson.fromJson(jsonObject.get("dataList").toString(), type);
+                            List<PersonBean> list = new ArrayList<PersonBean>();
+                            Type type = new TypeToken<List<PersonBean>>() {
+                            }.getType();
+                            list = gson.fromJson(data.toString(), type);
 //                            MessageDto messageDto = (MessageDto) gson.fromJson(jsonObject.toString(),MessageDto.class);
-                            for(int i=0;i<list.size();i++)
-                            {
-                                SortModel sortModel=new SortModel();
+                            for (int i = 0; i < list.size(); i++) {
+                                SortModel sortModel = new SortModel();
                                 sortModel.setId(list.get(i).getUserId());
                                 sortModel.setName(list.get(i).getUserTrueName());
                                 sortModel.setPhone(list.get(i).getMobile());
@@ -192,9 +199,9 @@ public class ItemContactsActivity extends BaseActivity implements View.OnClickLi
                                 String sortString = pinyin.substring(0, 1).toUpperCase();
 
                                 // 正则表达式，判断首字母是否是英文字母
-                                if(sortString.matches("[A-Z]")){
+                                if (sortString.matches("[A-Z]")) {
                                     sortModel.setSortLetters(sortString.toUpperCase());
-                                }else{
+                                } else {
                                     sortModel.setSortLetters("#");
                                 }
 
@@ -208,18 +215,21 @@ public class ItemContactsActivity extends BaseActivity implements View.OnClickLi
                     e.printStackTrace();
                 }
             }
+
             //请求异常后的回调方法
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 Log.e("JAVA", "onError:" + ex);
-                Toast.makeText(ItemContactsActivity.this,"网络或服务器异常！",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ItemContactsActivity.this, "网络或服务器异常！", Toast.LENGTH_SHORT).show();
             }
+
             //主动调用取消请求的回调方法
             @Override
             public void onCancelled(CancelledException cex) {
                 Log.e("JAVA", "onCancelled:" + cex);
 
             }
+
             @Override
             public void onFinished() {
                 Log.e("JAVA", "onFinished:" + "");
@@ -253,4 +263,6 @@ public class ItemContactsActivity extends BaseActivity implements View.OnClickLi
 
         }
     }
+
+
 }
