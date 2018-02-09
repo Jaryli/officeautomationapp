@@ -38,14 +38,25 @@ public class PersonAdapter extends ArrayAdapter<SortModel> {
     int maxNum;
     int resultCode;
 
-    public PersonAdapter(Activity context, int resource,int resourceImage, ArrayList<SortModel> objects,int maxNum,int resultCode) {
-        super(context, resource,objects);
+    int workId;
+    int sortId;
+    int type;
+
+    public PersonAdapter(Activity context, int resource, int resourceImage, ArrayList<SortModel> objects, int maxNum, int resultCode) {
+        super(context, resource, objects);
         this.mList = objects;
-        this.mContext=context;
-        resourceId=resource;
-        resourceIdImage=resourceImage;
-        this.maxNum=maxNum;
-        this.resultCode=resultCode;
+        this.mContext = context;
+        resourceId = resource;
+        resourceIdImage = resourceImage;
+        this.maxNum = maxNum;
+        this.resultCode = resultCode;
+    }
+
+
+    public void setRequestParams(int workId, int sortId, int type) {
+        this.workId = workId;
+        this.sortId = sortId;
+        this.type = type;
     }
 
     @Override
@@ -64,21 +75,20 @@ public class PersonAdapter extends ArrayAdapter<SortModel> {
         View view;
         ViewHolder viewHolder;//实例缓存
         view = LayoutInflater.from(getContext()).inflate(resourceId, null);
-        viewHolder=new ViewHolder();
-        viewHolder.hName=(TextView)view.findViewById(R.id.name);
-        viewHolder.hDel=(LinearLayout) view.findViewById(R.id.ll_del);
+        viewHolder = new ViewHolder();
+        viewHolder.hName = (TextView) view.findViewById(R.id.name);
+        viewHolder.hDel = (LinearLayout) view.findViewById(R.id.ll_del);
         view.setTag(viewHolder);
 
         View viewImage;
         ViewHolderImage viewHolderImage;//实例缓存
-        viewImage=LayoutInflater.from(getContext()).inflate(resourceIdImage, null);
-        viewHolderImage=new ViewHolderImage();
-        viewHolderImage.hPersonplus=(ImageView) viewImage.findViewById(R.id.iv_personplus);
+        viewImage = LayoutInflater.from(getContext()).inflate(resourceIdImage, null);
+        viewHolderImage = new ViewHolderImage();
+        viewHolderImage.hPersonplus = (ImageView) viewImage.findViewById(R.id.iv_personplus);
         viewImage.setTag(viewHolderImage);
 
-        if(maxNum>=(position+1))
-        {
-            if((position+1)==mList.size())//dayu 1
+        if (maxNum >= (position + 1)) {
+            if ((position + 1) == mList.size())//dayu 1
             {
                 viewHolderImage.hPersonplus.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -89,18 +99,22 @@ public class PersonAdapter extends ArrayAdapter<SortModel> {
                         intent.putExtra("hasDone", true);
                         intent.putExtra("code", resultCode);
                         intent.putExtra("maxNum", maxNum);
+
+                        intent.putExtra("workId", workId);
+                        intent.putExtra("sortId", sortId);
+                        intent.putExtra("type", type);
+
+
                         intent.setClass(mContext, ItemContactsActivity.class);
                         /*
                          * 如果希望启动另一个Activity，并且希望有返回值，则需要使用startActivityForResult这个方法，
                          * 第一个参数是Intent对象，第二个参数是一个requestCode值，如果有多个按钮都要启动Activity，则requestCode标志着每个按钮所启动的Activity
                          */
-                        mContext.startActivityForResult(intent,resultCode);
+                        mContext.startActivityForResult(intent, resultCode);
                     }
                 });
                 return viewImage;
-            }
-            else
-            {
+            } else {
                 viewHolder.hName.setText(mList.get(position).getName());
                 viewHolder.hDel.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -118,9 +132,7 @@ public class PersonAdapter extends ArrayAdapter<SortModel> {
                 });
                 return view;
             }
-        }
-        else
-        {
+        } else {
             viewHolderImage.hPersonplus.setVisibility(View.GONE);
             return viewImage;
         }
@@ -134,13 +146,13 @@ public class PersonAdapter extends ArrayAdapter<SortModel> {
 
 
     //实例缓存
-    class ViewHolder{
+    class ViewHolder {
         TextView hName;
         LinearLayout hDel;
     }
 
     //实例缓存
-    class ViewHolderImage{
+    class ViewHolderImage {
         ImageView hPersonplus;
     }
 }
