@@ -36,25 +36,33 @@ public class SpinnerDialog3 {
     int pos;
     int style;
 
-    int status=0;//同意
-    final ArrayList<SortModel> list1=new ArrayList<>();//返回获取,需要在最后面丢上一个空的
-    final ArrayList<SortModel> list2=new ArrayList<>();//返回获取,需要在最后面丢上一个空的
+    int status = 0;//同意
+    final ArrayList<SortModel> list1 = new ArrayList<>();//返回获取,需要在最后面丢上一个空的
+    final ArrayList<SortModel> list2 = new ArrayList<>();//返回获取,需要在最后面丢上一个空的
 
     PersonAdapter myGridAdapter;
     PersonAdapter myGridAdapter2;
     ArrayList<SortModel> defaultList1;
     ArrayList<SortModel> defaultList2;
 
+    int workId;
+    int sortId;
+
     public SpinnerDialog3(Activity activity) {
         this.context = activity;
     }
 
-    public SpinnerDialog3(Activity activity, int style,ArrayList<SortModel> defaultList1,ArrayList<SortModel> defaultList2) {
+    public SpinnerDialog3(Activity activity, int style, ArrayList<SortModel> defaultList1, ArrayList<SortModel> defaultList2) {
 
         this.context = activity;
-        this.style=style;
-        this.defaultList1=defaultList1;
-        this.defaultList2=defaultList2;
+        this.style = style;
+        this.defaultList1 = defaultList1;
+        this.defaultList2 = defaultList2;
+    }
+
+    public void setRequestParams(int workId, int sortId) {
+        this.workId = workId;
+        this.sortId = sortId;
     }
 
     public void bindOnSpinerListener(OnDoneClick onDoneClick) {
@@ -66,26 +74,27 @@ public class SpinnerDialog3 {
         View v = context.getLayoutInflater().inflate(R.layout.dialog_layout3, null);
         TextView rippleViewClose = (TextView) v.findViewById(R.id.close);
         TextView rippleViewdone = (TextView) v.findViewById(R.id.done);
-        et_reason= (EditText) v.findViewById(R.id.et_reason);
-        radio_yes= (RadioButton) v.findViewById(R.id.radio_yes);
+        et_reason = (EditText) v.findViewById(R.id.et_reason);
+        radio_yes = (RadioButton) v.findViewById(R.id.radio_yes);
         radio_yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                status=0;
+                status = 0;
             }
         });
-        radio_no= (RadioButton) v.findViewById(R.id.radio_no);
+        radio_no = (RadioButton) v.findViewById(R.id.radio_no);
         radio_no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                status=1;
+                status = 1;
             }
         });//不同意
-        mygridview= (MyGridView) v.findViewById(R.id.mygridview);
+        mygridview = (MyGridView) v.findViewById(R.id.mygridview);
         mygridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
         initData();
         //实例化一个适配器
-        myGridAdapter=new PersonAdapter(context,R.layout.item_person,R.layout.item_person2,list1,1,codeNum1);
+        myGridAdapter = new PersonAdapter(context, R.layout.item_person, R.layout.item_person2, list1, 1, codeNum1);
+        myGridAdapter.setRequestParams(workId, sortId,1);
         //为GridView设置适配器
         mygridview.setAdapter(myGridAdapter);
         mygridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -95,10 +104,12 @@ public class SpinnerDialog3 {
             }
         });
 
-        mygridview2= (MyGridView) v.findViewById(R.id.mygridview2);
+        mygridview2 = (MyGridView) v.findViewById(R.id.mygridview2);
         mygridview2.setSelector(new ColorDrawable(Color.TRANSPARENT));
         //实例化一个适配器
-        myGridAdapter2=new PersonAdapter(context,R.layout.item_person,R.layout.item_person2,list2,10,codeNum2);
+        myGridAdapter2 = new PersonAdapter(context, R.layout.item_person, R.layout.item_person2, list2, 10, codeNum2);
+        myGridAdapter2.setRequestParams(workId, sortId,2);
+
         //为GridView设置适配器
         mygridview2.setAdapter(myGridAdapter2);
         mygridview2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -117,7 +128,7 @@ public class SpinnerDialog3 {
             @Override
             public void onClick(View v) {
                 //提交
-                onDoneClick.onClick(status,et_reason.getText().toString(),list1,list2);
+                onDoneClick.onClick(status, et_reason.getText().toString(), list1, list2);
                 alertDialog.dismiss();
             }
         });
@@ -131,30 +142,25 @@ public class SpinnerDialog3 {
     }
 
 
-    private final int codeNum1=1;
-    private final int codeNum2=2;
+    private final int codeNum1 = 1;
+    private final int codeNum2 = 2;
 
-    public void refreshData(int num,ArrayList<SortModel> list)
-    {
-        if(num==codeNum1)
-        {
+    public void refreshData(int num, ArrayList<SortModel> list) {
+        if (num == codeNum1) {
             list1.clear();
-            SortModel sortMode=new SortModel();
+            SortModel sortMode = new SortModel();
             sortMode.setId(0);
-            if(list!=null)
-            {
+            if (list != null) {
                 list1.addAll(list);
             }
             list1.add(sortMode);
             myGridAdapter.refresh(list1);
         }
-        if(num==codeNum2)
-        {
+        if (num == codeNum2) {
             list2.clear();
-            SortModel sortMode=new SortModel();
+            SortModel sortMode = new SortModel();
             sortMode.setId(0);
-            if(list!=null)
-            {
+            if (list != null) {
                 list2.addAll(list);
             }
             list2.add(sortMode);
@@ -163,27 +169,22 @@ public class SpinnerDialog3 {
     }
 
 
-
-    public void initData()
-    {
-        SortModel sortMode=new SortModel();
+    public void initData() {
+        SortModel sortMode = new SortModel();
         sortMode.setId(0);
-        if(defaultList1!=null)
-        {
+        if (defaultList1 != null) {
             list1.addAll(defaultList1);
         }
         list1.add(sortMode);
-        if(defaultList2!=null)
-        {
+        if (defaultList2 != null) {
             list2.addAll(defaultList2);
         }
         list2.add(sortMode);
 
     }
 
-    public interface OnDoneClick
-    {
-        void onClick(int status, String reason,ArrayList<SortModel> list1,ArrayList<SortModel> list2);
+    public interface OnDoneClick {
+        void onClick(int status, String reason, ArrayList<SortModel> list1, ArrayList<SortModel> list2);
     }
 
 }
