@@ -171,6 +171,8 @@ public class ItemContactsActivity extends BaseActivity implements View.OnClickLi
                     } else if (type == 2) {
                         data =  jsonObject.get("userlist2");
 
+                    }else {
+                        data =  jsonObject.get("data");
                     }
                     if (re != 1) {
                         Toast.makeText(ItemContactsActivity.this, jsonObject.get("msg").toString(), Toast.LENGTH_SHORT).show();
