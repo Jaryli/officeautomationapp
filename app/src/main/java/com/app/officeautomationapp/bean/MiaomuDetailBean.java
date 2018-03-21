@@ -1,6 +1,7 @@
 package com.app.officeautomationapp.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by pc on 2017/12/23.
@@ -25,6 +26,8 @@ public class MiaomuDetailBean implements Serializable {
     private String RefuseNum;
     private String RefuseReason;
     private double MoneyNum;
+
+    public List<MiaomuDetailImagesBean> fileList;
 
     public Integer getId() {
         return Id;

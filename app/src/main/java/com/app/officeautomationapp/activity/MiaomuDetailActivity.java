@@ -146,6 +146,7 @@ public class MiaomuDetailActivity extends BaseActivity implements  View.OnClickL
                             Gson gson = new Gson();
                             Type type=new TypeToken<MiaomuDetailBean>(){}.getType();
                             miaomuDetailBean=gson.fromJson(jsonObject.get("data").toString(), type);
+
                             Message message = new Message();
                             message.what = 1;
                             handler.sendMessage(message);
@@ -196,14 +197,22 @@ public class MiaomuDetailActivity extends BaseActivity implements  View.OnClickL
                         refuseReason.setText(miaomuDetailBean.getRefuseReason());
                         moneyNum.setText(miaomuDetailBean.getMoneyNum()+"");
                         remark.setText(miaomuDetailBean.getRemark());
-                        if(miaomuDetailBean.getPhotoStr()!=null&&miaomuDetailBean.getPhotoStr().length>0)
-                        {
+//                        if(miaomuDetailBean.getPhotoStr()!=null&&miaomuDetailBean.getPhotoStr().length>0)
+//                        {
+//                            iv_img.setVisibility(View.GONE);
+//                            for(int i=0;i<miaomuDetailBean.getPhotoStr().length;i++)
+//                            {
+//                                addImg(miaomuDetailBean.getPhotoStr()[i]);
+//                            }
+//                        }
+
+                        if (miaomuDetailBean.fileList != null && miaomuDetailBean.fileList.size() > 0) {
                             iv_img.setVisibility(View.GONE);
-                            for(int i=0;i<miaomuDetailBean.getPhotoStr().length;i++)
-                            {
-                                addImg(miaomuDetailBean.getPhotoStr()[i]);
+                            for (int i = 0; i < miaomuDetailBean.fileList.size(); i++) {
+                                addImg(miaomuDetailBean.fileList.get(i).FileImageStr);
                             }
                         }
+
                     }
                     break;
             }

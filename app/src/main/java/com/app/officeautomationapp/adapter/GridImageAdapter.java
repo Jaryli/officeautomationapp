@@ -20,7 +20,7 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.tools.DateUtils;
-import com.luck.picture.lib.tools.DebugUtil;
+//import com.luck.picture.lib.tools.DebugUtils;
 import com.luck.picture.lib.tools.StringUtils;
 
 import java.io.File;
@@ -141,7 +141,7 @@ public class GridImageAdapter extends
                         list.remove(index);
                         notifyItemRemoved(index);
                         notifyItemRangeChanged(index, list.size());
-                        DebugUtil.i("delete position:", index + "--->remove after:" + list.size());
+                        Log.i("delete position:", index + "--->remove after:" + list.size());
                     }
                 }
             });
