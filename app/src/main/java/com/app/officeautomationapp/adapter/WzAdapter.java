@@ -55,6 +55,7 @@ public class WzAdapter extends ArrayAdapter<WzBean> {
             viewHolder.hheigth=(TextView) view.findViewById(R.id.heigth);
             viewHolder.hpj=(TextView) view.findViewById(R.id.pj);
             viewHolder.hunit=(TextView) view.findViewById(R.id.unit);
+            viewHolder.hcheckedNum=(TextView)view.findViewById(R.id.checkedNum);
             view.setTag(viewHolder);
         }else
         {
@@ -69,6 +70,7 @@ public class WzAdapter extends ArrayAdapter<WzBean> {
         viewHolder.hheigth.setText(wzBean.getACHeight());
         viewHolder.hpj.setText(wzBean.getACPengXing());
         viewHolder.hunit.setText(wzBean.getUnits());
+        viewHolder.hcheckedNum.setText(wzBean.getCheckedNum()+"");
         return view;
     }
 
@@ -81,5 +83,6 @@ public class WzAdapter extends ArrayAdapter<WzBean> {
         TextView hheigth;
         TextView hpj;
         TextView hunit;
+        TextView hcheckedNum;
     }
 }

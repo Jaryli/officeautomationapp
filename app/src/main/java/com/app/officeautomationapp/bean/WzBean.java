@@ -17,7 +17,13 @@ public class WzBean implements Serializable {
     private String ACHeight;//高度
     private String ACPengXing;//蓬型
     private Double YSNumInfo;//验收数量
-
+    private Double CheckedNum;//已验收
+    public Double getCheckedNum() {
+        return CheckedNum;
+    }
+    public void setCheckedNum(Double checkedNum) {
+        CheckedNum = checkedNum;
+    }
     public Integer getId() {
         return Id;
     }

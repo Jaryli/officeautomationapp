@@ -101,7 +101,6 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
             b2=!"".equals(hiddenProjectBean.getWorkingPhoto());
             b3=!"".equals(hiddenProjectBean.getAfterWorkPhoto());
         }
-
         hiddenPorjectPostBean=new HiddenPorjectPostBean();
         ivBack=(ImageView)findViewById(R.id.iv_hidden_add_back);
         ivBack.setOnClickListener(this);
@@ -121,6 +120,7 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
         adapter1 = new GridImageAdapter(HiddenProjectAddActivity.this, onAddPicClickListener1);
         adapter1.setList(selectMedia1);
         adapter1.setSelectMax(maxSelectNum);
+
         recyclerView1.setAdapter(adapter1);
         adapter1.setOnItemClickListener(new GridImageAdapter.OnItemClickListener() {
             @Override
@@ -241,6 +241,7 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
                 }
                 adapter1.setList(selectMedia1);
                 adapter1.notifyDataSetChanged();
+                pic1=1;
             }
             if(!hiddenProjectBean.getWorkingPhoto().equals("")&&hiddenProjectBean.getWorkingPhoto()!=null) {
                 for(String s:hiddenProjectBean.getWorkingPhotoStr())
@@ -259,6 +260,7 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
                 }
                 adapter2.setList(selectMedia2);
                 adapter2.notifyDataSetChanged();
+                pic2=1;
             }
 
             if(!hiddenProjectBean.getAfterWorkPhoto().equals("")&&hiddenProjectBean.getAfterWorkPhoto()!=null) {
@@ -278,6 +280,7 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
                 }
                 adapter3.setList(selectMedia3);
                 adapter3.notifyDataSetChanged();
+                pic3=1;
             }
 
         }
@@ -633,7 +636,7 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
 
     private void post()
     {
-        if(selectMedia1.size()>0&&pic1>0)
+        if(selectMedia1.size()>0&&pic1==0)
         {
             String[] str=new String[selectMedia1.size()];
             for(int i=0;i<selectMedia1.size();i++)
@@ -643,7 +646,7 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
             hiddenPorjectPostBean.setBeforeWorkPhoto(str);
 
         }
-        if(selectMedia2.size()>0&&pic2>0) {
+        if(selectMedia2.size()>0&&pic2==0) {
             String[] str=new String[selectMedia2.size()];
             for(int i=0;i<selectMedia2.size();i++)
             {
@@ -651,7 +654,7 @@ public class HiddenProjectAddActivity extends BaseActivity implements View.OnCli
             }
             hiddenPorjectPostBean.setWorkingPhoto(str);
         }
-        if(selectMedia3.size()>0&&pic3>0) {
+        if(selectMedia3.size()>0&&pic3==0) {
             String[] str=new String[selectMedia3.size()];
             for(int i=0;i<selectMedia3.size();i++)
             {

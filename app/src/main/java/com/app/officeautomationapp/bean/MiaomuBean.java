@@ -22,6 +22,15 @@ public class MiaomuBean implements Serializable {
     private List<file> fileList;
     private String TreeName;
     private Integer ACNumInfo;
+    private Integer CheckedNum;
+
+    public Integer getCheckedNum() {
+        return CheckedNum;
+    }
+
+    public void setCheckedNum(Integer checkedNum) {
+        CheckedNum = checkedNum;
+    }
 
     class file  implements Serializable
     {

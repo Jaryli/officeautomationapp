@@ -21,6 +21,15 @@ public class TujianBean  implements Serializable {
     private String[] PhotoStr;
     private List<file> fileList;
 
+    public Integer getCheckedNum() {
+        return CheckedNum;
+    }
+
+    public void setCheckedNum(Integer checkedNum) {
+        CheckedNum = checkedNum;
+    }
+
+    private Integer CheckedNum;
     class file  implements Serializable
     {
         private Integer FileId;

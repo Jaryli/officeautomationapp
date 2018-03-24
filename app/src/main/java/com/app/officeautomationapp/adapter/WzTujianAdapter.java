@@ -43,6 +43,7 @@ public class WzTujianAdapter extends ArrayAdapter<WzTujianBean> {
             viewHolder.hname=(TextView)view.findViewById(R.id.name);
             viewHolder.hnum=(TextView) view.findViewById(R.id.num);
             viewHolder.units=(TextView) view.findViewById(R.id.units);
+            viewHolder.hcheckedNum=(TextView) view.findViewById(R.id.checkedNum);
             view.setTag(viewHolder);
         }else
         {
@@ -53,6 +54,7 @@ public class WzTujianAdapter extends ArrayAdapter<WzTujianBean> {
         viewHolder.hname.setText(wzBean.getCivilName());
         viewHolder.hnum.setText(wzBean.getCivilNum()+"");
         viewHolder.units.setText(wzBean.getCivilUnits());
+        viewHolder.hcheckedNum.setText(wzBean.getCheckedNum()+"");
         return view;
     }
 
@@ -61,5 +63,6 @@ public class WzTujianAdapter extends ArrayAdapter<WzTujianBean> {
         TextView hname;
         TextView hnum;
         TextView units;
+        TextView hcheckedNum;
     }
 }

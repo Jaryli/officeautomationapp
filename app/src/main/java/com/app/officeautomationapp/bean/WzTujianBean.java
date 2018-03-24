@@ -20,6 +20,15 @@ public class WzTujianBean implements Serializable {
     private String[] PhotoStr;
     private String[] fileList;
 
+    public double getCheckedNum() {
+        return CheckedNum;
+    }
+
+    public void setCheckedNum(double checkedNum) {
+        CheckedNum = checkedNum;
+    }
+
+    private double CheckedNum;
     public Integer getId() {
         return Id;
     }
